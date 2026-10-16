@@ -17,11 +17,19 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Syntax check app.js
-        run: node --check app.js
+      - name: Syntax check player JavaScript modules
+        run: |
+          node --check app.js
+          node --check global-story.js
+          node --check i18n.js
+          node --check sw.js
 
-      - name: Syntax check sw.js
-        run: node --check sw.js
+      - name: Verify required modules exist and load before app
+        run: |
+          test -f global-story.js
+          test -f i18n.js
+          test "$(grep -n 'src=\"global-story.js\"' index.html | cut -d: -f1)" -lt "$(grep -n 'src=\"i18n.js\"' index.html | cut -d: -f1)"
+          test "$(grep -n 'src=\"i18n.js\"' index.html | cut -d: -f1)" -lt "$(grep -n 'src=\"app.js\"' index.html | cut -d: -f1)"
 
       - name: Verify no hardcoded stop counts
         run: |
