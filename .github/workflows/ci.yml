@@ -22,14 +22,17 @@ jobs:
           node --check app.js
           node --check global-story.js
           node --check i18n.js
+          node --check pack-validation.js
           node --check sw.js
 
       - name: Verify required modules exist and load before app
         run: |
           test -f global-story.js
           test -f i18n.js
+          test -f pack-validation.js
           test "$(grep -n 'src="global-story.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)"
-          test "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="app.js"' index.html | cut -d: -f1)"
+          test "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="pack-validation.js"' index.html | cut -d: -f1)"
+          test "$(grep -n 'src="pack-validation.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="app.js"' index.html | cut -d: -f1)"
 
       - name: Run player module regression tests
         run: node --test tests/*.test.cjs
