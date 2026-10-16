@@ -20,7 +20,9 @@ const DEMO_PACK = {
       wisp: "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
       lit: "One down! See how it glows? That's my happy leaking out.",
       puzzle: { cozy: { q: "Count the pumpkins in the patch picture your organizer showed you. How many are smiling?", a: "4", type: "number" },
-                spooky: { q: "Riddle: I have a face but cannot see, I glow but cannot flee. On Halloween night I watch the street. What am I?", a: "jack-o-lantern", type: "text" } },
+                spooky: { q: "Riddle: I have a face but cannot see, I glow but cannot flee. On Halloween night I watch the street. What am I?", a: "jack-o-lantern", type: "text" },
+                afterdark: { q: "The colony year hides in the welcome sign's number. Count the digits.", a: "22", type: "number" },
+                overdrive: { q: "Dr. Z's madness meter reads 6.66. Round to the nearest whole number and multiply by the number of lanterns.", a: "42", type: "number" } },
       fallback: { q: "What color is the ribbon on the welcome sign?", a: "orange" },
       hints: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."] },
     { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
@@ -30,7 +32,10 @@ const DEMO_PACK = {
                overdrive: "Two hundred years this oak has stood, and it has seen faster Keepers than you. Oakie, be honest — are they slow? …He says yes. MOVE." },
       wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       lit: "Got it! Oakie says you're officially tree-approved.",
-      puzzle: { cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" } },
+      puzzle: { cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" },
+                spooky: { q: "I whisper without a mouth and shelter without walls. What am I?", a: "oak", type: "text" },
+                afterdark: { q: "The word 'whispering' hides a number. Count its letters.", a: "8", type: "number" },
+                overdrive: { q: "The oak has whispered 200 years. Each year it whispers 3 words. How many words total? Count the digits.", a: "6", type: "number" } },
       fallback: { q: "What is carved on the small sign by the oak?", a: "wisp" },
       hints: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: the answer is 2."] },
     { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
@@ -40,7 +45,10 @@ const DEMO_PACK = {
                overdrive: "The ghosts keep score, and right now you're losing to a team of TODDLERS. Tag them back. TAG. THEM. BACK." },
       wisp: "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
       lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
-      puzzle: { cozy: { q: "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)", a: "pumpkins", type: "text" } },
+      puzzle: { cozy: { q: "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)", a: "pumpkins", type: "text" },
+                spooky: { q: "The gnome's hat points to the tombstones. His hat is what color?", a: "red", type: "text" },
+                afterdark: { q: "One stone reads 'Here lies Wisp's lantern'. Count the letters in 'lantern'.", a: "7", type: "number" },
+                overdrive: { q: "The graveyard has 5 tombstones. Each tombstone has 4 letters. Add the letters to the number of stones.", a: "9", type: "number" } },
       fallback: { q: "How many foam tombstones are there?", a: "5" },
       hints: ["Read the stones — one of them is joking.", "It rhymes with the patch from Stop 1.", "Ranger assist: Rest In Pumpkins."] },
     { id: 4, name: "The Spider's Counting Web", lat: 29.0270, lng: -80.9252, code: "LANTERN-4", art: "stop-4-spider.webp",
@@ -50,7 +58,10 @@ const DEMO_PACK = {
                overdrive: "Mrs. Spider has rebuilt eleven webs tonight AND finished a crossword. Your excuse is WHAT, exactly? Untangle that lantern. Clock's ticking." },
       wisp: "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
       lit: "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT.",
-      puzzle: { cozy: { q: "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?", a: "5", type: "number" } },
+      puzzle: { cozy: { q: "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?", a: "5", type: "number" },
+                spooky: { q: "Mrs. Spider's web has 8 points. She cuts 5. How many points are left?", a: "3", type: "number" },
+                afterdark: { q: "Mrs. Spider has 8 legs. She gives 3 to her sister. How many legs does Mrs. Spider have left?", a: "5", type: "number" },
+                overdrive: { q: "Mrs. Spider weaves 8 legs. Each leg has 7 joints. How many joints total? Count the digits of your answer.", a: "5", type: "number" } },
       fallback: { q: "What color is Mrs. Spider?", a: "purple" },
       hints: ["Start with 8 legs, like every spider.", "She waves with 3 of them.", "Ranger assist: 8 − 3 = 5."] },
     { id: 5, name: "The Owl's Night Watch", lat: 29.0274, lng: -80.9246, code: "LANTERN-5", art: "stop-5-owl.webp",
@@ -60,7 +71,10 @@ const DEMO_PACK = {
                overdrive: "Professor Hoot graded your last answer a C+. A C! In MY hunt! Listen harder, answer faster — make an owl proud." },
       wisp: "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
       lit: "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome.",
-      puzzle: { cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" } },
+      puzzle: { cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" },
+                spooky: { q: "The owl's favorite time rhymes with 'twilight light'. What is it?", a: "twilight", type: "text" },
+                afterdark: { q: "Professor Hoot's name has 4 letters. The owl hoots 3 times. Add them together.", a: "7", type: "number" },
+                overdrive: { q: "Professor Hoot hoots 10 times. Each hoot has 2 syllables. Add the syllables to the number of hoots.", a: "12", type: "number" } },
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
       hints: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."] },
     { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-parade.webp",
@@ -70,7 +84,10 @@ const DEMO_PACK = {
                overdrive: "FINAL STRETCH. Wisp ran the numbers and they are NOT in your favor. Light that last lantern like you mean it — FULL! MADNESS!" },
       wisp: "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
       lit: "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!",
-      puzzle: { cozy: { q: "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?", a: "6", type: "number" } },
+      puzzle: { cozy: { q: "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?", a: "6", type: "number" },
+                spooky: { q: "If each lantern burns for 3 hours, how many total hours of light did your team create?", a: "18", type: "number" },
+                afterdark: { q: "The 6 lanterns are numbered 1 through 6. Add the even numbers.", a: "12", type: "number" },
+                overdrive: { q: "FINAL CHALLENGE: 6 lanterns, each burns 3 hours. Total burn time? Add the digits of your answer.", a: "9", type: "number" } },
       fallback: { q: "Say the magic words out loud as a team: 'Light the way, Wisp!' then type: wisp", a: "wisp" },
       hints: ["Count the stops on your map.", "One lantern per stop.", "Ranger assist: 6 lanterns."] }
   ]
@@ -540,6 +557,9 @@ $("btn-start").addEventListener("click", async () => {
     state.startedAt = state.startedAt || Date.now();
   }
   save(); show("screen-scare");
+  startTimer();
+  focusFirst();
+  playSound("assets/audio/hoot.ogg");
 });
 
 /* ---------- QR deep links ----------
@@ -706,6 +726,72 @@ $("btn-hint").addEventListener("click", () => {
   }
 });
 
+/* ---------- audio: play sound effects ---------- */
+let audioCtx = null;
+function playSound(url) {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  fetch(url)
+    .then(r => r.arrayBuffer())
+    .then(buf => audioCtx.decodeAudioData(buf))
+    .then(audioBuf => {
+      const src = audioCtx.createBufferSource();
+      src.buffer = audioBuf;
+      src.connect(audioCtx.destination);
+      src.start();
+    })
+    .catch(() => {});
+}
+
+/* ---------- share: native share or clipboard fallback ---------- */
+function shareTeam() {
+  const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! Join the hunt!`;
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: "Wisp's Lost Lanterns", text, url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + " " + url).then(() => {
+      $("feedback").textContent = "Link copied! Share it with your team.";
+    });
+  }
+}
+
+/* ---------- timer: elapsed time display ---------- */
+let timerInterval = null;
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const el = $("hunt-clock");
+    if (!el || !state.startedAt) return;
+    const secs = Math.floor((Date.now() - state.startedAt) / 1000);
+    const m = Math.floor(secs / 60), s = secs % 60;
+    el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
+  }, 1000);
+}
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+/* ---------- PWA install prompt ---------- */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = $("btn-install");
+  if (btn) btn.style.display = "inline-block";
+});
+function installPWA() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
+  }
+}
+
+/* ---------- focus management ---------- */
+function focusFirst() {
+  const first = document.querySelector("input, button");
+  if (first) first.focus();
+}
+
 /* ---------- leaderboard scoring ----------
    Lower is better. Weights: completion >> clean solves >> hints >> time >> wrong guesses.
    Matches backend sort intent (finished, hints) with richer local signals. */
@@ -779,6 +865,15 @@ function finale() {
     }).join("");
   }
   syncProgress(true);
+  stopTimer();
+  // Show share and install buttons
+  const shareBtn = $("btn-share-finale");
+  if (shareBtn) shareBtn.style.display = "inline-block";
+  if (deferredInstallPrompt) {
+    const installBtn = $("btn-install");
+    if (installBtn) installBtn.style.display = "inline-block";
+  }
+  focusFirst();
 }
 window.addEventListener("pagehide", stopTracking);
 $("btn-restart").addEventListener("click", () => {
@@ -790,6 +885,48 @@ $("btn-restart").addEventListener("click", () => {
   const q = keep.toString();
   localStorage.removeItem("lantern-state");
   location.href = location.pathname + (q ? "?" + q : "");
+});
+
+// Share button
+$("btn-share-finale").addEventListener("click", shareTeam);
+
+// Install PWA button
+$("btn-install").addEventListener("click", installPWA);
+
+// Keyboard navigation: Enter to submit, Escape to go back
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.tagName === "INPUT") {
+    const btn = e.target.parentElement.querySelector("button");
+    if (btn) btn.click();
+  }
+  if (e.key === "Escape") {
+    const active = document.querySelector(".screen.active");
+    if (active && active.id === "screen-puzzle") openMap();
+  }
+});
+
+// Touch feedback: haptic on mobile
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON" && navigator.vibrate) {
+    navigator.vibrate(10);
+  }
+}, { passive: true });
+
+// Offline detection
+window.addEventListener("offline", () => {
+  const el = $("offline-banner");
+  if (el) el.style.display = "block";
+});
+window.addEventListener("online", () => {
+  const el = $("offline-banner");
+  if (el) el.style.display = "none";
+});
+
+// Image lazy loading
+document.querySelectorAll("img").forEach(img => {
+  if (!img.src && img.dataset.src) {
+    img.src = img.dataset.src;
+  }
 });
 
 /* ---------- helpers / backend stubs ---------- */
