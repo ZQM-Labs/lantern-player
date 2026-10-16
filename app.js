@@ -63,7 +63,7 @@ const DEMO_PACK = {
       puzzle: { cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" } },
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
       hints: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."] },
-    { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-parade.webp",
+    { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
       story: { cozy: "The last lantern! Light it and the whole parade glows.",
                spooky: "The empty parade ground waits. Six lanterns, six shadows — but there are seven shadows moving on the grass, and one of them is waving at you.",
                afterdark: "Every lantern you've lit is still burning behind you, a dotted line of fire through the dark. One more, and the road home exists.",
@@ -104,27 +104,47 @@ let hintLevel = 0;
    pack (wrong stop count, missing hints, duplicate answers) crashes openMap()
    or the hint ladder mid-hunt. Reject and fall back to the embedded pack. */
 function validatePack(p) {
-  const errs = [];
   if (!p || !Array.isArray(p.stops) || p.stops.length !== 6) {
     const got = !p ? "nothing" : (Array.isArray(p.stops) ? p.stops.length : typeof p.stops);
     return ["expected 6 stops, got " + got];
   }
+
+  const errs = [];
   const answers = [];
   const ids = [];
   for (const s of p.stops) {
+    if (!s || typeof s !== "object" || Array.isArray(s)) {
+      errs.push("stop ?: must be an object");
+      continue;
+    }
     const tag = `stop ${s.id ?? "?"}`;
     if (typeof s.id !== "number" || !Number.isInteger(s.id)) errs.push(`${tag}: id must be an integer`);
     else ids.push(s.id);
-    if (!s.name || !s.code) errs.push(`${tag}: needs name + code`);
-    if (!s.story || !s.story.cozy) errs.push(`${tag}: story.cozy missing`);
-    const pz = s.puzzle && s.puzzle.cozy;
-    const qOk = pz && pz.q !== undefined && pz.q !== null && String(pz.q).trim() !== "";
-    const aOk = pz && pz.a !== undefined && pz.a !== null && String(pz.a).trim() !== "";
-    if (!qOk || !aOk) errs.push(`${tag}: puzzle.cozy needs q + a`);
+    if (typeof s.name !== "string" || !s.name.trim() ||
+        typeof s.code !== "string" || !s.code.trim()) {
+      errs.push(`${tag}: name + code must be non-empty strings`);
+    }
+    if (!s.story || typeof s.story !== "object" ||
+        typeof s.story.cozy !== "string" || !s.story.cozy.trim()) {
+      errs.push(`${tag}: story.cozy missing or invalid`);
+    }
+    const pz = s.puzzle && typeof s.puzzle === "object" ? s.puzzle.cozy : null;
+    const qOk = pz && typeof pz.q === "string" && pz.q.trim() !== "";
+    const aOk = pz && (typeof pz.a === "string" || (typeof pz.a === "number" && Number.isFinite(pz.a))) &&
+      String(pz.a).trim() !== "";
+    if (!qOk || !aOk) errs.push(`${tag}: puzzle.cozy needs a non-empty question and answer`);
     else answers.push(String(pz.a).trim().toLowerCase());
-    if (!s.fallback || !s.fallback.q || !s.fallback.a) errs.push(`${tag}: fallback needs q + a`);
-    if (!Array.isArray(s.hints) || s.hints.length !== 3) errs.push(`${tag}: needs exactly 3 hints`);
-    if (typeof s.lat !== "number" || !Number.isFinite(s.lat) || typeof s.lng !== "number" || !Number.isFinite(s.lng)) {
+    if (!s.fallback || typeof s.fallback !== "object" ||
+        typeof s.fallback.q !== "string" || !s.fallback.q.trim() ||
+        !["string", "number"].includes(typeof s.fallback.a) || !String(s.fallback.a).trim()) {
+      errs.push(`${tag}: fallback needs a non-empty question + answer`);
+    }
+    if (!Array.isArray(s.hints) || s.hints.length !== 3 ||
+        s.hints.some(h => typeof h !== "string" || !h.trim())) {
+      errs.push(`${tag}: needs exactly 3 non-empty string hints`);
+    }
+    if (typeof s.lat !== "number" || !Number.isFinite(s.lat) ||
+        typeof s.lng !== "number" || !Number.isFinite(s.lng)) {
       errs.push(`${tag}: lat/lng must be finite numbers`);
     } else if (s.lat < -90 || s.lat > 90 || s.lng < -180 || s.lng > 180) {
       errs.push(`${tag}: lat/lng out of geographic bounds`);
@@ -134,7 +154,6 @@ function validatePack(p) {
   if (new Set(ids).size !== ids.length) errs.push("stop ids must be unique");
   return errs;
 }
-
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
@@ -153,8 +172,8 @@ function artFor(stop) {
   const name = safeArtName(stop && stop.art);
   if (!name) return "";
   const tier = ["spooky", "afterdark", "overdrive"].includes(state.scare) ? state.scare : "cozy";
-  if (tier !== "cozy") return "assets/" + name.replace(/\.webp$/i, "-" + tier + ".webp");
-  return "assets/" + name;
+  if (tier !== "cozy") return "assets/img/" + name.replace(/\.webp$/i, "-" + tier + ".webp");
+  return "assets/img/" + name.replace(/\.webp$/i, "-cozy.webp");
 }
 
 function variant(stop, kind) { // kind: "story" | puzzle object
@@ -490,7 +509,7 @@ function updateHUD() {
     let dots = "";
     for (let i = 0; i < total; i++) dots += i < lit ? "🏮" : "🌑";
     wm.innerHTML = `<strong>Wisp's glow</strong>` +
-      `<img class="wisp-mood" src="assets/${mood.src}" alt="${mood.alt}">` +
+      `<img class="wisp-mood" src="assets/img/${mood.src}" alt="${mood.alt}">` +
       `<div class="dots" role="img" aria-label="${lit} of ${total} lanterns lit">${dots}</div>` +
       `<div>${lit}/${total} lanterns lit — ${mood.cap}</div>`;
   }
@@ -639,18 +658,23 @@ window.openStop = function (id) {
     const baseArt = safeArtName(currentStop.art);
     if (baseArt) {
       const selectedArt = artFor(currentStop);
+      const candidates = [...new Set([
+        selectedArt,
+        "assets/img/" + baseArt.replace(/\.webp$/i, "-cozy.webp"),
+        "assets/img/" + baseArt
+      ])];
+      let candidateIndex = 0;
       sa.onerror = function () {
-        sa.onerror = null;
-        // A missing scare variant may fall back only to the validated base filename.
-        if (selectedArt !== "assets/" + baseArt) {
-          sa.onerror = function () { sa.onerror = null; sa.removeAttribute("src"); sa.style.display = "none"; };
-          sa.src = "assets/" + baseArt;
+        candidateIndex++;
+        if (candidateIndex < candidates.length) {
+          sa.src = candidates[candidateIndex];
         } else {
+          sa.onerror = null;
           sa.removeAttribute("src");
           sa.style.display = "none";
         }
       };
-      sa.src = selectedArt;
+      sa.src = candidates[0];
       sa.alt = RELIC_ALT[currentStop.id] || ("Art for " + currentStop.name);
       sa.style.display = "";
     } else {

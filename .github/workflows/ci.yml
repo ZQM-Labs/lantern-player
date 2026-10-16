@@ -32,7 +32,15 @@ jobs:
           test "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="app.js"' index.html | cut -d: -f1)"
 
       - name: Run player module regression tests
-        run: node --test tests/*.test.cjs
+        run: node --test tests/global-story.test.cjs
+
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Run release acceptance tests in Chromium
+        run: node --test tests/release-e2e.test.cjs
 
       - name: Verify no hardcoded stop counts
         run: |
@@ -50,7 +58,7 @@ jobs:
 
       - name: Check for TODO/FIXME
         run: |
-          if grep -rn 'TODO\|FIXME' --include='*.js' --include='*.css' --include='*.html' .; then
+          if grep -rn 'TODO\|FIXME' --include='*.js' --include='*.css' --include='*.html' --exclude-dir=node_modules .; then
             echo "WARNING: TODO/FIXME found. Please resolve before merging."
             exit 1
           fi
