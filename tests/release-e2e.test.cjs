@@ -59,6 +59,8 @@ test("20 consecutive launches render the start screen without uncaught JavaScrip
   const errors = [];
   for (let i = 0; i < 20; i++) {
     const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
     page.on("pageerror", error => errors.push("launch " + (i + 1) + ": " + error.message));
     await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
     await page.locator("#screen-start.active").waitFor({ state: "visible" });
@@ -72,6 +74,8 @@ test("20 consecutive launches render the start screen without uncaught JavaScrip
 test("malformed packs return validation errors rather than throwing", async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
   const result = await page.evaluate(() => {
     const validStop = i => ({
@@ -112,6 +116,8 @@ test("malformed packs return validation errors rather than throwing", async () =
 test("installed player survives five offline reloads and completes ten consecutive six-stop quests offline", async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
 
@@ -221,6 +227,8 @@ test("installed player survives five offline reloads and completes ten consecuti
 test("corrupt saved state does not prevent startup", async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
   await page.evaluate(() => localStorage.setItem("lantern-state", "{broken-json"));
   await page.reload({ waitUntil: "domcontentloaded" });
@@ -238,6 +246,8 @@ test("disabled localStorage does not crash startup or prevent entering the game"
     });
   });
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
@@ -251,6 +261,8 @@ test("disabled localStorage does not crash startup or prevent entering the game"
 test("language switching preserves progress and clearly discloses incomplete translation coverage", async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
   const note = await page.locator("#language-support-note").innerText();
   assert.match(note, /experimental/i);
