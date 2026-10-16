@@ -411,7 +411,10 @@ const GlobalStory = {
         intro.className = 'story-intro';
         startScreen.insertBefore(intro, startScreen.firstChild);
       }
-      intro.textContent = this.adaptedStory?.intro || this.modes.halloween.intro;
+      const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+      const storyContent = pack.story_content || {};
+      const content = storyContent[lang] || storyContent['en'] || {};
+      intro.textContent = content.intro || this.adaptedStory?.intro || this.modes.halloween.intro;
     }
 
     // Add story outro to the finale screen
@@ -423,8 +426,104 @@ const GlobalStory = {
         outro.className = 'story-outro';
         finaleScreen.insertBefore(outro, finaleScreen.firstChild);
       }
-      outro.textContent = this.adaptedStory?.outro || this.modes.halloween.outro;
+      const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+      const storyContent = pack.story_content || {};
+      const content = storyContent[lang] || storyContent['en'] || {};
+      outro.textContent = content.outro || this.adaptedStory?.outro || this.modes.halloween.outro;
     }
+
+    // Add environmental storytelling
+    this.renderEnvironmentalStory();
+  },
+
+  // Render environmental storytelling based on current stop
+  renderEnvironmentalStory() {
+    const env = pack.environmental_storytelling || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    const envContent = env[lang] || env['en'] || {};
+    
+    // Add environment description to map screen
+    const mapScreen = document.getElementById('screen-map');
+    if (mapScreen && !mapScreen.querySelector('.env-story')) {
+      const envEl = document.createElement('p');
+      envEl.className = 'env-story story-transition';
+      const next = nextUnsolved();
+      if (next) {
+        const envKey = this.getEnvironmentKey(next.id);
+        envEl.textContent = envContent[envKey] || '';
+      }
+      if (envEl.textContent) {
+        mapScreen.insertBefore(envEl, mapScreen.firstChild);
+      }
+    }
+  },
+
+  // Get environment key for a stop
+  getEnvironmentKey(stopId) {
+    const keys = { 1: 'park', 2: 'park', 3: 'graveyard', 4: 'gazebo', 5: 'park', 6: 'parade_ground' };
+    return keys[stopId] || 'park';
+  },
+
+  // Get dynamic story element based on game state
+  getDynamicStoryElement(type) {
+    const dynamic = pack.dynamic_story || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    
+    if (type === 'weather') {
+      // In a real implementation, this would use a weather API
+      return dynamic.weather_effects?.[lang]?.clear || '';
+    }
+    if (type === 'time') {
+      const hour = new Date().getHours();
+      let timeKey = 'night';
+      if (hour >= 5 && hour < 12) timeKey = 'dawn';
+      else if (hour >= 12 && hour < 17) timeKey = 'day';
+      else if (hour >= 17 && hour < 20) timeKey = 'dusk';
+      return dynamic.time_of_day?.[lang]?.[timeKey] || '';
+    }
+    if (type === 'progress') {
+      const solved = state.solved.length;
+      let progressKey = 'start';
+      if (solved >= 1) progressKey = 'quarter';
+      if (solved >= 3) progressKey = 'halfway';
+      if (solved >= 5) progressKey = 'almost';
+      if (solved >= 6) progressKey = 'complete';
+      return dynamic.player_progress?.[lang]?.[progressKey] || '';
+    }
+    return '';
+  },
+
+  // Get story choice for a stop
+  getStoryChoice(stopId) {
+    const choices = pack.story_choices || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    const langChoices = choices[lang] || choices['en'] || [];
+    return langChoices.find(c => c.stop === stopId) || null;
+  },
+
+  // Get character arc for current progress
+  getCharacterArc(character) {
+    const arcs = pack.character_arcs || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    const charArcs = arcs[character]?.[lang] || arcs[character]?.['en'] || {};
+    const solved = state.solved.length;
+    if (solved < 2) return charArcs.start || '';
+    if (solved < 4) return charArcs.middle || '';
+    return charArcs.end || '';
+  },
+
+  // Get theme description
+  getThemeDescription(themeId) {
+    const themes = pack.themes || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    return themes[themeId]?.[lang] || themes[themeId]?.['en'] || '';
+  },
+
+  // Get cultural adaptation text
+  getCulturalAdaptation(cultureId) {
+    const adaptations = pack.cultural_adaptations || {};
+    const lang = (typeof I18n !== 'undefined') ? I18n.current : 'en';
+    return adaptations[cultureId]?.[lang] || adaptations[cultureId]?.['en'] || '';
   },
 
   // Get the current story mode

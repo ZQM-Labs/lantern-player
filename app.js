@@ -784,7 +784,10 @@ function showTransition() {
   const transition = document.createElement("div");
   transition.className = "story-transition";
   const mode = GlobalStory.getCurrentMode();
-  const transitions = GlobalStory.transitions[mode] || GlobalStory.transitions.halloween;
+  const lang = (typeof I18n !== "undefined") ? I18n.current : "en";
+  const storyContent = pack.story_content || {};
+  const content = storyContent[lang] || storyContent["en"] || {};
+  const transitions = content.transitions || GlobalStory.transitions[mode] || GlobalStory.transitions.halloween;
   const idx = Math.min(state.solved.length, transitions.length - 1);
   transition.textContent = transitions[idx];
   box.appendChild(transition);
