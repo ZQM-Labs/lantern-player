@@ -94,6 +94,7 @@ state.arrivedGps = state.arrivedGps || {};
 state.stopAttempts = state.stopAttempts || {};  // wrong answers per stop id
 state.stopTimes = state.stopTimes || {};        // {start, end} timestamps per stop id
 state.arrivedVia = state.arrivedVia || {};      // gps|qr|manual per stop id
+let sourcePack = DEMO_PACK;
 let pack = DEMO_PACK;
 let currentStop = null;
 let hintLevel = 0;
@@ -529,7 +530,8 @@ $("btn-start").addEventListener("click", async () => {
         console.error("Rejected content pack:", errs);
         alert("This kit's content failed validation — using the built-in game. Tell your organizer.");
       } else {
-        pack = bundle.pack;
+        sourcePack = bundle.pack;
+        pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
       }
     }
     // Update scare level from kit if available
@@ -1019,6 +1021,16 @@ async function syncProgress(done = false) {
 }
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 document.body.dataset.scare = state.scare;
+
+// Re-apply any available pack translations when the selected language changes.
+document.addEventListener("languageChanged", () => {
+  pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
+  if (currentStop) {
+    const activePuzzle = $("screen-puzzle")?.classList.contains("active");
+    if (activePuzzle) openStop(currentStop.id);
+    else renderNextStop();
+  }
+});
 
 // Initialize global story mode selector
 if (typeof renderStoryModeSelector === "function") renderStoryModeSelector();
