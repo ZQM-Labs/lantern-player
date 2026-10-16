@@ -828,7 +828,7 @@ function renderStoryModeSelector() {
    Lower is better. Weights: completion >> clean solves >> hints >> time >> wrong guesses.
    Matches backend sort intent (finished, hints) with richer local signals. */
 function teamScore(r) {
-  if (!r.finished && (r.solvedCount || 6) < 6) return 1e9 + (r.hintsUsed * 100);
+  if (!r.finished && (r.solvedCount ?? 0) < 6) return 1e9 + (r.hintsUsed * 100);
   return (r.hintsUsed * 1000) - ((r.cleanSolves || 0) * 150) + (r.mins || 0) + ((r.totalAttempts || 0) * 10) - ((r.verified || 0) * 5);
 }
 function teamTitle(r, stops) {
