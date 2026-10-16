@@ -56,6 +56,7 @@ const SHELL = [
   "./assets/img/wisp-leading-parade.webp",
   "./assets/img/wisp-sad-intro.webp",
   "./assets/audio/hoot.ogg",
+  "./assets/icon.svg",
 ];
 
 self.addEventListener("install", e => {
