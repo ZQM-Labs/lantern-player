@@ -37,6 +37,14 @@ jobs:
       - name: Run player module regression tests
         run: node --test tests/*.test.cjs
 
+      - name: Install Chromium for browser acceptance tests
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Run browser release smoke tests
+        run: node tests/browser-release-smoke.cjs
+
       - name: Verify no hardcoded stop counts
         run: |
           if grep -n 'cleanSolves}/6' app.js; then
