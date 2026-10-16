@@ -58,33 +58,6 @@ const I18n = {
       dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
       numberFormat: { style: 'decimal', useGrouping: true }
     },
-    zh: {
-      name: 'Chinese',
-      nativeName: '中文',
-      dir: 'ltr',
-      flag: '🇨🇳',
-      pluralRule: () => 'other',
-      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
-      numberFormat: { style: 'decimal' }
-    },
-    ja: {
-      name: 'Japanese',
-      nativeName: '日本語',
-      dir: 'ltr',
-      flag: '🇯🇵',
-      pluralRule: () => 'other',
-      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
-      numberFormat: { style: 'decimal' }
-    },
-    ar: {
-      name: 'Arabic',
-      nativeName: 'العربية',
-      dir: 'rtl',
-      flag: '🇸🇦',
-      pluralRule: (n) => n === 0 ? 'zero' : n === 1 ? 'one' : n === 2 ? 'two' : n % 100 >= 3 && n % 100 <= 10 ? 'few' : n % 100 >= 11 ? 'many' : 'other',
-      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
-      numberFormat: { style: 'decimal' }
-    }
   },
 
   // Current language
@@ -94,9 +67,10 @@ const I18n = {
   translations: {},
 
   // Initialize i18n
-  init() {
+  async init() {
     // Detect language from localStorage or browser
-    const saved = localStorage.getItem('lantern-lang');
+    let saved = null;
+    try { saved = localStorage.getItem('lantern-lang'); } catch (e) { /* storage may be disabled */ }
     const browserLang = (navigator.language || 'en').split('-')[0];
     
     if (saved && this.languages[saved]) {
@@ -108,7 +82,7 @@ const I18n = {
     }
 
     // Load translations
-    this.loadTranslations(this.current);
+    await this.loadTranslations(this.current);
 
     // Apply RTL if needed
     this.applyDirection();
@@ -159,7 +133,7 @@ const I18n = {
     if (!this.languages[lang]) return;
 
     this.current = lang;
-    localStorage.setItem('lantern-lang', lang);
+    try { localStorage.setItem('lantern-lang', lang); } catch (e) { /* language still applies in memory */ }
 
     await this.loadTranslations(lang);
     this.applyDirection();
