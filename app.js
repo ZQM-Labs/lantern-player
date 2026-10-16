@@ -99,41 +99,8 @@ let pack = DEMO_PACK;
 let currentStop = null;
 let hintLevel = 0;
 
-/* ---------- pack validation (mirrors ZQM-Labs/quest-authoring SPEC.md) ----------
-   A remote pack replaces DEMO_PACK wholesale. Without this gate a malformed
-   pack (wrong stop count, missing hints, duplicate answers) crashes openMap()
-   or the hint ladder mid-hunt. Reject and fall back to the embedded pack. */
-function validatePack(p) {
-  const errs = [];
-  if (!p || !Array.isArray(p.stops) || p.stops.length !== 6) {
-    const got = !p ? "nothing" : (Array.isArray(p.stops) ? p.stops.length : typeof p.stops);
-    return ["expected 6 stops, got " + got];
-  }
-  const answers = [];
-  const ids = [];
-  for (const s of p.stops) {
-    const tag = `stop ${s.id ?? "?"}`;
-    if (typeof s.id !== "number" || !Number.isInteger(s.id)) errs.push(`${tag}: id must be an integer`);
-    else ids.push(s.id);
-    if (!s.name || !s.code) errs.push(`${tag}: needs name + code`);
-    if (!s.story || !s.story.cozy) errs.push(`${tag}: story.cozy missing`);
-    const pz = s.puzzle && s.puzzle.cozy;
-    const qOk = pz && pz.q !== undefined && pz.q !== null && String(pz.q).trim() !== "";
-    const aOk = pz && pz.a !== undefined && pz.a !== null && String(pz.a).trim() !== "";
-    if (!qOk || !aOk) errs.push(`${tag}: puzzle.cozy needs q + a`);
-    else answers.push(String(pz.a).trim().toLowerCase());
-    if (!s.fallback || !s.fallback.q || !s.fallback.a) errs.push(`${tag}: fallback needs q + a`);
-    if (!Array.isArray(s.hints) || s.hints.length !== 3) errs.push(`${tag}: needs exactly 3 hints`);
-    if (typeof s.lat !== "number" || !Number.isFinite(s.lat) || typeof s.lng !== "number" || !Number.isFinite(s.lng)) {
-      errs.push(`${tag}: lat/lng must be finite numbers`);
-    } else if (s.lat < -90 || s.lat > 90 || s.lng < -180 || s.lng > 180) {
-      errs.push(`${tag}: lat/lng out of geographic bounds`);
-    }
-  }
-  if (new Set(answers).size !== answers.length) errs.push("cozy answers must be unique");
-  if (new Set(ids).size !== ids.length) errs.push("stop ids must be unique");
-  return errs;
-}
+/* PackValidation is loaded as a separate, regression-tested module. */
+const validatePack = PackValidation.validatePack;
 
 
 const $ = id => document.getElementById(id);
