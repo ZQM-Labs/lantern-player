@@ -45,10 +45,11 @@ test("GlobalStory initializes and applies a valid mode and culture", () => {
 
 test("service worker precaches the new player modules and available translation files", () => {
   const source = fs.readFileSync(path.join(root, "sw.js"), "utf8");
-  assert.match(source, /const CACHE = "lantern-v5"/);
+  assert.match(source, /const CACHE = "lantern-v6"/);
   for (const asset of [
     "./global-story.js",
     "./i18n.js",
+    "./pack-validation.js",
     "./i18n/en.json",
     "./i18n/es.json",
     "./i18n/fr.json",
