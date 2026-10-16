@@ -636,11 +636,28 @@ window.openStop = function (id) {
   }
   const sa = $("stop-art");
   if (sa) {
-    if (currentStop.art) { sa.onerror = function(){ sa.onerror = null; sa.src = "assets/" + currentStop.art; };
-      sa.src = artFor(currentStop);
+    const baseArt = safeArtName(currentStop.art);
+    if (baseArt) {
+      const selectedArt = artFor(currentStop);
+      sa.onerror = function () {
+        sa.onerror = null;
+        // A missing scare variant may fall back only to the validated base filename.
+        if (selectedArt !== "assets/" + baseArt) {
+          sa.onerror = function () { sa.onerror = null; sa.removeAttribute("src"); sa.style.display = "none"; };
+          sa.src = "assets/" + baseArt;
+        } else {
+          sa.removeAttribute("src");
+          sa.style.display = "none";
+        }
+      };
+      sa.src = selectedArt;
       sa.alt = RELIC_ALT[currentStop.id] || ("Art for " + currentStop.name);
-      sa.style.display = ""; }
-    else { sa.removeAttribute("src"); sa.style.display = "none"; }
+      sa.style.display = "";
+    } else {
+      sa.onerror = null;
+      sa.removeAttribute("src");
+      sa.style.display = "none";
+    }
   }
   $("puzzle-story").textContent = variant(currentStop, "story");
   const ws = $("wisp-says");
@@ -1027,7 +1044,7 @@ document.addEventListener("languageChanged", () => {
   pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
   if (currentStop) {
     const activePuzzle = $("screen-puzzle")?.classList.contains("active");
-    if (activePuzzle) openStop(currentStop.id);
+    if (activePuzzle) window.openStop(currentStop.id);
     else renderNextStop();
   }
 });
