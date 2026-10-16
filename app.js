@@ -509,7 +509,7 @@ function updateHUD() {
     let dots = "";
     for (let i = 0; i < total; i++) dots += i < lit ? "🏮" : "🌑";
     wm.innerHTML = `<strong>Wisp's glow</strong>` +
-      `<img class="wisp-mood" src="assets/${mood.src}" alt="${mood.alt}">` +
+      `<img class="wisp-mood" src="assets/img/${mood.src}" alt="${mood.alt}">` +
       `<div class="dots" role="img" aria-label="${lit} of ${total} lanterns lit">${dots}</div>` +
       `<div>${lit}/${total} lanterns lit — ${mood.cap}</div>`;
   }
