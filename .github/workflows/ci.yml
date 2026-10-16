@@ -58,7 +58,7 @@ jobs:
 
       - name: Check for TODO/FIXME
         run: |
-          if grep -rn 'TODO\|FIXME' --include='*.js' --include='*.css' --include='*.html' .; then
+          if grep -rn 'TODO\|FIXME' --include='*.js' --include='*.css' --include='*.html' --exclude-dir=node_modules .; then
             echo "WARNING: TODO/FIXME found. Please resolve before merging."
             exit 1
           fi
