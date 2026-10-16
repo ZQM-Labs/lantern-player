@@ -5,11 +5,18 @@
    NOTE: Leaflet is expected to be vendored locally (see AGENTS.md). If it is
    still loaded from a CDN, the map will not work offline — the text stop list
    in app.js is the offline fallback. */
-const CACHE = "lantern-v4";
+const CACHE = "lantern-v5";
 const SHELL = [
   "./",
   "./index.html",
   "./app.js",
+  "./global-story.js",
+  "./i18n.js",
+  "./i18n/en.json",
+  "./i18n/es.json",
+  "./i18n/fr.json",
+  "./i18n/de.json",
+  "./i18n/pt.json",
   "./styles.css",
   "./manifest.webmanifest",
   "./vendor/leaflet.css",
