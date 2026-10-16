@@ -124,6 +124,16 @@ body[data-scare="overdrive"] .wisp-speech { border-color:#e0311a; }
 .mode-btn.active { background:var(--accent); color:#fff; }
 .mode-btn:hover { filter:brightness(1.1); }
 
+/* Hunt clock */
+.hunt-clock { font-size:1.1rem; font-weight:700; text-align:center; padding:8px; background:var(--card); border-radius:10px; margin:8px 0; }
+
+/* Finale actions row */
+.finale-actions { display:flex; gap:10px; flex-wrap:wrap; margin:16px 0; }
+.finale-actions button { flex:1; min-width:140px; }
+
+/* Offline banner */
+#offline-banner { position:fixed; bottom:0; left:0; right:0; background:#e07b24; color:#fff; text-align:center; padding:8px; font-weight:600; z-index:9999; }
+
 /* Touch feedback */
 button:active { transform:scale(.96); }
 input:focus { outline:3px solid var(--accent); outline-offset:2px; }
