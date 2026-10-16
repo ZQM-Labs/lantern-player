@@ -540,6 +540,9 @@ $("btn-start").addEventListener("click", async () => {
     state.startedAt = state.startedAt || Date.now();
   }
   save(); show("screen-scare");
+  startTimer();
+  focusFirst();
+  playSound("assets/audio/hoot.ogg");
 });
 
 /* ---------- QR deep links ----------
@@ -571,6 +574,8 @@ document.querySelectorAll(".scare-card").forEach(b => b.addEventListener("click"
     const target = pack.stops.find(s => s.id === deepStop);
     if (target && !state.solved.includes(target.id)) window.openStop(deepStop);
   }
+  // Show transition narrative
+  showTransition();
 }));
 
 let map = null;
@@ -706,6 +711,107 @@ $("btn-hint").addEventListener("click", () => {
   }
 });
 
+/* ---------- audio: play sound effects ---------- */
+let audioCtx = null;
+function playSound(url) {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  fetch(url)
+    .then(r => r.arrayBuffer())
+    .then(buf => audioCtx.decodeAudioData(buf))
+    .then(audioBuf => {
+      const src = audioCtx.createBufferSource();
+      src.buffer = audioBuf;
+      src.connect(audioCtx.destination);
+      src.start();
+    })
+    .catch(() => {});
+}
+
+/* ---------- share: native share or clipboard fallback ---------- */
+function shareTeam() {
+  const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! Join the hunt!`;
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: "Wisp's Lost Lanterns", text, url }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + " " + url).then(() => {
+      $("feedback").textContent = "Link copied! Share it with your team.";
+    });
+  }
+}
+
+/* ---------- timer: elapsed time display ---------- */
+let timerInterval = null;
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const el = $("hunt-clock");
+    if (!el || !state.startedAt) return;
+    const secs = Math.floor((Date.now() - state.startedAt) / 1000);
+    const m = Math.floor(secs / 60), s = secs % 60;
+    el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
+  }, 1000);
+}
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+/* ---------- PWA install prompt ---------- */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = $("btn-install");
+  if (btn) btn.style.display = "inline-block";
+});
+function installPWA() {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(() => { deferredInstallPrompt = null; });
+  }
+}
+
+/* ---------- focus management ---------- */
+function focusFirst() {
+  const first = document.querySelector("input, button");
+  if (first) first.focus();
+}
+
+/* ---------- story transitions ---------- */
+function showTransition() {
+  const box = $("next-stop");
+  if (!box) return;
+  const transition = document.createElement("div");
+  transition.className = "story-transition";
+  const mode = GlobalStory.getCurrentMode();
+  const transitions = GlobalStory.transitions[mode] || GlobalStory.transitions.halloween;
+  const idx = Math.min(state.solved.length, transitions.length - 1);
+  transition.textContent = transitions[idx];
+  box.appendChild(transition);
+  setTimeout(() => transition.remove(), 4000);
+}
+
+/* ---------- story mode selector ---------- */
+function renderStoryModeSelector() {
+  const container = $("story-mode-selector");
+  if (!container) return;
+  const modes = GlobalStory.modes;
+  const current = GlobalStory.getCurrentMode();
+  container.innerHTML = "";
+  Object.values(modes).forEach(mode => {
+    const btn = document.createElement("button");
+    btn.className = "mode-btn" + (mode.id === current ? " active" : "");
+    btn.innerHTML = `${mode.icon} ${mode.name}`;
+    btn.addEventListener("click", () => {
+      GlobalStory.currentMode = mode.id;
+      GlobalStory.applyCulturalAdaptation();
+      renderStoryModeSelector();
+      GlobalStory.renderStoryElements();
+    });
+    container.appendChild(btn);
+  });
+}
+
 /* ---------- leaderboard scoring ----------
    Lower is better. Weights: completion >> clean solves >> hints >> time >> wrong guesses.
    Matches backend sort intent (finished, hints) with richer local signals. */
@@ -779,6 +885,15 @@ function finale() {
     }).join("");
   }
   syncProgress(true);
+  stopTimer();
+  // Show share and install buttons
+  const shareBtn = $("btn-share-finale");
+  if (shareBtn) shareBtn.style.display = "inline-block";
+  if (deferredInstallPrompt) {
+    const installBtn = $("btn-install");
+    if (installBtn) installBtn.style.display = "inline-block";
+  }
+  focusFirst();
 }
 window.addEventListener("pagehide", stopTracking);
 $("btn-restart").addEventListener("click", () => {
@@ -790,6 +905,48 @@ $("btn-restart").addEventListener("click", () => {
   const q = keep.toString();
   localStorage.removeItem("lantern-state");
   location.href = location.pathname + (q ? "?" + q : "");
+});
+
+// Share button
+$("btn-share-finale").addEventListener("click", shareTeam);
+
+// Install PWA button
+$("btn-install").addEventListener("click", installPWA);
+
+// Keyboard navigation: Enter to submit, Escape to go back
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.tagName === "INPUT") {
+    const btn = e.target.parentElement.querySelector("button");
+    if (btn) btn.click();
+  }
+  if (e.key === "Escape") {
+    const active = document.querySelector(".screen.active");
+    if (active && active.id === "screen-puzzle") openMap();
+  }
+});
+
+// Touch feedback: haptic on mobile
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON" && navigator.vibrate) {
+    navigator.vibrate(10);
+  }
+}, { passive: true });
+
+// Offline detection
+window.addEventListener("offline", () => {
+  const el = $("offline-banner");
+  if (el) el.style.display = "block";
+});
+window.addEventListener("online", () => {
+  const el = $("offline-banner");
+  if (el) el.style.display = "none";
+});
+
+// Image lazy loading
+document.querySelectorAll("img").forEach(img => {
+  if (!img.src && img.dataset.src) {
+    img.src = img.dataset.src;
+  }
 });
 
 /* ---------- helpers / backend stubs ---------- */
@@ -850,3 +1007,6 @@ async function syncProgress(done = false) {
 }
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 document.body.dataset.scare = state.scare;
+
+// Initialize global story mode selector
+if (typeof renderStoryModeSelector === "function") renderStoryModeSelector();
