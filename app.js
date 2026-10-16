@@ -710,7 +710,7 @@ $("btn-hint").addEventListener("click", () => {
    Lower is better. Weights: completion >> clean solves >> hints >> time >> wrong guesses.
    Matches backend sort intent (finished, hints) with richer local signals. */
 function teamScore(r) {
-  if (!r.finished && (r.solvedCount || 6) < 6) return 1e9 + (r.hintsUsed * 100);
+  if (!r.finished && (r.solvedCount || 0) < 6) return 1e9 + (r.hintsUsed * 100);
   return (r.hintsUsed * 1000) - ((r.cleanSolves || 0) * 150) + (r.mins || 0) + ((r.totalAttempts || 0) * 10) - ((r.verified || 0) * 5);
 }
 function teamTitle(r, stops) {
@@ -775,7 +775,7 @@ function finale() {
       const medal = medals[i] || `${i + 1}.`;
       const title = teamTitle(r, pack.stops.length);
       const hl = r.ts === run.ts ? ' style="font-weight:700;background:#fff3cd;border-radius:8px;padding:2px 6px"' : "";
-      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/6 ${title}</div>`;
+      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
     }).join("");
   }
   syncProgress(true);
