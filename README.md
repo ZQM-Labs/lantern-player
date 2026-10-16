@@ -46,6 +46,8 @@ hardcode new story text here — author it in `lantern-content`.
 
 - `index.html` — shell, screens (start / scare / map / puzzle / finale)
 - `app.js` — game state machine, unlock logic, hint tiers, demo pack
+- `pack-validation.js` — non-throwing validation for untrusted remote quest packs
+- `i18n/` — shipped interface translations: English, Spanish, French, German, and Portuguese
 - `styles.css` — base layout + scare themes via `body[data-scare]`
 - `sw.js` — service worker: cache-first app shell (offline play)
 - `manifest.webmanifest` — installable PWA metadata
