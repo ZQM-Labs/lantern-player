@@ -144,6 +144,7 @@ test("installed player survives five offline reloads and completes a full six-st
   for (let i = 0; i < 5; i++) {
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator("#screen-start.active").waitFor({ state: "visible" });
+    await page.waitForFunction(() => { const img = document.querySelector(".brand-logo"); return img && img.complete && img.naturalWidth > 0; });
     const logoWidth = await page.locator(".brand-logo").evaluate(img => img.naturalWidth);
     assert.ok(logoWidth > 0, "logo must load offline on cycle " + (i + 1));
   }
@@ -156,7 +157,8 @@ test("installed player survives five offline reloads and completes a full six-st
   for (let stop = 1; stop <= 6; stop++) {
     await page.locator("#next-stop").getByRole("button", { name: /We're at the stop/ }).click();
     await page.locator("#screen-puzzle.active").waitFor({ state: "visible" });
-    const artWidth = await page.locator("#stop-art").evaluate(img => img.complete ? img.naturalWidth : 0);
+    await page.waitForFunction(() => { const img = document.querySelector("#stop-art"); return img && img.complete && img.naturalWidth > 0; });
+    const artWidth = await page.locator("#stop-art").evaluate(img => img.naturalWidth);
     assert.ok(artWidth > 0, "stop " + stop + " artwork must load offline");
     await page.locator("#unlock-code").fill("LANTERN-" + stop);
     await page.locator("#btn-unlock").click();
@@ -165,11 +167,52 @@ test("installed player survives five offline reloads and completes a full six-st
       return Array.isArray(saved.solved) && saved.solved.length >= expected;
     }, stop, { timeout: 5000 });
     if (stop < 6) await page.locator("#screen-map.active").waitFor({ state: "visible", timeout: 5000 });
+    if (stop === 1) {
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.locator("#screen-start.active").waitFor({ state: "visible" });
+      const persisted = await page.evaluate(() => JSON.parse(localStorage.getItem("lantern-state") || "{}"));
+      assert.deepEqual(persisted.solved, [1], "progress must survive reload");
+      await page.getByRole("button", { name: "Start the hunt" }).click();
+      await page.locator('[data-pick="cozy"]').click();
+      await page.locator("#screen-map.active").waitFor({ state: "visible" });
+    }
   }
   await page.locator("#screen-finale.active").waitFor({ state: "visible", timeout: 5000 });
+  await page.waitForFunction(() => { const img = document.querySelector("#screen-finale img.story-art"); return img && img.complete && img.naturalWidth > 0; });
   const finaleWidth = await page.locator("#screen-finale img.story-art").evaluate(img => img.naturalWidth);
   assert.ok(finaleWidth > 0, "finale artwork must load offline");
   assert.deepEqual(errors, [], "offline play must not emit uncaught JavaScript errors");
+  await context.close();
+});
+
+
+test("corrupt saved state does not prevent startup", async () => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
+  await page.evaluate(() => localStorage.setItem("lantern-state", "{broken-json"));
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.locator("#screen-start.active").waitFor({ state: "visible" });
+  await page.getByRole("button", { name: "Start the hunt" }).waitFor({ state: "visible" });
+  await context.close();
+});
+
+test("disabled localStorage does not crash startup or prevent entering the game", async () => {
+  const context = await browser.newContext();
+  await context.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      get() { throw new DOMException("Storage disabled", "SecurityError"); }
+    });
+  });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
+  await page.locator("#screen-start.active").waitFor({ state: "visible" });
+  await page.getByRole("button", { name: "Start the hunt" }).click();
+  await page.locator("#screen-scare.active").waitFor({ state: "visible" });
+  assert.deepEqual(errors, []);
   await context.close();
 });
 
