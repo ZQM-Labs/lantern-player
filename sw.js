@@ -5,7 +5,7 @@
    NOTE: Leaflet is expected to be vendored locally (see AGENTS.md). If it is
    still loaded from a CDN, the map will not work offline — the text stop list
    in app.js is the offline fallback. */
-const CACHE = "lantern-v5";
+const CACHE = "lantern-v6";
 const SHELL = [
   "./",
   "./index.html",
@@ -21,6 +21,41 @@ const SHELL = [
   "./manifest.webmanifest",
   "./vendor/leaflet.css",
   "./vendor/leaflet.js",
+  "./assets/img/drz-afterdark.webp",
+  "./assets/img/drz-cozy.webp",
+  "./assets/img/drz-overdrive.webp",
+  "./assets/img/drz-spooky.webp",
+  "./assets/img/finale-lantern-parade.webp",
+  "./assets/img/logo-primary-evergreen.webp",
+  "./assets/img/logo-primary.webp",
+  "./assets/img/stop-1-pumpkin-afterdark.webp",
+  "./assets/img/stop-1-pumpkin-cozy.webp",
+  "./assets/img/stop-1-pumpkin-overdrive.webp",
+  "./assets/img/stop-1-pumpkin-spooky.webp",
+  "./assets/img/stop-2-oak-afterdark.webp",
+  "./assets/img/stop-2-oak-cozy.webp",
+  "./assets/img/stop-2-oak-overdrive.webp",
+  "./assets/img/stop-2-oak-spooky.webp",
+  "./assets/img/stop-3-graveyard-afterdark.webp",
+  "./assets/img/stop-3-graveyard-cozy.webp",
+  "./assets/img/stop-3-graveyard-overdrive.webp",
+  "./assets/img/stop-3-graveyard-spooky.webp",
+  "./assets/img/stop-4-spider-afterdark.webp",
+  "./assets/img/stop-4-spider-cozy.webp",
+  "./assets/img/stop-4-spider-overdrive.webp",
+  "./assets/img/stop-4-spider-spooky.webp",
+  "./assets/img/stop-5-owl-afterdark.webp",
+  "./assets/img/stop-5-owl-cozy.webp",
+  "./assets/img/stop-5-owl-overdrive.webp",
+  "./assets/img/stop-5-owl-spooky.webp",
+  "./assets/img/stop-6-lantern-afterdark.webp",
+  "./assets/img/stop-6-lantern-cozy.webp",
+  "./assets/img/stop-6-lantern-overdrive.webp",
+  "./assets/img/stop-6-lantern-spooky.webp",
+  "./assets/img/wisp-hiding-lantern.webp",
+  "./assets/img/wisp-leading-parade.webp",
+  "./assets/img/wisp-sad-intro.webp",
+  "./assets/audio/hoot.ogg",
 ];
 
 self.addEventListener("install", e => {
@@ -30,7 +65,7 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
-      .then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(ks => Promise.all(ks.filter(k => k.startsWith("lantern-") && k !== CACHE).map(k => caches.delete(k))))
       // Take control of open pages immediately so updates apply without a reload.
       .then(() => self.clients.claim())
   );
