@@ -151,7 +151,8 @@ function safeArtName(name) {
 function artFor(stop) {
   const name = safeArtName(stop && stop.art);
   if (!name) return "";
-  if (state.scare && state.scare !== "cozy") return "assets/" + name.replace(/\.webp$/i, "-" + state.scare + ".webp");
+  const tier = ["spooky", "afterdark", "overdrive"].includes(state.scare) ? state.scare : "cozy";
+  if (tier !== "cozy") return "assets/" + name.replace(/\.webp$/i, "-" + tier + ".webp");
   return "assets/" + name;
 }
 
@@ -203,7 +204,7 @@ function updatePlayerMarker(lat, lng, acc) {
 }
 function stopIcon(s) {
   const lit = state.solved.includes(s.id);
-  const face = s.art
+  const face = artFor(s)
     ? `<img src="${artFor(s)}" alt="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}" onerror="this.onerror=null;this.remove()">`
     : `<div class="pin-fallback" role="img" aria-label="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}">🏮</div>`;
   return L.divIcon({ className: "stop-marker" + (lit ? " lit" : ""), html: face,
@@ -498,7 +499,7 @@ function updateHUD() {
     tray.innerHTML = pack.stops.map(s => {
       const got = state.solved.includes(s.id);
       const cls = got ? "relic" : "relic locked";
-      const inner = (got && s.art)
+      const inner = (got && artFor(s))
         ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.remove()">`
         : `<div class="${cls}" role="img" aria-label="${got ? "lit lantern relic" : "unfound relic"}">${got ? "🏮" : "❔"}</div>`;
       return `<span title="${got ? esc(s.name) : "???"}">${inner}</span>`;
