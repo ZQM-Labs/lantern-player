@@ -109,7 +109,7 @@ test("malformed packs return validation errors rather than throwing", async () =
   }
 });
 
-test("installed player survives five offline reloads and completes a full six-stop quest offline", async () => {
+test("installed player survives five offline reloads and completes ten consecutive six-stop quests offline", async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
   const errors = [];
@@ -190,6 +190,29 @@ test("installed player survives five offline reloads and completes a full six-st
   await page.waitForFunction(() => { const img = document.querySelector("#screen-finale img.story-art"); return img && img.complete && img.naturalWidth > 0; });
   const finaleWidth = await page.locator("#screen-finale img.story-art").evaluate(img => img.naturalWidth);
   assert.ok(finaleWidth > 0, "finale artwork must load offline");
+
+  // Repeat the complete quest ten times in the same offline Chromium session.
+  for (let run = 2; run <= 10; run++) {
+    await page.locator("#btn-restart").click();
+    await page.locator("#screen-start.active").waitFor({ state: "visible" });
+    await page.getByLabel("Team name").fill("Acceptance Team " + run);
+    await page.getByRole("button", { name: "Start the hunt" }).click();
+    await page.locator('[data-pick="cozy"]').click();
+    await page.locator("#screen-map.active").waitFor({ state: "visible" });
+
+    for (let stop = 1; stop <= 6; stop++) {
+      await page.locator("#next-stop").getByRole("button", { name: /We're at the stop/ }).click();
+      await page.locator("#screen-puzzle.active").waitFor({ state: "visible" });
+      await page.locator("#unlock-code").fill("LANTERN-" + stop);
+      await page.locator("#btn-unlock").click();
+      await page.waitForFunction(expected => {
+        const saved = JSON.parse(localStorage.getItem("lantern-state") || "{}");
+        return Array.isArray(saved.solved) && saved.solved.length >= expected;
+      }, stop, { timeout: 5000 });
+      if (stop < 6) await page.locator("#screen-map.active").waitFor({ state: "visible", timeout: 5000 });
+    }
+    await page.locator("#screen-finale.active").waitFor({ state: "visible", timeout: 5000 });
+  }
   assert.deepEqual(errors, [], "offline play must not emit uncaught JavaScript errors");
   await context.close();
 });
