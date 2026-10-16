@@ -300,8 +300,8 @@ const GlobalStory = {
 
   // Initialize the global story engine
   init() {
-    this.detectMode();
-    this.detectCulture();
+    this.currentMode = this.detectMode();
+    this.currentCulture = this.detectCulture();
     this.applyCulturalAdaptation();
     this.renderStoryElements();
     return this;
@@ -372,7 +372,7 @@ const GlobalStory = {
   // Apply cultural adaptation to the current story mode
   applyCulturalAdaptation() {
     const mode = this.modes[this.currentMode] || this.modes.halloween;
-    const culture = this.culturalAdaptations[this.currentCulture] || this.cultural_adaptations.western;
+    const culture = this.cultural_adaptations[this.currentCulture] || this.cultural_adaptations.western;
     
     // Store adapted story elements
     this.adaptedStory = {

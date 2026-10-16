@@ -94,6 +94,7 @@ state.arrivedGps = state.arrivedGps || {};
 state.stopAttempts = state.stopAttempts || {};  // wrong answers per stop id
 state.stopTimes = state.stopTimes || {};        // {start, end} timestamps per stop id
 state.arrivedVia = state.arrivedVia || {};      // gps|qr|manual per stop id
+let sourcePack = DEMO_PACK;
 let pack = DEMO_PACK;
 let currentStop = null;
 let hintLevel = 0;
@@ -123,7 +124,11 @@ function validatePack(p) {
     else answers.push(String(pz.a).trim().toLowerCase());
     if (!s.fallback || !s.fallback.q || !s.fallback.a) errs.push(`${tag}: fallback needs q + a`);
     if (!Array.isArray(s.hints) || s.hints.length !== 3) errs.push(`${tag}: needs exactly 3 hints`);
-    if (typeof s.lat !== "number" || typeof s.lng !== "number") errs.push(`${tag}: lat/lng must be numeric`);
+    if (typeof s.lat !== "number" || !Number.isFinite(s.lat) || typeof s.lng !== "number" || !Number.isFinite(s.lng)) {
+      errs.push(`${tag}: lat/lng must be finite numbers`);
+    } else if (s.lat < -90 || s.lat > 90 || s.lng < -180 || s.lng > 180) {
+      errs.push(`${tag}: lat/lng out of geographic bounds`);
+    }
   }
   if (new Set(answers).size !== answers.length) errs.push("cozy answers must be unique");
   if (new Set(ids).size !== ids.length) errs.push("stop ids must be unique");
@@ -140,11 +145,16 @@ function show(id) {
 }
 /* Scare-tier art: stop-1-pumpkin-spooky.webp etc. Cozy reuses the base file;
    a missing tier file falls back to base art via the img onerror guard. */
+function safeArtName(name) {
+  // Only allow a simple local WebP filename from an authored pack.
+  return typeof name === "string" && /^[A-Za-z0-9][A-Za-z0-9._-]*\.webp$/i.test(name) && !name.includes("..") ? name : "";
+}
 function artFor(stop) {
-  if (!stop || !stop.art) return "";
-  if (state.scare && state.scare !== "cozy")
-    return "assets/" + stop.art.replace(/\.webp$/i, "-" + state.scare + ".webp");
-  return "assets/" + stop.art;
+  const name = safeArtName(stop && stop.art);
+  if (!name) return "";
+  const tier = ["spooky", "afterdark", "overdrive"].includes(state.scare) ? state.scare : "cozy";
+  if (tier !== "cozy") return "assets/" + name.replace(/\.webp$/i, "-" + tier + ".webp");
+  return "assets/" + name;
 }
 
 function variant(stop, kind) { // kind: "story" | puzzle object
@@ -195,8 +205,8 @@ function updatePlayerMarker(lat, lng, acc) {
 }
 function stopIcon(s) {
   const lit = state.solved.includes(s.id);
-  const face = s.art
-    ? `<img src="${artFor(s)}" alt="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}" onerror="this.onerror=null;this.src='assets/${s.art}'">`
+  const face = artFor(s)
+    ? `<img src="${artFor(s)}" alt="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}" onerror="this.onerror=null;this.remove()">`
     : `<div class="pin-fallback" role="img" aria-label="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}">🏮</div>`;
   return L.divIcon({ className: "stop-marker" + (lit ? " lit" : ""), html: face,
     iconSize: [46, 46], iconAnchor: [23, 23] });
@@ -490,8 +500,8 @@ function updateHUD() {
     tray.innerHTML = pack.stops.map(s => {
       const got = state.solved.includes(s.id);
       const cls = got ? "relic" : "relic locked";
-      const inner = (got && s.art)
-        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.src='assets/${s.art}'">`
+      const inner = (got && artFor(s))
+        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.remove()">`
         : `<div class="${cls}" role="img" aria-label="${got ? "lit lantern relic" : "unfound relic"}">${got ? "🏮" : "❔"}</div>`;
       return `<span title="${got ? esc(s.name) : "???"}">${inner}</span>`;
     }).join("");
@@ -520,7 +530,8 @@ $("btn-start").addEventListener("click", async () => {
         console.error("Rejected content pack:", errs);
         alert("This kit's content failed validation — using the built-in game. Tell your organizer.");
       } else {
-        pack = bundle.pack;
+        sourcePack = bundle.pack;
+        pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
       }
     }
     // Update scare level from kit if available
@@ -625,11 +636,28 @@ window.openStop = function (id) {
   }
   const sa = $("stop-art");
   if (sa) {
-    if (currentStop.art) { sa.onerror = function(){ sa.onerror = null; sa.src = "assets/" + currentStop.art; };
-      sa.src = artFor(currentStop);
+    const baseArt = safeArtName(currentStop.art);
+    if (baseArt) {
+      const selectedArt = artFor(currentStop);
+      sa.onerror = function () {
+        sa.onerror = null;
+        // A missing scare variant may fall back only to the validated base filename.
+        if (selectedArt !== "assets/" + baseArt) {
+          sa.onerror = function () { sa.onerror = null; sa.removeAttribute("src"); sa.style.display = "none"; };
+          sa.src = "assets/" + baseArt;
+        } else {
+          sa.removeAttribute("src");
+          sa.style.display = "none";
+        }
+      };
+      sa.src = selectedArt;
       sa.alt = RELIC_ALT[currentStop.id] || ("Art for " + currentStop.name);
-      sa.style.display = ""; }
-    else { sa.removeAttribute("src"); sa.style.display = "none"; }
+      sa.style.display = "";
+    } else {
+      sa.onerror = null;
+      sa.removeAttribute("src");
+      sa.style.display = "none";
+    }
   }
   $("puzzle-story").textContent = variant(currentStop, "story");
   const ws = $("wisp-says");
@@ -819,7 +847,7 @@ function renderStoryModeSelector() {
    Lower is better. Weights: completion >> clean solves >> hints >> time >> wrong guesses.
    Matches backend sort intent (finished, hints) with richer local signals. */
 function teamScore(r) {
-  if (!r.finished && (r.solvedCount || 6) < 6) return 1e9 + (r.hintsUsed * 100);
+  if (!r.finished && (r.solvedCount ?? 0) < 6) return 1e9 + (r.hintsUsed * 100);
   return (r.hintsUsed * 1000) - ((r.cleanSolves || 0) * 150) + (r.mins || 0) + ((r.totalAttempts || 0) * 10) - ((r.verified || 0) * 5);
 }
 function teamTitle(r, stops) {
@@ -884,7 +912,7 @@ function finale() {
       const medal = medals[i] || `${i + 1}.`;
       const title = teamTitle(r, pack.stops.length);
       const hl = r.ts === run.ts ? ' style="font-weight:700;background:#fff3cd;border-radius:8px;padding:2px 6px"' : "";
-      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/6 ${title}</div>`;
+      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
     }).join("");
   }
   syncProgress(true);
@@ -1010,6 +1038,16 @@ async function syncProgress(done = false) {
 }
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 document.body.dataset.scare = state.scare;
+
+// Re-apply any available pack translations when the selected language changes.
+document.addEventListener("languageChanged", () => {
+  pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
+  if (currentStop) {
+    const activePuzzle = $("screen-puzzle")?.classList.contains("active");
+    if (activePuzzle) window.openStop(currentStop.id);
+    else renderNextStop();
+  }
+});
 
 // Initialize global story mode selector
 if (typeof renderStoryModeSelector === "function") renderStoryModeSelector();
