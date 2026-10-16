@@ -892,7 +892,7 @@ function finale() {
       const medal = medals[i] || `${i + 1}.`;
       const title = teamTitle(r, pack.stops.length);
       const hl = r.ts === run.ts ? ' style="font-weight:700;background:#fff3cd;border-radius:8px;padding:2px 6px"' : "";
-      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/6 ${title}</div>`;
+      return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
     }).join("");
   }
   syncProgress(true);
