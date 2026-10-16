@@ -115,16 +115,19 @@ test("installed player survives five offline reloads and completes a full six-st
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
 
-  await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
+  await page.goto(baseUrl + "/tests/fixtures/blank.html", { waitUntil: "domcontentloaded" });
   await page.evaluate(async () => {
+    const oldCache = await caches.open("lantern-v5");
+    await oldCache.put(new Request(location.origin + "/old-version-sentinel"), new Response("old"));
+    const unrelated = await caches.open("unrelated-app-cache");
+    await unrelated.put(new Request(location.origin + "/sentinel"), new Response("keep me"));
+    await navigator.serviceWorker.register("/sw.js", { scope: "/" });
     await navigator.serviceWorker.ready;
   });
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
+  await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
+  await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
-  await page.evaluate(async () => {
-    const cache = await caches.open("unrelated-app-cache");
-    await cache.put("/sentinel", new Response("keep me"));
-  });
   const cached = await page.evaluate(async () => {
     const cache = await caches.open("lantern-v6");
     const paths = [
@@ -138,7 +141,8 @@ test("installed player survives five offline reloads and completes a full six-st
     return { missing, cacheNames: await caches.keys() };
   });
   assert.deepEqual(cached.missing, [], "offline shell, translations, audio, and key art must be precached");
-  assert.ok(cached.cacheNames.includes("unrelated-app-cache"), "the player must not delete unrelated origin caches");
+  assert.ok(!cached.cacheNames.includes("lantern-v5"), "activation must remove the previous player cache");
+  assert.ok(cached.cacheNames.includes("unrelated-app-cache"), "the player must preserve unrelated origin caches");
 
   await context.setOffline(true);
   for (let i = 0; i < 5; i++) {
