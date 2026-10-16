@@ -31,6 +31,9 @@ jobs:
           test "$(grep -n 'src="global-story.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)"
           test "$(grep -n 'src="i18n.js"' index.html | cut -d: -f1)" -lt "$(grep -n 'src="app.js"' index.html | cut -d: -f1)"
 
+      - name: Run player module regression tests
+        run: node --test tests/*.test.cjs
+
       - name: Verify no hardcoded stop counts
         run: |
           if grep -n 'cleanSolves}/6' app.js; then
