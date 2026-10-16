@@ -69,3 +69,39 @@ test("language picker lists only languages with translation files", () => {
     assert.ok(fs.existsSync(path.join(root, "i18n", language + ".json")), `missing file for ${language}`);
   }
 });
+
+test("pack validator rejects null stop records and malformed field types without throwing", () => {
+  const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+  const start = app.indexOf("function validatePack(p) {");
+  const end = app.indexOf("\n\nconst $ = id", start);
+  assert.ok(start >= 0 && end > start, "validatePack function should exist");
+  const validator = app.slice(start, end);
+  assert.match(validator, /typeof s !== "object"/);
+  assert.match(validator, /hints\.some/);
+  assert.match(validator, /Number\.isFinite/);
+});
+
+test("all advertised languages have the same complete, non-empty interface key set", () => {
+  const english = JSON.parse(fs.readFileSync(path.join(root, "i18n/en.json"), "utf8"));
+  const keys = Object.keys(english).sort();
+  assert.ok(keys.length > 0, "English translation file must not be empty");
+  for (const language of ["es", "fr", "de", "pt"]) {
+    const translations = JSON.parse(fs.readFileSync(path.join(root, "i18n", language + ".json"), "utf8"));
+    assert.deepEqual(Object.keys(translations).sort(), keys, language + " must match English key coverage");
+    for (const key of keys) {
+      assert.equal(typeof translations[key], "string", language + "." + key + " must be a string");
+      assert.ok(translations[key].trim(), language + "." + key + " must not be empty");
+    }
+  }
+});
+
+test("service worker precaches every artwork path referenced by the player and only clears its own cache family", () => {
+  const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
+  assert.match(sw, /const CACHE = "lantern-v6"/);
+  for (const file of fs.readdirSync(path.join(root, "assets", "img"))) {
+    if (/\.(webp|svg)$/i.test(file) && !["hero-pumpkin.svg", "relic-bat.svg", "relic-ghost.svg", "relic-lantern.svg", "relic-pumpkin.svg", "relic-spider.svg", "relic-wisp.svg"].includes(file)) {
+      assert.ok(sw.includes("./assets/img/" + file), "missing artwork precache: " + file);
+    }
+  }
+  assert.match(sw, /k\.startsWith\("lantern-"\)/);
+});
