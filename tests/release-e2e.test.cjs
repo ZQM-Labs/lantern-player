@@ -157,7 +157,12 @@ test("installed player survives five offline reloads and completes a full six-st
   for (let stop = 1; stop <= 6; stop++) {
     await page.locator("#next-stop").getByRole("button", { name: /We're at the stop/ }).click();
     await page.locator("#screen-puzzle.active").waitFor({ state: "visible" });
-    await page.waitForFunction(() => { const img = document.querySelector("#stop-art"); return img && img.complete && img.naturalWidth > 0; });
+    try {
+      await page.waitForFunction(() => { const img = document.querySelector("#stop-art"); return img && img.complete && img.naturalWidth > 0; }, null, { timeout: 5000 });
+    } catch (error) {
+      const detail = await page.locator("#stop-art").evaluate(img => ({ src: img.src, complete: img.complete, naturalWidth: img.naturalWidth, display: img.style.display }));
+      throw new Error("stop " + stop + " artwork failed offline: " + JSON.stringify(detail) + "; " + error.message);
+    }
     const artWidth = await page.locator("#stop-art").evaluate(img => img.naturalWidth);
     assert.ok(artWidth > 0, "stop " + stop + " artwork must load offline");
     await page.locator("#unlock-code").fill("LANTERN-" + stop);
