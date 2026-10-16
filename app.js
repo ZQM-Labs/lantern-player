@@ -123,7 +123,11 @@ function validatePack(p) {
     else answers.push(String(pz.a).trim().toLowerCase());
     if (!s.fallback || !s.fallback.q || !s.fallback.a) errs.push(`${tag}: fallback needs q + a`);
     if (!Array.isArray(s.hints) || s.hints.length !== 3) errs.push(`${tag}: needs exactly 3 hints`);
-    if (typeof s.lat !== "number" || typeof s.lng !== "number") errs.push(`${tag}: lat/lng must be numeric`);
+    if (typeof s.lat !== "number" || !Number.isFinite(s.lat) || typeof s.lng !== "number" || !Number.isFinite(s.lng)) {
+      errs.push(`${tag}: lat/lng must be finite numbers`);
+    } else if (s.lat < -90 || s.lat > 90 || s.lng < -180 || s.lng > 180) {
+      errs.push(`${tag}: lat/lng out of geographic bounds`);
+    }
   }
   if (new Set(answers).size !== answers.length) errs.push("cozy answers must be unique");
   if (new Set(ids).size !== ids.length) errs.push("stop ids must be unique");
@@ -140,11 +144,15 @@ function show(id) {
 }
 /* Scare-tier art: stop-1-pumpkin-spooky.webp etc. Cozy reuses the base file;
    a missing tier file falls back to base art via the img onerror guard. */
+function safeArtName(name) {
+  // Only allow a simple local WebP filename from an authored pack.
+  return typeof name === "string" && /^[A-Za-z0-9][A-Za-z0-9._-]*\.webp$/i.test(name) && !name.includes("..") ? name : "";
+}
 function artFor(stop) {
-  if (!stop || !stop.art) return "";
-  if (state.scare && state.scare !== "cozy")
-    return "assets/" + stop.art.replace(/\.webp$/i, "-" + state.scare + ".webp");
-  return "assets/" + stop.art;
+  const name = safeArtName(stop && stop.art);
+  if (!name) return "";
+  if (state.scare && state.scare !== "cozy") return "assets/" + name.replace(/\.webp$/i, "-" + state.scare + ".webp");
+  return "assets/" + name;
 }
 
 function variant(stop, kind) { // kind: "story" | puzzle object
@@ -196,7 +204,7 @@ function updatePlayerMarker(lat, lng, acc) {
 function stopIcon(s) {
   const lit = state.solved.includes(s.id);
   const face = s.art
-    ? `<img src="${artFor(s)}" alt="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}" onerror="this.onerror=null;this.src='assets/${s.art}'">`
+    ? `<img src="${artFor(s)}" alt="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}" onerror="this.onerror=null;this.remove()">`
     : `<div class="pin-fallback" role="img" aria-label="${lit ? "Lit" : "Unlit"}: Stop ${s.id} — ${esc(s.name)}">🏮</div>`;
   return L.divIcon({ className: "stop-marker" + (lit ? " lit" : ""), html: face,
     iconSize: [46, 46], iconAnchor: [23, 23] });
@@ -491,7 +499,7 @@ function updateHUD() {
       const got = state.solved.includes(s.id);
       const cls = got ? "relic" : "relic locked";
       const inner = (got && s.art)
-        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.src='assets/${s.art}'">`
+        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.remove()">`
         : `<div class="${cls}" role="img" aria-label="${got ? "lit lantern relic" : "unfound relic"}">${got ? "🏮" : "❔"}</div>`;
       return `<span title="${got ? esc(s.name) : "???"}">${inner}</span>`;
     }).join("");
