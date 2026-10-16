@@ -119,7 +119,7 @@ test("installed player survives five offline reloads and completes a full six-st
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
-  await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), { timeout: 15000 });
+  await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
   await page.evaluate(async () => {
     const cache = await caches.open("unrelated-app-cache");
