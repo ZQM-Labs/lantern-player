@@ -53,6 +53,11 @@ test("service worker precaches the new player modules and available translation 
   for (const language of Object.keys(i18n.languages)) {
     const asset = `./i18n/${language}.json`;
     assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
+    assert.equal(
+      source.split(`"${asset}"`).length - 1,
+      1,
+      `precache entry must appear exactly once: ${asset}`
+    );
   }
 });
 
