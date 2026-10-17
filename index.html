@@ -12,7 +12,7 @@
 <div id="offline-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#e07b24;color:#fff;text-align:center;padding:8px;font-weight:600;z-index:9999">📡 You're offline — progress saves on this device</div>
 <div id="achievements-toast"></div>
 <main id="app">
-  <div id="lang-switcher" class="lang-switcher" aria-label="Interface language"></div>
+  <div id="lang-switcher" class="lang-switcher" role="group" aria-label="Interface language"></div>
   <p id="language-support-note" class="fineprint">Language selection is experimental. Translation files are available for English, Spanish, French, German, Portuguese, Italian, and Russian, but the interface is not fully translated; many labels and some quest stories, puzzles, and hints may remain in English or the pack’s original language.</p>
   <div id="story-mode-selector" class="mode-selector"></div>
   <div id="global-leaderboard" class="global-leaderboard card" style="display:none">
@@ -66,11 +66,13 @@
     <p id="wisp-says" class="wisp-speech"></p>
     <p id="puzzle-question"></p>
     <div id="puzzle-input-row">
-      <input id="puzzle-answer" autocomplete="off" placeholder="Your answer">
+      <label class="visually-hidden" for="puzzle-answer">Your answer</label>
+      <input id="puzzle-answer" autocomplete="off" placeholder="Your answer" aria-describedby="feedback">
       <button id="btn-answer">Light the lantern</button>
     </div>
     <div id="unlock-row">
-      <input id="unlock-code" autocomplete="off" placeholder="Code from the QR sign">
+      <label class="visually-hidden" for="unlock-code">Code from the QR sign</label>
+      <input id="unlock-code" autocomplete="off" placeholder="Code from the QR sign" aria-describedby="feedback">
       <button id="btn-unlock">Unlock with sign code</button>
       <button id="btn-gps">📍 I'm here (GPS check)</button>
     </div>
