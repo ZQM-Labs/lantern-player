@@ -67,3 +67,21 @@ hardcode new story text here — author it in `lantern-content`.
   <a href="https://github.com/ZQM-Computing">ZQM Computing</a>
 </p>
 <!-- ZQM-FOOTER-END -->
+
+
+## Release validation contract
+
+A green unit-test or CI result is necessary but does not prove that a location-based release is ready for players. Before tagging a release, record the player commit, content-pack version, browser/device matrix, and results of the checks below. Use the [playtest protocol](https://github.com/ZQM-Labs/playtests) and keep physical observations separate from automated test results.
+
+| Area | Minimum release check | Evidence |
+|---|---|---|
+| Startup | Fresh install opens the game without uncaught errors; malformed or missing pack input fails with a useful message rather than a crash | CI result and reproducible test case |
+| Offline | Install/load once, disconnect the network, reload, resume progress, and confirm the documented offline scope | Device/browser, steps, outcome |
+| Content | Validate the exact release pack with the authoring validator and player; test missing, malformed, and unsupported fields | Pack filename/version and test result |
+| Languages | Confirm available locale choices and review actual story/UI coverage; do not infer translation completeness from matching key counts | Locale coverage report and reviewer |
+| QR and GPS | Test printed QR codes at actual size and lighting; test GPS on the intended route and record drift/failure behavior | Route/device notes and photos only where safe |
+| Accessibility and safety | Verify the non-GPS observation fallback, route permissions, safe sign placement, and an accessible alternative for each checkpoint | Completed organizer checklist |
+| Assets | Confirm every referenced image/audio/font file exists in the standalone package, not only in the marketing-site bundle | Asset check output |
+| Recovery | Verify refresh/reopen behavior, progress persistence, and the documented recovery path for a failed checkpoint | Playtest record |
+
+Do not publish a physical-validation claim until the route, signs, and accessible alternatives have actually been checked in the field. Do not publish a language as fully supported solely because a locale file exists.
