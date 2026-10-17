@@ -595,10 +595,16 @@ $("btn-start").addEventListener("click", async () => {
     const startBtn = $("btn-start");
     startBtn.disabled = true;
     startBtn.textContent = "Loading...";
-    // Fetch kit bundle + content pack
-    const bundle = await fetchKitBundle(result.kit, code);
-    startBtn.disabled = false;
-    startBtn.textContent = "Start the hunt";
+    // Fetch kit bundle + content pack. Always restore the control even if an
+    // unexpected exception escapes the helper, so a transient failure cannot
+    // strand the player in a permanent loading state.
+    let bundle = null;
+    try {
+      bundle = await fetchKitBundle(result.kit, code);
+    } finally {
+      startBtn.disabled = false;
+      startBtn.textContent = "Start the hunt";
+    }
     if (!bundle) { alert("Could not load the game — check your connection."); return; }
     if (bundle.pack) {
       // Gate the remote pack: a malformed one would crash openMap()/hints mid-hunt.
