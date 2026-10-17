@@ -48,6 +48,11 @@ test("service worker precaches the new player modules and available translation 
   assert.match(source, /const CACHE = "lantern-v7"/);
   for (const asset of ["./global-story.js", "./i18n.js"]) {
     assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
+    assert.equal(
+      source.split(`"${asset}"`).length - 1,
+      1,
+      `precache entry must appear exactly once: ${asset}`
+    );
   }
   const i18n = require("../i18n.js");
   for (const language of Object.keys(i18n.languages)) {
