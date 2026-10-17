@@ -27,8 +27,8 @@ python3 -m http.server 8080
 ## How a game flows
 
 1. Team opens the kit link (or scans the start QR) → enters access code.
-2. **Scare meter**: Cozy Glow 🎃 / Spooky 👻 / After Dark 🦇 — sets story skin,
-   puzzle set, palette, and audio. Organizer default comes from the kit.
+2. **Story/scare dial**: Cozy Glow 🎃 / Spooky 👻 / After Dark 🦇 / Overdrive 🔥 —
+   selects story and puzzle variants and the visual theme. Organizer default comes from the kit.
 3. Six checkpoints. Each unlocks by scanning the QR sign (the code is in the
    URL), typing the code, or passing a GPS geofence check — every checkpoint
    also has an observation-answer fallback (accessibility + dead-battery rule).
@@ -45,7 +45,7 @@ The player currently ships locale files for English (`en`), Spanish (`es`), Fren
 
 The player consumes a JSON content pack exported from `lantern-content`.
 `DEMO_PACK` in `app.js` is the embedded example: every stop has `story` and
-`puzzle` per scare level; missing variants fall back to Cozy text. Never
+`puzzle` for all four levels (`cozy`, `spooky`, `afterdark`, `overdrive`); missing variants fall back to Cozy text. Never
 hardcode new story text here — author it in `lantern-content`.
 
 ## Files
