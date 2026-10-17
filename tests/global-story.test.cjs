@@ -63,10 +63,25 @@ test("language picker lists only languages with translation files", () => {
   global.document = { readyState: "loading", addEventListener() {} };
   delete require.cache[require.resolve("../i18n.js")];
   const i18n = require("../i18n.js");
-  const languages = Object.keys(i18n.languages);
-  assert.deepEqual(languages.sort(), ["de", "en", "es", "fr", "pt"]);
+  const languages = Object.keys(i18n.languages).sort();
+  const localeFiles = fs.readdirSync(path.join(root, "i18n"))
+    .filter((name) => name.endsWith(".json"))
+    .map((name) => name.slice(0, -5))
+    .sort();
+
+  assert.ok(languages.includes("en"), "English must remain available as the fallback");
+  assert.deepEqual(
+    languages,
+    localeFiles,
+    "the language picker must match the locale files that ship with the player"
+  );
+
+  const serviceWorker = fs.readFileSync(path.join(root, "sw.js"), "utf8");
   for (const language of languages) {
-    assert.ok(fs.existsSync(path.join(root, "i18n", language + ".json")), `missing file for ${language}`);
+    assert.ok(
+      serviceWorker.includes(`"./i18n/${language}.json"`),
+      `missing offline precache entry for advertised language: ${language}`
+    );
   }
 });
 
