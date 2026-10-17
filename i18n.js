@@ -58,6 +58,24 @@ const I18n = {
       dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
       numberFormat: { style: 'decimal', useGrouping: true }
     },
+    it: {
+      name: 'Italian',
+      nativeName: 'Italiano',
+      dir: 'ltr',
+      flag: '🇮🇹',
+      pluralRule: (n) => n === 1 ? 'one' : 'other',
+      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+      numberFormat: { style: 'decimal', useGrouping: true }
+    },
+    ru: {
+      name: 'Russian',
+      nativeName: 'Русский',
+      dir: 'ltr',
+      flag: '🇷🇺',
+      pluralRule: (n) => { let r10 = n % 10, r100 = n % 100; if (r10 === 1 && r100 !== 11) return 'one'; if (r10 >= 2 && r10 <= 4 && (r100 < 12 || r100 > 14)) return 'few'; return 'many'; },
+      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+      numberFormat: { style: 'decimal', useGrouping: true }
+    },
   },
 
   // Current language
