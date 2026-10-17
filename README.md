@@ -37,7 +37,7 @@ python3 -m http.server 8080
 
 ## Language support
 
-The player currently ships locale files for English (`en`), Spanish (`es`), French (`fr`), German (`de`), and Portuguese (`pt`). The language selector is experimental: matching translation keys do not guarantee complete or professionally reviewed translations, and some interface text and quest-pack content may remain in English or the pack's source language. Do not advertise full localization until content coverage and language quality have been reviewed and tested.
+The player currently ships locale files for English (`en`), Spanish (`es`), French (`fr`), German (`de`), Portuguese (`pt`), Italian (`it`), and Russian (`ru`). The language selector is experimental: matching translation keys do not guarantee complete or professionally reviewed translations, and some interface text and quest-pack content may remain in English or the pack's source language. Do not advertise full localization until content coverage and language quality have been reviewed and tested.
 
 ## Content packs
 
