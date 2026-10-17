@@ -1,5 +1,9 @@
 # lantern-player
 
+<p align="center">
+  <img src="assets/img/wisps-lost-lanterns-readme-banner.svg" alt="Wisp's Lost Lanterns — a six-checkpoint story hunt from ZQM Labs" width="100%" />
+</p>
+
 <!-- ZQM-START -->
 <p align="center">
   <strong>ZQM Labs — Z's Quests & Mischief</strong><br>
@@ -7,8 +11,6 @@
   <a href="https://github.com/ZQM-Labs">GitHub</a>
 </p>
 <!-- ZQM-END -->
-
-
 
 The player web app (PWA) for ZQM Labs location games. Vanilla HTML/CSS/JS —
 no build step, no framework. Leaflet is the only library (vendor it locally
@@ -53,7 +55,6 @@ hardcode new story text here — author it in `lantern-content`.
 - `styles.css` — base layout + scare themes via `body[data-scare]`
 - `sw.js` — service worker: cache-first app shell (offline play)
 - `manifest.webmanifest` — installable PWA metadata
-
 
 <!-- ZQM-FOOTER-START -->
 ---
