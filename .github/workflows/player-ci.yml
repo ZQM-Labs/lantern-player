@@ -1,0 +1,28 @@
+name: Lantern Player CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax-check player modules
+        run: |
+          node --check app.js
+          node --check global-story.js
+          node --check global-features.js
+          node --check i18n.js
+          node --check sw.js
+      - name: Run dependency-free regression tests
+        run: node --test tests/global-story.test.cjs
