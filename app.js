@@ -34,12 +34,10 @@ const DEMO_PACK = {
                overdrive: "Two hundred years this oak has stood, and it has seen faster Keepers than you. Oakie, be honest — are they slow? …He says yes. MOVE." },
       wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       lit: "Got it! Oakie says you're officially tree-approved.",
-            puzzle: {
-              cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" },
-              spooky: { q: "The oak watches over its seats. How many wooden swings or benches face the tree?", a: "2", type: "number" },
-              afterdark: { q: "Oakie's secret is the pair of wooden places facing him. How many swings or benches face the oak?", a: "2", type: "number" },
-              overdrive: { q: "Oakie says count fast: how many wooden swings or benches face the tree?", a: "2", type: "number" }
-            },
+      puzzle: { cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" },
+               spooky: { q: "Riddle: I have arms but cannot hug, I wear a coat but cannot feel cold. The wind whispers through me but I never speak. What am I?", a: "tree", type: "text" },
+               afterdark: { q: "The oak was planted in 1824. How many decades has it stood? (Round to nearest whole decade)", a: "20", type: "number" },
+               overdrive: { q: "Dr. Z's challenge: The oak's canopy spans 15m. If each lantern hangs 3m apart, how many lanterns fit in a straight line across the canopy?", a: "5", type: "number" } },
       fallback: { q: "What is carved on the small sign by the oak?", a: "wisp" },
       hints: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: the answer is 2."] },
     { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
@@ -49,12 +47,10 @@ const DEMO_PACK = {
                overdrive: "The ghosts keep score, and right now you're losing to a team of TODDLERS. Tag them back. TAG. THEM. BACK." },
       wisp: "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
       lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
-            puzzle: {
-              cozy: { q: "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)", a: "pumpkins", type: "text" },
-              spooky: { q: "The pretend tombstone has a silly Halloween epitaph: Rest In... what?", a: "pumpkins", type: "text" },
-              afterdark: { q: "Read the joke on the foam stone. It changes R.I.P. to Rest In... what?", a: "pumpkins", type: "text" },
-              overdrive: { q: "No time to mourn, Keeper! Finish the silly phrase: Rest In... what?", a: "pumpkins", type: "text" }
-            },
+      puzzle: { cozy: { q: "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)", a: "pumpkins", type: "text" },
+               spooky: { q: "Riddle: I have a head and a tail but no body. I lie in the dark waiting. What am I?", a: "coin", type: "text" },
+               afterdark: { q: "The 1918 flu pandemic killed 675,000 Americans. If this graveyard represents 1/1000th of that, how many 'souls' are here?", a: "675", type: "number" },
+               overdrive: { q: "Dr. Z's challenge: The ghosts giggle every 7 seconds. How many giggles in one minute? (Round to nearest whole number)", a: "9", type: "number" } },
       fallback: { q: "How many foam tombstones are there?", a: "5" },
       hints: ["Read the stones — one of them is joking.", "It rhymes with the patch from Stop 1.", "Ranger assist: Rest In Pumpkins."] },
     { id: 4, name: "The Spider's Counting Web", lat: 29.0270, lng: -80.9252, code: "LANTERN-4", art: "stop-4-spider.webp",
@@ -64,12 +60,10 @@ const DEMO_PACK = {
                overdrive: "Mrs. Spider has rebuilt eleven webs tonight AND finished a crossword. Your excuse is WHAT, exactly? Untangle that lantern. Clock's ticking." },
       wisp: "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
       lit: "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT.",
-            puzzle: {
-              cozy: { q: "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?", a: "5", type: "number" },
-              spooky: { q: "Mrs. Spider waves with 3 of her 8 legs. How many legs stay on the ground?", a: "5", type: "number" },
-              afterdark: { q: "Count all 8 legs, then subtract the 3 raised in greeting. How many remain on the ground?", a: "5", type: "number" },
-              overdrive: { q: "Eight legs, three waving. Quick, how many of Mrs. Spider's legs are on the ground?", a: "5", type: "number" }
-            },
+      puzzle: { cozy: { q: "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?", a: "5", type: "number" },
+               spooky: { q: "Riddle: I weave without a loom, I trap without a cage. My silk is stronger than steel by weight. What am I?", a: "spider", type: "text" },
+               afterdark: { q: "Orb weavers rebuild their web every night. If Mrs. Spider has been here 11 years, approximately how many webs has she built? (Ignore leap years)", a: "4015", type: "number" },
+               overdrive: { q: "Dr. Z's challenge: A spider web has 20 radial threads. If each radial thread takes 2 minutes to spin, how long does the full web take?", a: "40", type: "number" } },
       fallback: { q: "What color is Mrs. Spider?", a: "purple" },
       hints: ["Start with 8 legs, like every spider.", "She waves with 3 of them.", "Ranger assist: 8 − 3 = 5."] },
     { id: 5, name: "The Owl's Night Watch", lat: 29.0274, lng: -80.9246, code: "LANTERN-5", art: "stop-5-owl.webp",
@@ -79,12 +73,10 @@ const DEMO_PACK = {
                overdrive: "Professor Hoot graded your last answer a C+. A C! In MY hunt! Listen harder, answer faster — make an owl proud." },
       wisp: "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
       lit: "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome.",
-            puzzle: {
-              cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" },
-              spooky: { q: "The silent night watchman hoots from the branches. What kind of bird is Professor Hoot?", a: "owl", type: "text" },
-              afterdark: { q: "Who cooks for you? The bird asking that question is what kind of bird?", a: "owl", type: "text" },
-              overdrive: { q: "Professor Hoot is grading you. Name his kind of bird before the clock runs out.", a: "owl", type: "text" }
-            },
+      puzzle: { cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" },
+               spooky: { q: "Riddle: I fly without wings, I see without eyes. I turn my head almost all the way around. What am I?", a: "owl", type: "text" },
+               afterdark: { q: "Barred owls live about 10 years in the wild. If Professor Hoot is 7, how many years does he likely have left?", a: "3", type: "number" },
+               overdrive: { q: "Dr. Z's challenge: An owl can rotate its head 270 degrees. How many more degrees would it need for a full 360?", a: "90", type: "number" } },
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
       hints: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."] },
     { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
@@ -94,12 +86,10 @@ const DEMO_PACK = {
                overdrive: "FINAL STRETCH. Wisp ran the numbers and they are NOT in your favor. Light that last lantern like you mean it — FULL! MADNESS!" },
       wisp: "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
       lit: "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!",
-            puzzle: {
-              cozy: { q: "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?", a: "6", type: "number" },
-              spooky: { q: "The last glow joins the others. How many lanterns should be lit when the hunt is complete?", a: "6", type: "number" },
-              afterdark: { q: "Count every lantern Wisp lost and your team recovered. How many in total?", a: "6", type: "number" },
-              overdrive: { q: "FINAL COUNT! Six stops, one lantern per stop. How many lanterns must be lit?", a: "6", type: "number" }
-            },
+      puzzle: { cozy: { q: "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?", a: "6", type: "number" },
+               spooky: { q: "Riddle: I am born in fire, I die in water, and I glow in the dark. What am I?", a: "candle", type: "text" },
+               afterdark: { q: "The first lantern festival was in China over 1800 years ago. Approximately how many centuries ago was that?", a: "18", type: "number" },
+               overdrive: { q: "Dr. Z's final challenge: If your team lit 6 lanterns in 45 minutes, what was your average time per lantern?", a: "7.5", type: "number" } },
       fallback: { q: "Say the magic words out loud as a team: 'Light the way, Wisp!' then type: wisp", a: "wisp" },
       hints: ["Count the stops on your map.", "One lantern per stop.", "Ranger assist: 6 lanterns."] }
   ]
@@ -587,14 +577,22 @@ function updateHUD() {
 
 /* ---------- flow ---------- */
 $("btn-start").addEventListener("click", async () => {
-  state.team = $("team-name").value.trim() || "Lantern Keepers";
+  const teamName = $("team-name").value.trim();
+  if (teamName.length > 30) { alert("Team name must be 30 characters or less."); return; }
+  state.team = teamName || "Lantern Keepers";
   const code = $("access-code").value.trim();
   let startingKit = "DEMO";
   if (!isDemo) {
     const result = await validateCode(code);
     if (!result) { alert("That access code didn't check out — ask your organizer."); return; }
+    // Show loading state
+    const startBtn = $("btn-start");
+    startBtn.disabled = true;
+    startBtn.textContent = "Loading...";
     // Fetch kit bundle + content pack
     const bundle = await fetchKitBundle(result.kit);
+    startBtn.disabled = false;
+    startBtn.textContent = "Start the hunt";
     if (!bundle) { alert("Could not load the game — check your connection."); return; }
     if (bundle.pack) {
       // Gate the remote pack: a malformed one would crash openMap()/hints mid-hunt.
@@ -651,8 +649,11 @@ if (accessCode) {
 }
 
 
-document.querySelectorAll(".scare-card").forEach((b, idx, cards) => {
-  b.addEventListener("click", () => {
+// Guard against double-initialization (e.g., HMR or script re-execution)
+if (!document.querySelector(".scare-card[data-initialized]")) {
+  document.querySelectorAll(".scare-card").forEach((b, idx, cards) => {
+    b.setAttribute("data-initialized", "true");
+    b.addEventListener("click", () => {
     document.querySelectorAll(".scare-card").forEach(c => c.setAttribute("aria-checked", "false"));
     b.setAttribute("aria-checked", "true");
     state.scare = b.dataset.pick;
@@ -666,15 +667,16 @@ document.querySelectorAll(".scare-card").forEach((b, idx, cards) => {
   // Show transition narrative
   showTransition();
   });
-  b.addEventListener("keydown", (e) => {
-    let newIdx = null;
-    if (e.key === "ArrowDown" || e.key === "ArrowRight") newIdx = (idx + 1) % cards.length;
-    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") newIdx = (idx - 1 + cards.length) % cards.length;
-    else if (e.key === "Home") newIdx = 0;
-    else if (e.key === "End") newIdx = cards.length - 1;
-    if (newIdx !== null) { e.preventDefault(); cards[newIdx].focus(); }
+    b.addEventListener("keydown", (e) => {
+      let newIdx = null;
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") newIdx = (idx + 1) % cards.length;
+      else if (e.key === "ArrowUp" || e.key === "ArrowLeft") newIdx = (idx - 1 + cards.length) % cards.length;
+      else if (e.key === "Home") newIdx = 0;
+      else if (e.key === "End") newIdx = cards.length - 1;
+      if (newIdx !== null) { e.preventDefault(); cards[newIdx].focus(); }
+    });
   });
-});
+}
 
 let map = null;
 let mapBroken = false;
@@ -855,7 +857,8 @@ function playSound(url) {
 
 /* ---------- share: native share or clipboard fallback ---------- */
 function shareTeam() {
-  const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! Join the hunt!`;
+  const mins = state.startedAt ? Math.round((Date.now() - state.startedAt) / 60000) : 0;
+  const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! I lit ${state.solved.length} lanterns in ${mins} minutes with ${state.hintsUsed} hints. Join the hunt!`;
   const url = window.location.href;
   if (navigator.share) {
     navigator.share({ title: "Wisp's Lost Lanterns", text, url }).catch(() => {});
@@ -1016,6 +1019,8 @@ function finale() {
   }
   syncProgress(true);
   stopTimer();
+  fetchGlobalLeaderboard();
+  showAchievements();
   // Show share and install buttons
   const shareBtn = $("btn-share-finale");
   if (shareBtn) shareBtn.style.display = "inline-block";
@@ -1045,6 +1050,24 @@ $("btn-share-finale").addEventListener("click", shareTeam);
 // Install PWA button
 $("btn-install").addEventListener("click", installPWA);
 
+// Past stops history
+$("btn-history").addEventListener("click", () => {
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem("lantern-history") || "[]"); } catch {}
+  const lb = $("leaderboard"), lbl = $("leaderboard-list");
+  if (lb && lbl) {
+    lb.style.display = "block";
+    if (history.length === 0) {
+      lbl.innerHTML = "<div>No past stops yet — finish a hunt to see history!</div>";
+    } else {
+      lbl.innerHTML = history.slice(-10).reverse().map((r, i) => {
+        const title = teamTitle(r, pack.stops.length);
+        return `<div>${i + 1}. ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
+      }).join("");
+    }
+  }
+});
+
 // Keyboard navigation: Enter to submit, Escape to go back
 document.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && e.target.tagName === "INPUT") {
@@ -1057,12 +1080,38 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+// Pause/resume game
+let pausedAt = null;
+$("btn-pause").addEventListener("click", () => {
+  if (pausedAt) {
+    // Resume: adjust startedAt forward by the pause duration
+    state.startedAt += Date.now() - pausedAt;
+    pausedAt = null;
+    $("btn-pause").textContent = "⏸ Pause";
+    startTimer();
+  } else {
+    // Pause
+    pausedAt = Date.now();
+    $("btn-pause").textContent = "▶ Resume";
+    stopTimer();
+  }
+});
+
 // Touch feedback: haptic on mobile
 document.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON" && navigator.vibrate) {
     navigator.vibrate(10);
   }
 }, { passive: true });
+
+// Pause timer when tab is hidden
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopTimer();
+  } else if (state.startedAt && state.solved.length < pack.stops.length) {
+    startTimer();
+  }
+});
 
 // Offline detection
 window.addEventListener("offline", () => {
@@ -1126,6 +1175,35 @@ async function fetchKitBundle(kitId) {
     return { ...bundle, pack: null };
   } catch { return null; }
 }
+async function fetchGlobalLeaderboard() {
+  if (isDemo) return;
+  try {
+    const r = await fetch(`${API_BASE}/api/lantern/leaderboard`);
+    if (!r.ok) return;
+    const data = await r.json();
+    const lb = $("global-leaderboard"), lbl = $("global-leaderboard-list");
+    if (lb && lbl && data.teams) {
+      lb.style.display = "block";
+      lbl.innerHTML = data.teams.slice(0, 10).map((t, i) => {
+        const medal = ["🥇", "🥈", "🥉"][i] || `${i + 1}.`;
+        return `<div>${medal} ${esc(t.team)} — ${t.mins}m · ${t.hintsUsed} hints</div>`;
+      }).join("");
+    }
+  } catch { /* offline is fine */ }
+}
+
+function showAchievements() {
+  const achievements = [];
+  if (state.cleanSolves === pack.stops.length) achievements.push("🎯 Flawless — no hints used!");
+  if (state.hintsUsed === 0) achievements.push("🌟 Purist — zero hints!");
+  if (state.solved.length === pack.stops.length) achievements.push("🏮 Lantern Master — all 6 lit!");
+  const toast = $("achievements-toast");
+  if (toast && achievements.length > 0) {
+    toast.textContent = achievements.join(" ");
+    setTimeout(() => { toast.textContent = ""; }, 5000);
+  }
+}
+
 async function syncProgress(done = false) {
   if (isDemo) return;
   try {
