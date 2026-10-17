@@ -45,16 +45,13 @@ test("GlobalStory initializes and applies a valid mode and culture", () => {
 
 test("service worker precaches the new player modules and available translation files", () => {
   const source = fs.readFileSync(path.join(root, "sw.js"), "utf8");
-  assert.match(source, /const CACHE = "lantern-v6"/);
-  for (const asset of [
-    "./global-story.js",
-    "./i18n.js",
-    "./i18n/en.json",
-    "./i18n/es.json",
-    "./i18n/fr.json",
-    "./i18n/de.json",
-    "./i18n/pt.json"
-  ]) {
+  assert.match(source, /const CACHE = "lantern-v7"/);
+  for (const asset of ["./global-story.js", "./i18n.js"]) {
+    assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
+  }
+  const i18n = require("../i18n.js");
+  for (const language of Object.keys(i18n.languages)) {
+    const asset = `./i18n/${language}.json`;
     assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
   }
 });
@@ -63,10 +60,22 @@ test("language picker lists only languages with translation files", () => {
   global.document = { readyState: "loading", addEventListener() {} };
   delete require.cache[require.resolve("../i18n.js")];
   const i18n = require("../i18n.js");
-  const languages = Object.keys(i18n.languages);
-  assert.deepEqual(languages.sort(), ["de", "en", "es", "fr", "pt"]);
+  const languages = Object.keys(i18n.languages).sort();
+  const localeFiles = fs.readdirSync(path.join(root, "i18n"))
+    .filter((name) => name.endsWith(".json"))
+    .map((name) => name.slice(0, -5))
+    .filter((name) => Object.hasOwn(i18n.languages, name))
+    .sort();
+
+  assert.ok(languages.includes("en"), "English must remain available as the fallback");
+  assert.deepEqual(languages, localeFiles, "the language picker must match shipped locale files");
+
+  const serviceWorker = fs.readFileSync(path.join(root, "sw.js"), "utf8");
   for (const language of languages) {
-    assert.ok(fs.existsSync(path.join(root, "i18n", language + ".json")), `missing file for ${language}`);
+    assert.ok(
+      serviceWorker.includes(`"./i18n/${language}.json"`),
+      `missing offline precache entry for advertised language: ${language}`
+    );
   }
 });
 
@@ -85,7 +94,7 @@ test("all advertised languages have the same complete, non-empty interface key s
   const english = JSON.parse(fs.readFileSync(path.join(root, "i18n/en.json"), "utf8"));
   const keys = Object.keys(english).sort();
   assert.ok(keys.length > 0, "English translation file must not be empty");
-  for (const language of ["es", "fr", "de", "pt"]) {
+  for (const language of Object.keys(require("../i18n.js").languages).filter((code) => code !== "en")) {
     const translations = JSON.parse(fs.readFileSync(path.join(root, "i18n", language + ".json"), "utf8"));
     assert.deepEqual(Object.keys(translations).sort(), keys, language + " must match English key coverage");
     for (const key of keys) {
@@ -97,7 +106,7 @@ test("all advertised languages have the same complete, non-empty interface key s
 
 test("service worker precaches every artwork path referenced by the player and only clears its own cache family", () => {
   const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
-  assert.match(sw, /const CACHE = "lantern-v6"/);
+  assert.match(sw, /const CACHE = "lantern-v7"/);
   for (const file of fs.readdirSync(path.join(root, "assets", "img"))) {
     if (/\.(webp|svg)$/i.test(file) && !["hero-pumpkin.svg", "relic-bat.svg", "relic-ghost.svg", "relic-lantern.svg", "relic-pumpkin.svg", "relic-spider.svg", "relic-wisp.svg"].includes(file)) {
       assert.ok(sw.includes("./assets/img/" + file), "missing artwork precache: " + file);
