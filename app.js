@@ -596,7 +596,7 @@ $("btn-start").addEventListener("click", async () => {
     startBtn.disabled = true;
     startBtn.textContent = "Loading...";
     // Fetch kit bundle + content pack
-    const bundle = await fetchKitBundle(result.kit);
+    const bundle = await fetchKitBundle(result.kit, code);
     startBtn.disabled = false;
     startBtn.textContent = "Start the hunt";
     if (!bundle) { alert("Could not load the game — check your connection."); return; }
@@ -1162,9 +1162,13 @@ async function validateCode(code) {
   } catch { return null; }
 }
 
-async function fetchKitBundle(kitId) {
+async function fetchKitBundle(kitId, accessCode) {
   try {
-    const r = await fetch(`${API_BASE}/api/lantern/kit/${kitId}`);
+    const r = await fetch(`${API_BASE}/api/lantern/kit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kitId, code: accessCode })
+    });
     if (!r.ok) return null;
     const bundle = await r.json();
     // Fetch the content pack file if present
