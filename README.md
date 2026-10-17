@@ -85,3 +85,8 @@ A green unit-test or CI result is necessary but does not prove that a location-b
 | Recovery | Verify refresh/reopen behavior, progress persistence, and the documented recovery path for a failed checkpoint | Playtest record |
 
 Do not publish a physical-validation claim until the route, signs, and accessible alternatives have actually been checked in the field. Do not publish a language as fully supported solely because a locale file exists.
+
+
+## Release status is evidence-based
+
+A working local demo, a successful automated workflow, and a field-ready paid game are different states. This README does not establish that Wisp's Lost Lanterns is currently orderable or approved for an in-person event. Before calling it released, link a dated release record that identifies the exact player and content versions and includes browser/device, offline/update, asset, language, QR/GPS, accessibility/safety, and checkout/fulfillment evidence. If evidence is missing, record the status as **unknown** and keep public copy limited to the state that has actually been verified.
