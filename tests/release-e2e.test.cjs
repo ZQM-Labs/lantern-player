@@ -81,8 +81,8 @@ test("malformed packs return validation errors rather than throwing", async () =
     const validStop = i => ({
       id: i, name: "Stop " + i, code: "CODE-" + i,
       lat: 29 + i / 100, lng: -80 - i / 100,
-      story: { cozy: "A story" },
-      puzzle: { cozy: { q: "Question?", a: "answer-" + i } },
+      story: { cozy: "A story", spooky: "A spooky story", afterdark: "An afterdark story", overdrive: "An overdrive story" },
+      puzzle: { cozy: { q: "Question?", a: "answer-" + i }, spooky: { q: "Spooky question?", a: "spooky-" + i }, afterdark: { q: "Afterdark question?", a: "afterdark-" + i }, overdrive: { q: "Overdrive question?", a: "overdrive-" + i } },
       fallback: { q: "Fallback question?", a: "fallback-" + i },
       hints: ["hint one", "hint two", "hint three"]
     });
@@ -123,7 +123,7 @@ test("installed player survives five offline reloads and completes ten consecuti
 
   await page.goto(baseUrl + "/tests/fixtures/blank.html", { waitUntil: "domcontentloaded" });
   await page.evaluate(async () => {
-    const oldCache = await caches.open("lantern-v5");
+    const oldCache = await caches.open("lantern-v6");
     await oldCache.put(new Request(location.origin + "/old-version-sentinel"), new Response("old"));
     const unrelated = await caches.open("unrelated-app-cache");
     await unrelated.put(new Request(location.origin + "/sentinel"), new Response("keep me"));
@@ -135,7 +135,7 @@ test("installed player survives five offline reloads and completes ten consecuti
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
   const cached = await page.evaluate(async () => {
-    const cache = await caches.open("lantern-v6");
+    const cache = await caches.open("lantern-v7");
     const paths = [
       "./index.html", "./app.js", "./global-story.js", "./i18n.js",
       "./i18n/en.json", "./i18n/es.json", "./i18n/fr.json", "./i18n/de.json", "./i18n/pt.json",
@@ -147,7 +147,7 @@ test("installed player survives five offline reloads and completes ten consecuti
     return { missing, cacheNames: await caches.keys() };
   });
   assert.deepEqual(cached.missing, [], "offline shell, translations, audio, and key art must be precached");
-  assert.ok(!cached.cacheNames.includes("lantern-v5"), "activation must remove the previous player cache");
+  assert.ok(!cached.cacheNames.includes("lantern-v6"), "activation must remove the previous player cache");
   assert.ok(cached.cacheNames.includes("unrelated-app-cache"), "the player must preserve unrelated origin caches");
 
   await context.setOffline(true);
