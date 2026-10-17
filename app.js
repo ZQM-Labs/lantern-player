@@ -159,8 +159,15 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
 function save() { try { localStorage.setItem("lantern-state", JSON.stringify(state)); } catch { /* private mode / quota - game continues in memory */ } }
 function show(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  $(id).classList.add("active");
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("active");
+    s.setAttribute("aria-hidden", "true");
+  });
+  const target = $(id);
+  target.classList.add("active");
+  target.setAttribute("aria-hidden", "false");
+  const heading = target.querySelector("h1, h2");
+  if (heading) heading.focus();
 }
 /* Scare-tier art: stop-1-pumpkin-spooky.webp etc. Cozy reuses the base file;
    a missing tier file falls back to base art via the img onerror guard. */
@@ -313,10 +320,12 @@ function geoPromptNodes(box) {
   p.textContent = "Let Wisp track your team? She\u2019ll point at the next stop and cheer when you arrive.";
   const en = document.createElement("button");
   en.textContent = "\uD83D\uDCCD Enable location";
+  en.setAttribute("aria-label", "Enable location tracking");
   en.addEventListener("click", () => { geoDeclined = false; startTracking(); });
   const no = document.createElement("button");
   no.textContent = "No thanks";
   no.className = "ghost-btn";
+  no.setAttribute("aria-label", "Decline location tracking");
   no.addEventListener("click", () => {
     geoDeclined = true; geoState = "declined";
     lastCardSig = ""; lastListSig = "";
@@ -328,6 +337,7 @@ function navButton(s, label) {
   const nav = document.createElement("a");
   nav.className = "nav-btn";
   nav.href = mapsUrl(s);
+  nav.setAttribute("aria-label", "Open directions to " + s.name + " in maps");
   nav.target = "_blank";
   nav.rel = "noopener";
   nav.textContent = label || "\uD83E\uDDED Navigate";
@@ -572,6 +582,8 @@ $("btn-start").addEventListener("click", async () => {
   save(); show("screen-scare");
   startTimer();
   focusFirst();
+  const scareHeading = document.querySelector("#screen-scare h2");
+  if (scareHeading) scareHeading.focus();
   playSound("assets/audio/hoot.ogg");
 });
 
@@ -595,10 +607,13 @@ if (accessCode) {
 }
 
 
-document.querySelectorAll(".scare-card").forEach(b => b.addEventListener("click", () => {
-  state.scare = b.dataset.pick;
-  document.body.dataset.scare = state.scare;
-  save(); openMap();
+document.querySelectorAll(".scare-card").forEach((b, idx, cards) => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".scare-card").forEach(c => c.setAttribute("aria-checked", "false"));
+    b.setAttribute("aria-checked", "true");
+    state.scare = b.dataset.pick;
+    document.body.dataset.scare = state.scare;
+    save(); openMap();
   // A QR that carried ?stop=N jumps straight to that puzzle after scare choice.
   if (Number.isInteger(deepStop) && deepStop >= 1) {
     const target = pack.stops.find(s => s.id === deepStop);
@@ -606,12 +621,23 @@ document.querySelectorAll(".scare-card").forEach(b => b.addEventListener("click"
   }
   // Show transition narrative
   showTransition();
-}));
+  });
+  b.addEventListener("keydown", (e) => {
+    let newIdx = null;
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") newIdx = (idx + 1) % cards.length;
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") newIdx = (idx - 1 + cards.length) % cards.length;
+    else if (e.key === "Home") newIdx = 0;
+    else if (e.key === "End") newIdx = cards.length - 1;
+    if (newIdx !== null) { e.preventDefault(); cards[newIdx].focus(); }
+  });
+});
 
 let map = null;
 let mapBroken = false;
 function openMap() {
   show("screen-map");
+  const mapHeading = document.querySelector("#screen-map h2");
+  if (mapHeading) mapHeading.focus();
   if (!mapBroken && !map) {
     // Leaflet may be absent (CDN blocked by CSP, or offline). Degrade to a
     // text stop list instead of throwing ReferenceError and killing the screen.
@@ -696,6 +722,7 @@ window.openStop = function (id) {
   if (deepSignCode && deepSignCode.toUpperCase() === String(currentStop.code).toUpperCase())
     $("unlock-code").value = deepSignCode;
   show("screen-puzzle");
+  $("puzzle-title").focus();
 };
 
 function solved() {
@@ -751,6 +778,7 @@ $("btn-gps").addEventListener("click", () => {
 $("btn-hint").addEventListener("click", () => {
   if (state.hintsUsed >= HINT_BUDGET) {
     $("hint-text").textContent = "The hint jar is empty! Ask your organizer — a Lab Assistant can grant a rescue hint.";
+    $("btn-hint").setAttribute("aria-expanded", "false");
     return;
   }
   if (hintLevel < 3) {
@@ -758,8 +786,10 @@ $("btn-hint").addEventListener("click", () => {
     state.hintsUsed++;
     state.stopHints[currentStop.id] = (state.stopHints[currentStop.id] || 0) + 1;
     save(); updateHUD();
+    $("btn-hint").setAttribute("aria-expanded", "true");
   } else {
     $("hint-text").textContent = "That's all 3 hints for this stop — trust your team!";
+    $("btn-hint").setAttribute("aria-expanded", "false");
   }
 });
 
@@ -857,6 +887,7 @@ function renderStoryModeSelector() {
     const btn = document.createElement("button");
     btn.className = "mode-btn" + (mode.id === current ? " active" : "");
     btn.innerHTML = `${mode.icon} ${mode.name}`;
+    btn.setAttribute("aria-pressed", mode.id === current ? "true" : "false");
     btn.addEventListener("click", () => {
       GlobalStory.currentMode = mode.id;
       GlobalStory.applyCulturalAdaptation();
@@ -949,6 +980,8 @@ function finale() {
     if (installBtn) installBtn.style.display = "inline-block";
   }
   focusFirst();
+  const finaleHeading = document.querySelector("#screen-finale h2");
+  if (finaleHeading) finaleHeading.focus();
 }
 window.addEventListener("pagehide", stopTracking);
 $("btn-restart").addEventListener("click", () => {
