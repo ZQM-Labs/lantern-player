@@ -13,10 +13,11 @@ const DEMO_PACK = {
   kit: "DEMO",
   stops: [
     { id: 1, name: "The Welcome Pumpkin", lat: 29.0258, lng: -80.9270, code: "LANTERN-1", art: "stop-1-pumpkin.webp",
-      story: { cozy: "Wisp twirls sadly. \"My first lantern rolled away right at the start!\"",
-               spooky: "A carved pumpkin grins where no pumpkin should be. Something glows inside it.",
-               afterdark: "The old-timers say a light once wandered this road, looking for the turning it missed in 1768.",
-               overdrive: "Dr. Z here — FULL MADNESS engaged. My sensors detect faster teams ahead of you. That pumpkin isn't smiling, it's SMIRKING. Wipe that smirk off." },
+      story: {
+               cozy: "Wisp's lanterns bounced out of her basket when Dr. Z's experimental wind-up machine went BZZT. The first one rolled right to this pumpkin. Can your team help her gather all six?",
+               spooky: "The pumpkin's grin flickers in the lantern-light. Dr. Z's runaway machine scattered six lights into the night—and something in the pumpkin is still humming.",
+               afterdark: "Fictional field note 1: Dr. Z's lantern experiment misfired, scattering six lights along the hunt. This pumpkin caught the first. The trail begins here; the old road has no part in the mystery.",
+               overdrive: "DR. Z'S OFFICIAL INCIDENT REPORT: My machine made one tiny puff of wind. SIX lanterns escaped. This pumpkin has the first. Retrieve it before Wisp files a complaint—and before I have to apologize." },
       wisp: "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
       lit: "One down! See how it glows? That's my happy leaking out.",
             puzzle: {
@@ -28,10 +29,11 @@ const DEMO_PACK = {
       fallback: { q: "What color is the ribbon on the welcome sign?", a: "orange" },
       hints: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."] },
     { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
-      story: { cozy: "The big oak is Wisp's best friend. He hid a lantern in his branches!",
-               spooky: "The oak's branches are bare, but something in the canopy breathes in and out, in and out — like the tree is dreaming.",
-               afterdark: "They say this oak was a hanging tree in the 1800s. On still nights the leaves whisper names. Listen — is one of them yours?",
-               overdrive: "Two hundred years this oak has stood, and it has seen faster Keepers than you. Oakie, be honest — are they slow? …He says yes. MOVE." },
+      story: {
+               cozy: "Oakie the oak caught a scrap of Dr. Z's map in his branches. Wisp thinks it points to the next lantern. Ask the tree nicely—he likes good listeners.",
+               spooky: "A paper scrap rustles above you though the air is still. Oakie has kept Dr. Z's map all night. One inked arrow points onward; another has been scratched out.",
+               afterdark: "Fictional field note 2: Oakie caught a corner of Dr. Z's route map. Its second mark points deeper into the hunt. No local legend is needed; the tree has a clue of its own.",
+               overdrive: "Oakie intercepted Dr. Z's map and is now acting like head of security. Get the next clue from the tree, Keepers. Yes, I know trees don't talk. This one has standards." },
       wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       lit: "Got it! Oakie says you're officially tree-approved.",
             puzzle: {
@@ -43,10 +45,11 @@ const DEMO_PACK = {
       fallback: { q: "What is carved on the small sign by the oak?", a: "wisp" },
       hints: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: the answer is 2."] },
     { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
-      story: { cozy: "Don't worry — these tombstones are made of foam, and every ghost here just wants to play tag.",
-               spooky: "The foam tombstones lean like bad teeth, and the giggling isn't coming from any of them. It's coming from underneath.",
-               afterdark: "Pretend stones, real ground. The town buried its 1918 flu dead in a field like this one — and on Halloween the veil is thin enough to hear them laugh.",
-               overdrive: "The ghosts keep score, and right now you're losing to a team of TODDLERS. Tag them back. TAG. THEM. BACK." },
+      story: {
+               cozy: "The pretend graveyard is Dr. Z's decoy—foam stones, silly epitaphs, and ghostly giggles recorded on his machine. Wisp says the real lantern is nearby. Don't let the joke distract you!",
+               spooky: "The foam tombstones tilt toward a hidden speaker. A giggle crackles, then Dr. Z's recorded voice cuts out mid-laugh. His decoy is hiding something brighter than a prank.",
+               afterdark: "Fictional field note 3: The graveyard is a staged prop set, not a real burial ground. Dr. Z left a recorded laugh to cover the next clue. Follow the story, not a claim about local history.",
+               overdrive: "You have defeated Dr. Z's terrifying graveyard of FOAM. His spooky sound effect is stuck on loop. Laugh at the villain later; find the lantern now!" },
       wisp: "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
       lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
             puzzle: {
@@ -58,10 +61,11 @@ const DEMO_PACK = {
       fallback: { q: "How many foam tombstones are there?", a: "5" },
       hints: ["Read the stones — one of them is joking.", "It rhymes with the patch from Stop 1.", "Ranger assist: Rest In Pumpkins."] },
     { id: 4, name: "The Spider's Counting Web", lat: 29.0270, lng: -80.9252, code: "LANTERN-4", art: "stop-4-spider.webp",
-      story: { cozy: "Mrs. Spider (she's friendly, and made of pipe cleaners) has a lantern tangled in her web!",
-               spooky: "The web stretches between the gazebo posts like a trap, and the dew on it isn't dew — it's too thick, and it trembles when you step close.",
-               afterdark: "Orb weavers rebuild every night. This one has rebuilt in this exact spot for eleven years. She remembers every face that's ever been caught.",
-               overdrive: "Mrs. Spider has rebuilt eleven webs tonight AND finished a crossword. Your excuse is WHAT, exactly? Untangle that lantern. Clock's ticking." },
+      story: {
+               cozy: "Mrs. Spider found a glowing thread snagged on Dr. Z's decoy. It leads toward the next lantern. She'll help untangle the clue—eight legs are better than two!",
+               spooky: "A silver thread trembles across the web. At its end is a tiny tag stamped with Dr. Z's crooked Z. Mrs. Spider has caught his trail—and something is glowing in the silk.",
+               afterdark: "Fictional field note 4: Mrs. Spider's web caught a strand from Dr. Z's lantern rig. The thread links the decoy to the next stop, turning his messy experiment into a trail you can follow.",
+               overdrive: "Mrs. Spider has trapped a piece of my very expensive lantern rig. I would like it back. She would like you to solve the clue first. Frankly, I'm afraid to negotiate with her." },
       wisp: "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
       lit: "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT.",
             puzzle: {
@@ -73,10 +77,11 @@ const DEMO_PACK = {
       fallback: { q: "What color is Mrs. Spider?", a: "purple" },
       hints: ["Start with 8 legs, like every spider.", "She waves with 3 of them.", "Ranger assist: 8 − 3 = 5."] },
     { id: 5, name: "The Owl's Night Watch", lat: 29.0274, lng: -80.9246, code: "LANTERN-5", art: "stop-5-owl.webp",
-      story: { cozy: "High in the tree, Professor Hoot guards a lantern. He only lends it to good listeners.",
-               spooky: "The owl doesn't blink. Owls can't — but this one isn't trying to. It watches you solve, and you can feel it grading you.",
-               afterdark: "Barred owls ask ‘who cooks for you.’ The old stories say if you answer wrong, you follow the sound into the dark and don't come back. Answer carefully.",
-               overdrive: "Professor Hoot graded your last answer a C+. A C! In MY hunt! Listen harder, answer faster — make an owl proud." },
+      story: {
+               cozy: "Professor Hoot has Dr. Z's final note. The last lantern is waiting at the parade ground, but it needs all six lights to make the parade shine. You're nearly there!",
+               spooky: "Professor Hoot guards a note sealed with a wax Z. It says the final lantern can only be lit when the scattered lights are reunited. Somewhere ahead, a shadow is practicing a bow.",
+               afterdark: "Fictional field note 5: Professor Hoot recovered Dr. Z's final instruction. The experiment was meant to gather every lantern into one brilliant parade—not leave Wisp in the dark. One stop remains.",
+               overdrive: "Professor Hoot has my final note and is grading my handwriting. Focus, Keepers: one stop left. Bring the lights together, save the parade, and please do not let the owl review my entire notebook." },
       wisp: "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
       lit: "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome.",
             puzzle: {
@@ -88,10 +93,11 @@ const DEMO_PACK = {
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
       hints: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."] },
     { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
-      story: { cozy: "The last lantern! Light it and the whole parade glows.",
-               spooky: "The empty parade ground waits. Six lanterns, six shadows — but there are seven shadows moving on the grass, and one of them is waving at you.",
-               afterdark: "Every lantern you've lit is still burning behind you, a dotted line of fire through the dark. One more, and the road home exists.",
-               overdrive: "FINAL STRETCH. Wisp ran the numbers and they are NOT in your favor. Light that last lantern like you mean it — FULL! MADNESS!" },
+      story: {
+               cozy: "The last lantern! Bring its light together with the others and Wisp's parade can begin. Dr. Z's machine is quiet at last—and there's room in the parade for one reformed mad scientist.",
+               spooky: "The parade ground waits beneath six pools of light. The extra shadow steps forward: Dr. Z, holding his broken machine. He wanted a grand finale; instead, he scattered the very lights that make it possible.",
+               afterdark: "Fictional field note 6: The six lanterns are reunited. Dr. Z's experiment failed, but the Keepers turned the scattered clues into a path home. The parade begins by choice, together—not by magic or local history.",
+               overdrive: "FINAL LANTERN RECOVERED! The machine is off, the parade is ON, and Dr. Z has been assigned one job: carry the snacks. You saved the night, Keepers. I am absolutely not getting sentimental about this." },
       wisp: "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
       lit: "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!",
             puzzle: {
