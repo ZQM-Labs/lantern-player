@@ -19,8 +19,6 @@ const SHELL = [
   "./i18n/pt.json",
   "./i18n/it.json",
   "./i18n/ru.json",
-    "./i18n/it.json",
-    "./i18n/ru.json",
   "./styles.css",
   "./manifest.webmanifest",
   "./vendor/leaflet.css",
