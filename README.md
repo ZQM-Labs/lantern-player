@@ -94,3 +94,15 @@ Do not publish a physical-validation claim until the route, signs, and accessibl
 ## Release status is evidence-based
 
 A working local demo, a successful automated workflow, and a field-ready paid game are different states. This README does not establish that Wisp's Lost Lanterns is currently orderable or approved for an in-person event. Before calling it released, link a dated release record that identifies the exact player and content versions and includes browser/device, offline/update, asset, language, QR/GPS, accessibility/safety, and checkout/fulfillment evidence. If evidence is missing, record the status as **unknown** and keep public copy limited to the state that has actually been verified.
+
+## Installation
+
+```bash
+pip install -e .
+```
+
+Requires Python 3.11+.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
