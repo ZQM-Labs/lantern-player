@@ -56,6 +56,12 @@ hardcode new story text here — author it in `lantern-content`.
 - `sw.js` — service worker: cache-first app shell (offline play)
 - `manifest.webmanifest` — installable PWA metadata
 
+## Related repos
+
+- [wisps-tracker](https://github.com/ZQM-Labs/wisps-tracker) — team tracking backend (FastAPI + SQLite) for the lantern-player PWA
+- [quest-authoring](https://github.com/ZQM-Labs/quest-authoring) — quest pack spec, validator, and generator
+- [quest-packs](https://github.com/ZQM-Labs/quest-packs) — ready-to-play quest packs
+
 
 <!-- ZQM-FOOTER-START -->
 ---
@@ -67,7 +73,6 @@ hardcode new story text here — author it in `lantern-content`.
   <a href="https://github.com/ZQM-Computing">ZQM Computing</a>
 </p>
 <!-- ZQM-FOOTER-END -->
-
 
 ## Release validation contract
 
@@ -85,7 +90,6 @@ A green unit-test or CI result is necessary but does not prove that a location-b
 | Recovery | Verify refresh/reopen behavior, progress persistence, and the documented recovery path for a failed checkpoint | Playtest record |
 
 Do not publish a physical-validation claim until the route, signs, and accessible alternatives have actually been checked in the field. Do not publish a language as fully supported solely because a locale file exists.
-
 
 ## Release status is evidence-based
 
