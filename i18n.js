@@ -341,9 +341,9 @@ const I18n = {
 };
 
 // Auto-initialize when DOM is ready
-if (document.readyState === 'loading') {
+if (typeof document !== 'undefined' && document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => I18n.init());
-} else {
+} else if (typeof document !== 'undefined') {
   I18n.init();
 }
 

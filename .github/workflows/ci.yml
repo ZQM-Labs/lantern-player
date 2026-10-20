@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "20"
       - name: Install and test
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
