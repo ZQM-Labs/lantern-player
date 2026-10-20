@@ -283,3 +283,8 @@ button:focus-visible, input:focus-visible { outline:3px solid var(--accent); out
     border: 2px solid ButtonText;
   }
 }
+
+/* Dr. Z story moments (2026-10-19) */
+.drz-note{display:block;width:min(220px,60vw);margin:4px auto 8px;border-radius:14px}
+.drz-hint{display:block;width:min(160px,44vw);margin:8px auto;border-radius:12px}
+.drz-hint[hidden]{display:none}
