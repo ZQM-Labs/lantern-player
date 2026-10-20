@@ -5,6 +5,7 @@ This document defines what must be checked before claiming that the standalone p
 ## Deployment boundary
 
 The player is a static HTML/CSS/JavaScript PWA. Static player hosting and the live game API are separate services:
+
 - The player shell and approved public assets may be edge-hosted.
 - Live kit state, protected content packs, participant progress, organizer exports, and access-code validation require server-side authorization.
 - Never place answer keys, paid kit assets, access codes, participant data, or organizer exports in the public shell or service-worker precache.
@@ -31,6 +32,7 @@ If a command cannot run because a dependency/browser is unavailable, record it a
 ## Release gates
 
 ### Static asset and source checks
+
 - Every local HTML asset reference resolves to a tracked file.
 - The service-worker precache contains only approved public assets.
 - The four Brand Dial levels—Cozy Glow, Spooky, After Dark, Overdrive—have required variants for every authored stop and expected visual assets.
@@ -39,6 +41,7 @@ If a command cannot run because a dependency/browser is unavailable, record it a
 - Headers are reviewed against actual runtime needs. Do not add a broad CSP until all script, style, image, map, audio and API dependencies are inventoried and tested.
 
 ### Browser and offline checks
+
 - Fresh install: player starts in demo mode without uncaught JavaScript errors.
 - Cached install: player starts after one successful load with the device offline.
 - Offline mode: supported story/puzzle content remains usable; API-dependent features show a clear degraded state.
@@ -48,7 +51,9 @@ If a command cannot run because a dependency/browser is unavailable, record it a
 - Test a narrow mobile viewport, keyboard navigation, focus visibility, reduced motion, and representative screen-reader labels.
 
 ### Live API and authorization checks
+
 Run only against a controlled test environment until all gates pass:
+
 - Valid, expired, unknown, inactive and wrong-kit access codes.
 - Direct unauthenticated access to the underlying content-pack URL must be denied; protecting only the API endpoint is insufficient.
 - Organizer exports remain denied without organizer authentication/authorization.
@@ -58,6 +63,7 @@ Run only against a controlled test environment until all gates pass:
 - Do not use production participant records or private paid content as test fixtures.
 
 ### Hosting and recovery checks
+
 - Confirm the intended Pages project, production branch, production-deployment setting, custom domains, latest successful production deployment, and source commit SHA.
 - Verify the player hostname from an external network, not only the home LAN.
 - Verify expected security headers, manifest/icon paths, cache behavior and service-worker scope on the actual hostname.
@@ -69,18 +75,21 @@ Run only against a controlled test environment until all gates pass:
 ## Incident response
 
 ### Player loads, but live play fails
+
 1. Check static player availability and API health independently.
 2. Verify CORS and origin allowlist against the actual deployed player hostname.
 3. Check authorization response and backend readiness without logging access codes or participant data.
 4. If the API is down, show the approved degraded/offline behavior and activate the API recovery runbook. Do not make emergency DNS edits without validating the candidate origin.
 
 ### Broken player after release
+
 1. Record the deployed source SHA and Pages deployment ID.
 2. Stop promotion and roll back to the known-good static deployment if the rollback target is compatible.
 3. Verify fresh install, cached install and API-origin behavior after rollback.
 4. Preserve logs, add a regression test and only retry after the cause is understood.
 
 ### Cache appears stale
+
 1. Compare deployed source SHA with the service-worker cache key.
 2. Confirm all changed shell assets are versioned/precached as intended.
 3. Test upgrade from an older installed cache and a clean browser profile.
@@ -89,6 +98,7 @@ Run only against a controlled test environment until all gates pass:
 ## Evidence record
 
 For each release, record:
+
 - Player source SHA and corresponding site/backend versions.
 - Local checks run, checks skipped and exact reasons.
 - Browser/offline matrix and results.
