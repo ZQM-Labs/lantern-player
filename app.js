@@ -551,7 +551,8 @@ function updateHUD() {
     let dots = "";
     for (let i = 0; i < total; i++) {
       const on = i < lit;
-      dots += `<span role="listitem" aria-current="${on}" aria-label="Lantern ${i + 1}: ${on ? "lit" : "not lit"}">${on ? "🏮" : "🌑"}</span>`;
+      const curAttr = (i === (lit < total ? lit : lit - 1)) ? ' aria-current="step"' : "";
+      dots += `<span role="listitem"${curAttr} aria-label="Lantern ${i + 1}: ${on ? "lit" : "not lit"}">${on ? "🏮" : "🌑"}</span>`;
     }
     wm.innerHTML = `<strong>Wisp's glow</strong>` +
       `<img class="wisp-mood" src="assets/img/${mood.src}" alt="${mood.alt}">` +
@@ -754,7 +755,7 @@ window.openStop = function (id) {
         }
       };
       sa.src = candidates[0];
-      sa.alt = RELIC_ALT[currentStop.id] || ("Art for " + currentStop.name);
+      sa.alt = "Relic from Stop " + currentStop.id + ": " + currentStop.name;
       sa.style.display = "";
     } else {
       sa.onerror = null;
