@@ -89,6 +89,7 @@ jobs:
           else
             echo "No npm test script configured; dependency installation completed."
           fi
+      - run: npx playwright install --with-deps chromium
 
   go:
     needs: detect
