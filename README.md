@@ -91,7 +91,7 @@ hardcode new story text here — author it in `lantern-content`.
 A green unit-test or CI result is necessary but does not prove that a location-based release is ready for players. Before tagging a release, record the player commit, content-pack version, browser/device matrix, and results of the checks below. Use the [playtest protocol](https://github.com/ZQM-Labs/playtests) and keep physical observations separate from automated test results.
 
 | Area | Minimum release check | Evidence |
-|---|---|
+|---|---|---|
 | Startup | Fresh install opens the game without uncaught errors; malformed or missing pack input fails with a useful message rather than a crash | CI result and reproducible test case |
 | Offline | Install/load once, disconnect the network, reload, resume progress, and confirm the documented offline scope | Device/browser, steps, outcome |
 | Content | Validate the exact release pack with the authoring validator and player; test missing, malformed, and unsupported fields | Pack filename/version and test result |
