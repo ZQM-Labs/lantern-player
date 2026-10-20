@@ -143,19 +143,23 @@ function validatePack(p) {
       continue;
     }
     const tag = `stop ${s.id ?? "?"}`;
-    for (const tier of ["cozy", "spooky", "afterdark", "overdrive"]) {
-      const tierStory = s.story && s.story[tier];
-      if (typeof tierStory !== "string" || !tierStory.trim()) {
-        errs.push(`${tag}: story.${tier} missing or invalid`);
+    // Tier variants are OPTIONAL (SPEC.md): variant() falls back to cozy at
+    // runtime, so a missing tier is fine. A tier that IS present must be
+    // well-formed — a malformed present tier would be used as-is and break.
+    for (const tier of ["spooky", "afterdark", "overdrive"]) {
+      const tierStory = s.story ? s.story[tier] : undefined;
+      if (tierStory !== undefined && tierStory !== null &&
+          (typeof tierStory !== "string" || !tierStory.trim())) {
+        errs.push(`${tag}: story.${tier} is present but invalid`);
       }
-      const tierPuzzle = s.puzzle && s.puzzle[tier];
-      const questionOk = tierPuzzle && typeof tierPuzzle.q === "string" && tierPuzzle.q.trim() !== "";
-      const answerOk = tierPuzzle && (
-        (typeof tierPuzzle.a === "string" && tierPuzzle.a.trim() !== "") ||
-        (typeof tierPuzzle.a === "number" && Number.isFinite(tierPuzzle.a))
-      );
-      if (!questionOk || !answerOk) {
-        errs.push(`${tag}: puzzle.${tier} needs a non-empty question and answer`);
+      const tierPuzzle = s.puzzle ? s.puzzle[tier] : undefined;
+      if (tierPuzzle !== undefined && tierPuzzle !== null) {
+        const questionOk = typeof tierPuzzle.q === "string" && tierPuzzle.q.trim() !== "";
+        const answerOk = (typeof tierPuzzle.a === "string" && tierPuzzle.a.trim() !== "") ||
+          (typeof tierPuzzle.a === "number" && Number.isFinite(tierPuzzle.a));
+        if (!questionOk || !answerOk) {
+          errs.push(`${tag}: puzzle.${tier} is present but needs a non-empty question and answer`);
+        }
       }
     }
     if (typeof s.id !== "number" || !Number.isInteger(s.id)) errs.push(`${tag}: id must be an integer`);
