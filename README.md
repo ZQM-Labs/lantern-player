@@ -28,6 +28,13 @@ python3 -m http.server 8080
 # Live (needs lantern-backend):             http://localhost:8080/?kit=<kitId>&code=<accessCode>
 ```
 
+## Usage
+
+Open the player (see [Run](#run)), load a quest pack, and play: pick a
+stop, walk to it, and solve its puzzle. If you get stuck, Dr. Z offers
+hints — the story portraits and the hint system are wired into every
+pack that follows the format described under [Content packs](#content-packs).
+
 ## How a game flows
 
 1. Team opens the kit link (or scans the start QR) → enters access code.
