@@ -45,6 +45,9 @@ test("GlobalStory initializes and applies a valid mode and culture", () => {
 
 test("service worker precaches the new player modules and available translation files", () => {
   const source = fs.readFileSync(path.join(root, "sw.js"), "utf8");
+  // The CACHE value is a release counter bumped on every release (v9 -> v13 in
+  // one day); assert the naming FORMAT, never a specific version, or this
+  // suite goes red after every legitimate release.
   assert.match(source, /const CACHE = "lantern-v\d+"/);
   for (const asset of ["./global-story.js", "./i18n.js"]) {
     assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
