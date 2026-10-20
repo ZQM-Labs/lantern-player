@@ -243,15 +243,7 @@ function variant(stop, kind) { // kind: "story" | puzzle object
 
 /* ---------- pilot-bundle HUD: relics, Wisp meter, hint budget ----------
    Pack-supplied names are untrusted (remote packs) — esc() them anywhere
-   they enter HTML. RELIC_ALT / WISP_MOODS are local constants, safe. */
-const RELIC_ALT = {
-  1: "Relic from Stop 1, The Welcome Pumpkin: a smiling jack-o'-lantern with a glowing carved face",
-  2: "Relic from Stop 2, The Whispering Oak: an ancient oak with a kindly face in its bark and swirling autumn leaves",
-  3: "Relic from Stop 3, The Giggling Graveyard: smiling foam tombstones and a friendly little ghost under a crescent moon",
-  4: "Relic from Stop 4, The Spider's Counting Web: a cute friendly spider in a big sparkling dew-covered web",
-  5: "Relic from Stop 5, The Owl's Night Watch: a wise big-eyed owl perched on a branch at night",
-  6: "Relic from Stop 6, The Lantern Parade Ground: glowing paper lanterns floating above a winding park path at dusk"
-};
+   they enter HTML. WISP_MOODS is a local constant, safe. */
 // Wisp's mood evolves with progress: her three story moments double as the
 // meter's tiers, so the HUD itself tells her arc (lost → hopeful → home).
 const WISP_MOODS = [
@@ -575,10 +567,14 @@ function updateHUD() {
   if (wm) {
     const mood = wispMood(lit);
     let dots = "";
-    for (let i = 0; i < total; i++) dots += i < lit ? "🏮" : "🌑";
+    for (let i = 0; i < total; i++) {
+      const on = i < lit;
+      const curAttr = (i === (lit < total ? lit : lit - 1)) ? ' aria-current="step"' : "";
+      dots += `<span role="listitem"${curAttr} aria-label="Lantern ${i + 1}: ${on ? "lit" : "not lit"}">${on ? "🏮" : "🌑"}</span>`;
+    }
     wm.innerHTML = `<strong>Wisp's glow</strong>` +
       `<img class="wisp-mood" src="assets/img/${mood.src}" alt="${mood.alt}">` +
-      `<div class="dots" role="img" aria-label="${lit} of ${total} lanterns lit">${dots}</div>` +
+      `<div class="dots" role="list" aria-label="${lit} of ${total} lanterns lit">${dots}</div>` +
       `<div>${lit}/${total} lanterns lit — ${mood.cap}</div>`;
   }
   markers.forEach((m, i) => { if (m.setIcon) m.setIcon(stopIcon(pack.stops[i])); });
@@ -588,7 +584,7 @@ function updateHUD() {
       const got = state.solved.includes(s.id);
       const cls = got ? "relic" : "relic locked";
       const inner = (got && artFor(s))
-        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.remove()">`
+        ? `<img class="${cls}" src="${artFor(s)}" alt="Relic from Stop ${s.id}: ${esc(s.name)}" onerror="this.onerror=null;this.remove()">`
         : `<div class="${cls}" role="img" aria-label="${got ? "lit lantern relic" : "unfound relic"}">${got ? "🏮" : "❔"}</div>`;
       return `<span title="${got ? esc(s.name) : "???"}">${inner}</span>`;
     }).join("");
@@ -780,7 +776,7 @@ window.openStop = function (id) {
         }
       };
       sa.src = candidates[0];
-      sa.alt = RELIC_ALT[currentStop.id] || ("Art for " + currentStop.name);
+      sa.alt = "Relic from Stop " + currentStop.id + ": " + currentStop.name;
       sa.style.display = "";
     } else {
       sa.onerror = null;
