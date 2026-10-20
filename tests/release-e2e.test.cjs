@@ -135,7 +135,7 @@ test("installed player survives five offline reloads and completes ten consecuti
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
   const cached = await page.evaluate(async () => {
-    const cache = await caches.open("lantern-v8");
+    const cache = await caches.open("lantern-v9");
     const paths = [
       "./index.html", "./app.js", "./global-story.js", "./i18n.js",
       "./i18n/en.json", "./i18n/es.json", "./i18n/fr.json", "./i18n/de.json", "./i18n/pt.json",
