@@ -58,7 +58,7 @@ hardcode new story text here — author it in `lantern-content`.
 
 ## Related repos
 
-- [wisps-tracker](https://github.com/ZQM-Labs/wisps-tracker) — team tracking backend (FastAPI + SQLite) for the lantern-player PWA
+- [zqm-analytics](https://github.com/ZQM-Labs/zqm-analytics) — team analytics + tracking backend (FastAPI + SQLite) for the quest-player PWA
 - [quest-authoring](https://github.com/ZQM-Labs/quest-authoring) — quest pack spec, validator, and generator
 - [quest-packs](https://github.com/ZQM-Labs/quest-packs) — ready-to-play quest packs
 
