@@ -1,15 +1,19 @@
 # lantern-player
 
+<!-- markdownlint-disable MD033 -->
 <p align="center">
   <img src="docs/assets/wisps-lost-lanterns-readme-banner.svg" alt="Wisp's Lost Lanterns — a six-checkpoint story hunt from ZQM Labs" width="100%" />
 </p>
+<!-- markdownlint-enable MD033 -->
 
 <!-- ZQM-START -->
+<!-- markdownlint-disable MD033 -->
 <p align="center">
   <strong>ZQM Labs — Z's Quests & Mischief</strong><br>
   <a href="https://zqmlabs.com">zqmlabs.com</a> •
   <a href="https://github.com/ZQM-Labs">GitHub</a>
 </p>
+<!-- markdownlint-enable MD033 -->
 <!-- ZQM-END -->
 
 The player web app (PWA) for ZQM Labs location games. Vanilla HTML/CSS/JS —
@@ -58,12 +62,12 @@ hardcode new story text here — author it in `lantern-content`.
 
 ## Related repos
 
-- [zqm-analytics](https://github.com/ZQM-Labs/zqm-analytics) — team analytics + tracking backend (FastAPI + SQLite) for the quest-player PWA
+- [wisps-tracker](https://github.com/ZQM-Labs/wisps-tracker) — team tracking backend (FastAPI + SQLite) for the lantern-player PWA
 - [quest-authoring](https://github.com/ZQM-Labs/quest-authoring) — quest pack spec, validator, and generator
 - [quest-packs](https://github.com/ZQM-Labs/quest-packs) — ready-to-play quest packs
 
-
 <!-- ZQM-FOOTER-START -->
+<!-- markdownlint-disable MD033 -->
 ---
 
 <p align="center">
@@ -72,6 +76,7 @@ hardcode new story text here — author it in `lantern-content`.
   <a href="https://github.com/ZQM-Labs">ZQM Labs</a> •
   <a href="https://github.com/ZQM-Computing">ZQM Computing</a>
 </p>
+<!-- markdownlint-enable MD033 -->
 <!-- ZQM-FOOTER-END -->
 
 ## Release validation contract
