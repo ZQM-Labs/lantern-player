@@ -28,6 +28,13 @@ python3 -m http.server 8080
 # Live (needs lantern-backend):             http://localhost:8080/?kit=<kitId>&code=<accessCode>
 ```
 
+## Usage
+
+Open the player (see [Run](#run)), load a quest pack, and play: pick a
+stop, walk to it, and solve its puzzle. If you get stuck, Dr. Z offers
+hints — the story portraits and the hint system are wired into every
+pack that follows the format described under [Content packs](#content-packs).
+
 ## How a game flows
 
 1. Team opens the kit link (or scans the start QR) → enters access code.
@@ -84,7 +91,7 @@ hardcode new story text here — author it in `lantern-content`.
 A green unit-test or CI result is necessary but does not prove that a location-based release is ready for players. Before tagging a release, record the player commit, content-pack version, browser/device matrix, and results of the checks below. Use the [playtest protocol](https://github.com/ZQM-Labs/playtests) and keep physical observations separate from automated test results.
 
 | Area | Minimum release check | Evidence |
-|---|---|---|
+|---|---|
 | Startup | Fresh install opens the game without uncaught errors; malformed or missing pack input fails with a useful message rather than a crash | CI result and reproducible test case |
 | Offline | Install/load once, disconnect the network, reload, resume progress, and confirm the documented offline scope | Device/browser, steps, outcome |
 | Content | Validate the exact release pack with the authoring validator and player; test missing, malformed, and unsupported fields | Pack filename/version and test result |
