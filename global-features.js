@@ -41,9 +41,21 @@ const GlobalFeatures = {
     this.setupAchievements();
   },
 
+  // Parse a localStorage JSON value without letting one corrupt entry kill init.
+  safeParse(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw == null) return fallback;
+      const val = JSON.parse(raw);
+      if (val === null || typeof val !== typeof fallback ||
+          Array.isArray(fallback) !== Array.isArray(val)) return fallback;
+      return val;
+    } catch (e) { return fallback; }
+  },
+
   // Load user preferences from localStorage
   loadUserPreferences() {
-    const prefs = JSON.parse(localStorage.getItem('lantern-global-prefs') || '{}');
+    const prefs = this.safeParse('lantern-global-prefs', {});
     this.state.userCurrency = prefs.currency || this.config.defaultCurrency;
     this.state.userTimezone = prefs.timezone || this.config.defaultTimezone;
   },
@@ -378,7 +390,7 @@ const GlobalFeatures = {
   // ============================================================
 
   setupAchievements() {
-    this.state.achievements = JSON.parse(localStorage.getItem('lantern-achievements') || '[]');
+    this.state.achievements = this.safeParse('lantern-achievements', []);
     this.checkAchievements();
   },
 
@@ -469,7 +481,7 @@ const GlobalFeatures = {
   },
 
   getGameStats() {
-    return JSON.parse(localStorage.getItem('lantern-stats') || '{}');
+    return this.safeParse('lantern-stats', {});
   },
 
   // ============================================================

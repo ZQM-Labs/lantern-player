@@ -299,6 +299,11 @@ let geoDeclined = false;       // session flag: user tapped "No thanks"
 let guideLine = null;
 let lastRouteKey = "";
 let arrivalFired = {};
+// Session-only arrivalFired resets on reload; state.arrivedGps persists in
+// localStorage. hasArrived() unifies both so arrival UI survives reloads.
+function hasArrived(s) {
+  return !!(arrivalFired[s.id] || (state.arrivedGps && state.arrivedGps[s.id]));
+};
 let lastCardSig = "";
 let lastListSig = "";
 
@@ -358,7 +363,7 @@ function checkGeofences() {
 }
 function cardSig(next) {
   const arrived = pack.stops
-    .filter(s => arrivalFired[s.id] && !state.solved.includes(s.id))
+    .filter(s => hasArrived(s) && !state.solved.includes(s.id))
     .map(s => s.id).join(",");
   const d = (playerPos && next)
     ? Math.round(haversine(playerPos.lat, playerPos.lng, next.lat, next.lng) / 5) : "-";
@@ -404,7 +409,7 @@ function renderNextStop() {
   if (!next) return;
   // Arrival banners for any unsolved stop we're standing at.
   for (const s of pack.stops) {
-    if (arrivalFired[s.id] && !state.solved.includes(s.id)) {
+    if (hasArrived(s) && !state.solved.includes(s.id)) {
       const banner = document.createElement("div");
       banner.className = "arrival-banner";
       const b = document.createElement("strong");
@@ -500,7 +505,7 @@ function renderStopList() {
     if (done) label = "\uD83C\uDFEE " + label + " \u2014 lit!";
     else {
       if (playerPos) label += ` \u2014 ${fmtDist(haversine(playerPos.lat, playerPos.lng, s.lat, s.lng))}`;
-      if (arrivalFired[s.id]) label = "\uD83D\uDCCD " + label + " \u2014 you're here!";
+      if (hasArrived(s)) label = "\uD83D\uDCCD " + label + " \u2014 you're here!";
     }
     const span = document.createElement("span");
     span.textContent = label;
@@ -835,7 +840,7 @@ $("btn-gps").addEventListener("click", () => {
     updatePlayerMarker(plat, plng, acc);
     if (d <= radius) {
       state.arrivedGps = state.arrivedGps || {};
-      state.arrivedGps[currentStop.id] = true; save();
+      state.arrivedGps[currentStop.id] = true; arrivalFired[currentStop.id] = true; save();
       $("feedback").textContent = "📍 You're here — verified on-site! Now solve the puzzle above.";
     }
     else {
@@ -868,7 +873,14 @@ $("btn-hint").addEventListener("click", () => {
 /* ---------- audio: play sound effects ---------- */
 let audioCtx = null;
 function playSound(url) {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return; // no Web Audio on this device/browser
+      audioCtx = new AC();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+  } catch (e) { return; }
   fetch(url)
     .then(r => r.arrayBuffer())
     .then(buf => audioCtx.decodeAudioData(buf))
@@ -885,13 +897,22 @@ function playSound(url) {
 function shareTeam() {
   const mins = state.startedAt ? Math.round((Date.now() - state.startedAt) / 60000) : 0;
   const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! I lit ${state.solved.length} lanterns in ${mins} minutes with ${state.hintsUsed} hints. Join the hunt!`;
-  const url = window.location.href;
+  // Strip bearer credentials: ?ac= is the team access code and ?code= is a
+  // stop sign code. Keep ?kit= so friends can still join the same kit.
+  const shareUrl = new URL(window.location.href);
+  shareUrl.searchParams.delete("ac");
+  shareUrl.searchParams.delete("code");
+  const url = shareUrl.toString();
   if (navigator.share) {
     navigator.share({ title: "Wisp's Lost Lanterns", text, url }).catch(() => {});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text + " " + url).then(() => {
       $("feedback").textContent = "Link copied! Share it with your team.";
+    }).catch(() => {
+      $("feedback").textContent = "Copy this link to invite your team: " + url;
     });
+  } else {
+    $("feedback").textContent = "Copy this link to invite your team (codes removed): " + url;
   }
 }
 
