@@ -1060,7 +1060,7 @@ function finale() {
       const got = state.solved.includes(s.id);
       const cls = got ? "relic" : "relic locked";
       const inner = (got && artFor(s))
-        ? `<img class="${cls}" src="${artFor(s)}" alt="${RELIC_ALT[s.id] || ("Relic: " + esc(s.name))}" onerror="this.onerror=null;this.remove()">`
+        ? `<img class="${cls}" src="${artFor(s)}" alt="${"Relic: " + esc(s.name)}" onerror="this.onerror=null;this.remove()">`
         : `<div class="${cls}" role="img" aria-label="${got ? "lit lantern relic" : "unfound relic"}">${got ? "🏮" : "❔"}</div>`;
       return `<span title="${got ? esc(s.name) : "???"}">${inner}</span>`;
     }).join("");
