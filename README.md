@@ -81,7 +81,7 @@ hardcode new story text here — author it in `lantern-content`.
 
 ## Related repos
 
-- [quest-analytics](https://github.com/ZQM-Labs/quest-analytics) — team analytics + tracking backend (FastAPI + SQLite) for the quest-player PWA
+- quest-analytics — team analytics + tracking backend (FastAPI + SQLite) for the quest-player PWA; its source repository is private and is not linked from public documentation
 - [quest-authoring](https://github.com/ZQM-Labs/quest-authoring) — quest pack spec, validator, and generator
 - [quest-packs](https://github.com/ZQM-Labs/quest-packs) — ready-to-play quest packs
 
