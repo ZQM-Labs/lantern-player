@@ -135,7 +135,9 @@ test("installed player survives five offline reloads and completes ten consecuti
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
   const cached = await page.evaluate(async () => {
-    const cache = await caches.open("lantern-v9");
+    const cacheNames = await caches.keys();
+    const currentCache = cacheNames.find((name) => /^lantern-v\d+$/.test(name));
+    const cache = currentCache ? await caches.open(currentCache) : null;
     const paths = [
       "./index.html", "./app.js", "./global-story.js", "./i18n.js",
       "./i18n/en.json", "./i18n/es.json", "./i18n/fr.json", "./i18n/de.json", "./i18n/pt.json",
@@ -143,9 +145,10 @@ test("installed player survives five offline reloads and completes ten consecuti
       "./assets/img/finale-lantern-parade.webp", "./assets/audio/hoot.ogg"
     ];
     const missing = [];
-    for (const path of paths) if (!(await cache.match(path))) missing.push(path);
-    return { missing, cacheNames: await caches.keys() };
+    for (const path of paths) if (!cache || !(await cache.match(path))) missing.push(path);
+    return { missing, cacheNames, currentCache };
   });
+  assert.ok(cached.currentCache, "the player service worker must create a versioned lantern cache");
   assert.deepEqual(cached.missing, [], "offline shell, translations, audio, and key art must be precached");
   assert.ok(!cached.cacheNames.includes("lantern-v6"), "activation must remove the previous player cache");
   assert.ok(cached.cacheNames.includes("unrelated-app-cache"), "the player must preserve unrelated origin caches");
