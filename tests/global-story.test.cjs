@@ -45,7 +45,7 @@ test("GlobalStory initializes and applies a valid mode and culture", () => {
 
 test("service worker precaches the new player modules and available translation files", () => {
   const source = fs.readFileSync(path.join(root, "sw.js"), "utf8");
-  assert.match(source, /const CACHE = "lantern-v7"/);
+  assert.match(source, /const CACHE = "lantern-v8"/);
   for (const asset of ["./global-story.js", "./i18n.js"]) {
     assert.ok(source.includes(`"${asset}"`), `missing precache entry: ${asset}`);
   }
@@ -95,7 +95,7 @@ test("pack validator rejects null stop records and malformed field types without
   assert.ok(start >= 0 && end > start, "validatePack function should exist");
   const validator = app.slice(start, end);
   assert.match(validator, /typeof s !== "object"/);
-  assert.match(validator, /hints\.some/);
+  assert.match(validator, /s\.hints\.every/);
   assert.match(validator, /Number\.isFinite/);
 });
 
@@ -115,7 +115,7 @@ test("all advertised languages have the same complete, non-empty interface key s
 
 test("service worker precaches every artwork path referenced by the player and only clears its own cache family", () => {
   const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
-  assert.match(sw, /const CACHE = "lantern-v7"/);
+  assert.match(sw, /const CACHE = "lantern-v8"/);
   for (const file of fs.readdirSync(path.join(root, "assets", "img"))) {
     if (/\.(webp|svg)$/i.test(file) && !["hero-pumpkin.svg", "relic-bat.svg", "relic-ghost.svg", "relic-lantern.svg", "relic-pumpkin.svg", "relic-spider.svg", "relic-wisp.svg"].includes(file)) {
       assert.ok(sw.includes("./assets/img/" + file), "missing artwork precache: " + file);
