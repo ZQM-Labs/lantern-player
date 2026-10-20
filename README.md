@@ -1,4 +1,4 @@
-# lantern-player
+# quest-player
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
@@ -19,6 +19,18 @@
 The player web app (PWA) for ZQM Labs location games. Vanilla HTML/CSS/JS —
 no build step, no framework. Leaflet is the only library (vendor it locally
 before launch; CDN is fine for dev).
+
+## Repository role and status
+
+**Status:** Active, public. Canonical game player source for ZQM Labs location games; deployment-critical.
+
+**What this repository is:** The player web app (PWA) for ZQM Labs location games: vanilla HTML/CSS/JS with no build step, Leaflet maps, GPS geofence and QR/code unlocks, a four-level story/scare Dial, 3-hint ladders per puzzle, offline play via a service worker, and progress persistence. It plays the six-stop Wisp's Lost Lanterns format and consumes JSON content packs written to the quest-authoring spec.
+
+**What it contributes:** Every public game runs through this player. It is the runtime that quest-packs editions are validated against, and its progress sync feeds the quest-analytics backend leaderboards.
+
+**Deployment:** This repo is the canonical player source. The production deploy (ZQM-Computing/zqm-labs, `.github/workflows/pages-deploy.yml`) pins this repository by commit in `PLAYER_SOURCE_SHA`, syncs the player from that pin, and overwrites the served player copy in the site bundle — changes here go live only when the pin is bumped in the monorepo.
+
+**Name history:** Renamed from `lantern-player` to `quest-player` on 2026-10-19. Older documents and links may still use the old name; GitHub redirects the old repository URL.
 
 ## Run
 
