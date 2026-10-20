@@ -729,7 +729,7 @@ function openMap() {
 window.openStop = function (id) {
   currentStop = pack.stops.find(s => s.id === id);
   if (!currentStop) return;
-  hintLevel = Math.min(3, Number.isInteger(state.stopHints[currentStop.id]) ? state.stopHints[currentStop.id] : 0); $("hint-text").textContent = ""; $("feedback").textContent = "";
+  hintLevel = Math.min(3, Number.isInteger(state.stopHints[currentStop.id]) ? state.stopHints[currentStop.id] : 0); $("hint-text").textContent = ""; var _dh=$("drz-hint-img"); if(_dh) _dh.hidden = true; $("feedback").textContent = "";
   $("puzzle-title").textContent = `Stop ${currentStop.id}: ${currentStop.name}`;
   if (state.arrivedGps && state.arrivedGps[currentStop.id]) {
     const chip = document.createElement("span");
@@ -834,6 +834,7 @@ $("btn-gps").addEventListener("click", () => {
 });
 
 $("btn-hint").addEventListener("click", () => {
+  var _dh2=$("drz-hint-img"); if(_dh2) _dh2.hidden = false;
   if (state.hintsUsed >= HINT_BUDGET) {
     $("hint-text").textContent = "The hint jar is empty! Ask your organizer — a Lab Assistant can grant a rescue hint.";
     $("btn-hint").setAttribute("aria-expanded", "false");
