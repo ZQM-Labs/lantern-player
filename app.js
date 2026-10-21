@@ -240,6 +240,11 @@ function show(id) {
   target.setAttribute("aria-hidden", "false");
   const heading = target.querySelector("h1, h2");
   if (heading) heading.focus();
+  applyDemoBadge();
+}
+function applyDemoBadge() {
+  const db = $("demo-badge");
+  if (db) db.style.display = isDemo ? "block" : "none";
 }
 /* Scare-tier art: stop-1-pumpkin-spooky.webp etc. Cozy reuses the base file;
    a missing tier file falls back to base art via the img onerror guard. */
@@ -941,7 +946,7 @@ function playSound(url) {
 /* ---------- share: native share or clipboard fallback ---------- */
 function shareTeam() {
   const mins = state.startedAt ? Math.round((Date.now() - state.startedAt) / 60000) : 0;
-  const text = `I'm a Lantern Keeper in Wisp's Lost Lanterns! I lit ${state.solved.length} lanterns in ${mins} minutes with ${state.hintsUsed} hints. Join the hunt!`;
+  const text = `${isDemo ? "(Demo) " : ""}I'm a Lantern Keeper in Wisp's Lost Lanterns! I lit ${state.solved.length} lanterns in ${mins} minutes with ${state.hintsUsed} hints. Join the hunt!`;
   // Strip bearer credentials: ?ac= is the team access code and ?code= is a
   // stop sign code. Keep ?kit= so friends can still join the same kit.
   const shareUrl = new URL(window.location.href);
@@ -1063,6 +1068,7 @@ function finale() {
     team: state.team, mins, hintsUsed: state.hintsUsed,
     cleanSolves: state.cleanSolves || 0, verified, totalAttempts,
     scare: state.scare, date: new Date().toISOString().slice(0, 10),
+    demo: !!isDemo,
     ts: Date.now()
   };
   let history = [];
@@ -1073,20 +1079,25 @@ function finale() {
 
   // Rank this run among all runs (fewer hints = better, then more clean solves, then faster)
   // (scoring via teamScore)
-  const ranked = [...history].sort((a, b) => teamScore(a) - teamScore(b));
+  // Demo runs are recorded (flagged) but never ranked against real hunts:
+  // a practice run must not set the device's records or leaderboard.
+  const realHistory = history.filter(h => !h.demo);
+  const ranked = [...realHistory].sort((a, b) => teamScore(a) - teamScore(b));
   const rank = ranked.findIndex(r => r.ts === run.ts) + 1;
 
   // Best records
-  const bestTime = Math.min(...history.map(r => r.mins));
-  const bestClean = Math.max(...history.map(r => r.cleanSolves));
-  const fewestHints = Math.min(...history.map(r => r.hintsUsed));
+  const bestTime = Math.min(...realHistory.map(r => r.mins));
+  const bestClean = Math.max(...realHistory.map(r => r.cleanSolves));
+  const fewestHints = Math.min(...realHistory.map(r => r.hintsUsed));
 
   let compare = "";
-  if (history.length > 1) {
+  if (isDemo) {
+    compare = "\n🎮 " + T("demo_compare", "Demo run — rankings and records belong to real hunts.");
+  } else if (realHistory.length > 1) {
     const ord = rank === 1 ? "1st" : rank === 2 ? "2nd" : rank === 3 ? "3rd" : rank + "th";
-    compare = `\n🏆 ${ord} of ${history.length} ${T("of_teams", "teams on this device")}`;
+    compare = `\n🏆 ${ord} of ${realHistory.length} ${T("of_teams", "teams on this device")}`;
     const records = [];
-    if (run.mins === bestTime && history.length > 1) records.push(T("fastest_time", "fastest time"));
+    if (run.mins === bestTime && realHistory.length > 1) records.push(T("fastest_time", "fastest time"));
     if (run.cleanSolves === bestClean && run.cleanSolves > 0) records.push(T("most_clean", "most clean solves"));
     if (run.hintsUsed === fewestHints) records.push(T("fewest_hints", "fewest hints"));
     if (records.length) compare += ` · ${T("new_record", "New record:")} ${records.join(", ")}!`;
@@ -1113,7 +1124,7 @@ function finale() {
 
   // Render leaderboard table (top 10)
   const lb = $("leaderboard"), lbl = $("leaderboard-list");
-  if (lb && lbl && history.length > 0) {
+  if (lb && lbl && !isDemo && realHistory.length > 0) {
     lb.style.display = "block";
     const medals = ["🥇", "🥈", "🥉"];
     lbl.innerHTML = ranked.slice(0, 10).map((r, i) => {
@@ -1123,6 +1134,11 @@ function finale() {
       return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
     }).join("");
   }
+  // Demo finishers get the demo note, not the finale-table claim line:
+  // badges & treats are earned on the real trail, not the practice run.
+  const claimEl = $("finale-claim"), demoNoteEl = $("finale-demo-note");
+  if (claimEl) claimEl.style.display = isDemo ? "none" : "";
+  if (demoNoteEl) demoNoteEl.style.display = isDemo ? "" : "none";
   syncProgress(true);
   stopTimer();
   fetchGlobalLeaderboard();
@@ -1345,6 +1361,7 @@ async function syncProgress(done = false) {
 }
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 document.body.dataset.scare = state.scare;
+applyDemoBadge();
 
 // Re-apply any available pack translations when the selected language changes.
 document.addEventListener("languageChanged", () => {
