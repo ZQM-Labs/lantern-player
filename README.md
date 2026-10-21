@@ -32,6 +32,19 @@ before launch; CDN is fine for dev).
 
 **Name history:** Renamed from `lantern-player` to `quest-player` on 2026-10-19. Older documents and links may still use the old name; GitHub redirects the old repository URL.
 
+## Installation
+
+The player is static and has no build step. Either vendor Leaflet locally and
+serve the directory over HTTP, or open it through a local web server:
+
+```bash
+python3 -m http.server 8080
+# http://localhost:8080/?demo=1
+```
+
+There are no npm dependencies required to run the player; `npm install` is only
+needed for the Playwright release tests (see [Run](#run)).
+
 ## Run
 
 ```bash

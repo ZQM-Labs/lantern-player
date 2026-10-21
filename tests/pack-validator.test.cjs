@@ -18,7 +18,9 @@ const root = path.resolve(__dirname, "..");
 function loadValidatePack() {
   const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
   const start = app.indexOf("function validatePack(p) {");
-  const end = app.indexOf("\n\nconst $ = id", start);
+  // app.js is CRLF-terminated; match the blank-line boundary on either ending.
+  let end = app.indexOf("\n\nconst $ = id", start);
+  if (end < 0) end = app.indexOf("\r\n\r\nconst $ = id", start);
   assert.ok(start >= 0 && end > start, "validatePack should exist in app.js");
   const factory = new Function(app.slice(start, end) + "\nreturn validatePack;");
   return factory();

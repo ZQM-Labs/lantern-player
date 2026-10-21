@@ -599,8 +599,12 @@ function updateHUD() {
 $("btn-start").addEventListener("click", async () => {
   const teamName = $("team-name").value.trim();
   if (teamName.length > 30) { alert("Team name must be 30 characters or less."); return; }
+  // A reload re-renders the start screen with an EMPTY team-name field, so a
+  // returning player who simply presses "Start the hunt" must keep the team
+  // they already played as. Only treat the team as changed when the field
+  // actually names a different team.
   const prevTeam = state.team;
-  state.team = teamName || "Lantern Keepers";
+  state.team = teamName || prevTeam || "Lantern Keepers";
   const code = $("access-code").value.trim();
   let startingKit = "DEMO";
   // The public demo code plays the embedded pack with no backend. Poster-QR

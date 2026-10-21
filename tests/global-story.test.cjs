@@ -94,7 +94,9 @@ test("language picker lists only languages with translation files", () => {
 test("pack validator rejects null stop records and malformed field types without throwing", () => {
   const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
   const start = app.indexOf("function validatePack(p) {");
-  const end = app.indexOf("\n\nconst $ = id", start);
+  // app.js is CRLF-terminated; match the blank-line boundary on either ending.
+  let end = app.indexOf("\n\nconst $ = id", start);
+  if (end < 0) end = app.indexOf("\r\n\r\nconst $ = id", start);
   assert.ok(start >= 0 && end > start, "validatePack function should exist");
   const validator = app.slice(start, end);
   assert.match(validator, /typeof s !== "object"/);
