@@ -121,6 +121,11 @@ state.arrivedGps = state.arrivedGps || {};
 state.stopAttempts = state.stopAttempts || {};  // wrong answers per stop id
 state.stopTimes = state.stopTimes || {};        // {start, end} timestamps per stop id
 state.arrivedVia = state.arrivedVia || {};      // gps|qr|manual per stop id
+// Prefill the start screen's team field from saved state, so a returning
+// player sees their team after a reload instead of a blank box. (The
+// start handler also treats a blank field as "keep the saved team", so
+// this is presentation only — but it prevents the confusion entirely.)
+{ const tn = document.getElementById("team-name"); if (tn && state.team) tn.value = state.team; }
 let sourcePack = DEMO_PACK;
 let pack = DEMO_PACK;
 let currentStop = null;
@@ -602,7 +607,12 @@ $("btn-start").addEventListener("click", async () => {
   const teamName = $("team-name").value.trim();
   if (teamName.length > 30) { alert("Team name must be 30 characters or less."); return; }
   const prevTeam = state.team;
-  state.team = teamName || "Lantern Keepers";
+  // A blank field must not read as a team change. After a reload the input
+  // starts empty (it is not prefilled from saved state), so a returning
+  // player who just taps Start would otherwise trip the new-kit guard
+  // below and lose every solved stop. Blank keeps the saved team; the
+  // default name applies only when there is no saved team either.
+  state.team = teamName || prevTeam || "Lantern Keepers";
   const code = $("access-code").value.trim();
   let startingKit = "DEMO";
   // The public demo code plays the embedded pack with no backend. Poster-QR
