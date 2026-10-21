@@ -105,7 +105,7 @@ const DEMO_PACK = {
 const qs = new URLSearchParams(location.search);
 // Demo mode is explicit: ?demo=1 (not ?demo=0). (m2)
 const _demoVal = (qs.get("demo") || "").toLowerCase();
-const isDemo = qs.has("demo") && !["0", "false", "no", "off"].includes(_demoVal);
+let isDemo = qs.has("demo") && !["0", "false", "no", "off"].includes(_demoVal);
 // Corrupt saved state must not brick the player on load. (P3)
 let _loaded = null;
 try { _loaded = JSON.parse(localStorage.getItem("lantern-state") || "null"); } catch { _loaded = null; }
@@ -603,6 +603,10 @@ $("btn-start").addEventListener("click", async () => {
   state.team = teamName || "Lantern Keepers";
   const code = $("access-code").value.trim();
   let startingKit = "DEMO";
+  // The public demo code plays the embedded pack with no backend. Poster-QR
+  // arrivals carry ?kit=DEMO&ac=... but no ?demo=1, so without this check the
+  // demo code falls into live-kit validation and dies against the backend.
+  if (!isDemo && code.toUpperCase() === "WISP-2026-DEMO") isDemo = true;
   if (!isDemo) {
     const result = await validateCode(code);
     if (!result) { alert("That access code didn't check out — ask your organizer."); return; }
