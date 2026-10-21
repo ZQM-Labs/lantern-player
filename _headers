@@ -2,7 +2,7 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(self), camera=(), microphone=()
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
 
 # Keep the standalone PWA static. Do not add broad CSP until all runtime
 # dependencies and API origins have been inventoried and tested.
