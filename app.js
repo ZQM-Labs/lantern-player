@@ -110,9 +110,11 @@ let isDemo = qs.has("demo") && !["0", "false", "no", "off"].includes(_demoVal);
 let _loaded = null;
 try { _loaded = JSON.parse(localStorage.getItem("lantern-state") || "null"); } catch { _loaded = null; }
 const state = _loaded || {
-  team: "", scare: "cozy", solved: [], hintsUsed: 0, startedAt: null, kitId: null
+  team: "", scare: "cozy", solved: [], hintsUsed: 0, startedAt: null, pausedAt: null, hiddenAt: null, kitId: null
 };
 const HINT_BUDGET = 18;
+state.pausedAt = state.pausedAt || null;
+state.hiddenAt = state.hiddenAt || null;
 state.cleanSolves = state.cleanSolves || 0;
 state.stopHints = state.stopHints || {};
 state.arrivedGps = state.arrivedGps || {};
@@ -652,8 +654,17 @@ $("btn-start").addEventListener("click", async () => {
   } else {
     state.startedAt = state.startedAt || Date.now();
   }
+  const awaySince = state.pausedAt || state.hiddenAt;
+  if (awaySince && state.startedAt) {
+    // Reloaded while paused or hidden: keep the whole away span out of
+    // elapsed time and come back paused (Resume re-anchors from here).
+    state.startedAt += Date.now() - awaySince;
+    state.pausedAt = Date.now();
+    state.hiddenAt = null;
+    $("btn-pause").textContent = "▶ Resume";
+  }
   save(); show("screen-scare");
-  startTimer();
+  if (!state.pausedAt) startTimer();
   focusFirst();
   const scareHeading = document.querySelector("#screen-scare h2");
   if (scareHeading) scareHeading.focus();
@@ -1154,21 +1165,24 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Pause/resume game
-let pausedAt = null;
+// Pause/resume game. The marker lives in state (persisted by save())
+// so a reload mid-pause keeps the pause instead of silently unpausing.
+
 $("btn-pause").addEventListener("click", () => {
-  if (pausedAt) {
+  if (state.pausedAt) {
     // Resume: adjust startedAt forward by the pause duration
-    state.startedAt += Date.now() - pausedAt;
-    pausedAt = null;
+    state.startedAt += Date.now() - state.pausedAt;
+    state.pausedAt = null;
     $("btn-pause").textContent = "⏸ Pause";
     startTimer();
   } else {
     // Pause
-    pausedAt = Date.now();
+    state.pausedAt = Date.now();
+    state.hiddenAt = null;  // a button pause supersedes any hidden-tab marker
     $("btn-pause").textContent = "▶ Resume";
     stopTimer();
   }
+  save();
 });
 
 // Touch feedback: haptic on mobile
@@ -1178,12 +1192,26 @@ document.addEventListener("click", (e) => {
   }
 }, { passive: true });
 
-// Pause timer when tab is hidden
+// Pause timer when tab is hidden. Background time must not count toward
+// elapsed (the score and the fastest-time record derive from it), so a
+// hidden span is accounted exactly like a button pause: startedAt shifts
+// on return. A deliberate button pause wins: never restart over it.
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopTimer();
-  } else if (state.startedAt && state.solved.length < pack.stops.length) {
-    startTimer();
+    if (state.startedAt && !state.pausedAt && !state.hiddenAt) {
+      state.hiddenAt = Date.now();
+      save();
+    }
+  } else {
+    if (state.hiddenAt) {
+      state.startedAt += Date.now() - state.hiddenAt;
+      state.hiddenAt = null;
+      save();
+    }
+    if (!state.pausedAt && state.startedAt && state.solved.length < pack.stops.length) {
+      startTimer();
+    }
   }
 });
 
