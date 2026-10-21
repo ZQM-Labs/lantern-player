@@ -16,6 +16,34 @@
 <!-- markdownlint-enable MD033 -->
 <!-- ZQM-END -->
 
+## The game: Wisp's Lost Lanterns
+
+Wisp is a will-o'-the-wisp — a small, wandering light — and she has lost
+her six glow lanterns. Without them she cannot find her way home, and the
+shadows are growing longer. Your team are her Lantern Keepers. Walk the
+route, find each stop, solve its puzzle, and relight the lanterns before
+the light fades for good.
+
+The lanterns are waiting in real places: under the Welcome Pumpkin, in the
+branches of the Whispering Oak, past the Giggling Graveyard (pretend!),
+across the Spider's Counting Web, beneath the Owl's Night Watch, and at
+the Lantern Parade Ground, where every relit lantern joins the parade.
+Each stop proves you are really there — scan the sign, type its code, or
+pass the GPS check — and every puzzle carries a three-hint ladder, so no
+team is ever stuck in the dark for long.
+
+One hunt, four tellings. The story/scare dial — Cozy Glow, Spooky, After
+Dark, Overdrive — retells the same route with different story, puzzles,
+and art, from a gentle family walk to a proper Halloween dare. And when
+the last lantern lights, Wisp gets her ending: *the light you carry is
+the light you share.*
+
+This repository is where that story becomes playable. The words are
+authored as content packs in `lantern-content`; this player is the stage
+they are performed on — offline-first, with locale files for seven
+languages, on whatever
+phone a Lantern Keeper already has in their pocket.
+
 The player web app (PWA) for ZQM Labs location games. Vanilla HTML/CSS/JS —
 no build step, no framework. Leaflet is the only library (vendor it locally
 before launch; CDN is fine for dev).
