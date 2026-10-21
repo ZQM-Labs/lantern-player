@@ -32,6 +32,15 @@ before launch; CDN is fine for dev).
 
 **Name history:** Renamed from `lantern-player` to `quest-player` on 2026-10-19. Older documents and links may still use the old name; GitHub redirects the old repository URL.
 
+## Installation
+
+No build step and no dependencies: the player is vanilla JavaScript with a vendored copy of Leaflet. Clone the repo and serve the files statically:
+
+```bash
+git clone https://github.com/ZQM-Labs/quest-player.git
+cd quest-player
+```
+
 ## Run
 
 ```bash
