@@ -21,13 +21,13 @@ const DEMO_PACK = {
       wisp: "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
       lit: "One down! See how it glows? That's my happy leaking out.",
             puzzle: {
-              cozy: { q: "Count the pumpkins in the patch picture your organizer showed you. How many are smiling?", a: "4", type: "number" },
-              spooky: { q: "The carved pumpkins are watching the street. How many are smiling in the patch?", a: "4", type: "number" },
-              afterdark: { q: "A lantern's glow reveals the smiling pumpkins. How many smiling pumpkins are there?", a: "4", type: "number" },
-              overdrive: { q: "Dr. Z demands a quick count: how many pumpkins are smiling?", a: "4", type: "number" }
+              cozy: { q: "Look at the patch picture above. How many pumpkins are smiling?", a: "1", type: "number" },
+              spooky: { q: "The carved pumpkins are watching the street. In the picture, how many are smiling?", a: "1", type: "number" },
+              afterdark: { q: "A lantern's glow reveals the smiling pumpkins. In the picture, how many smiling pumpkins are there?", a: "1", type: "number" },
+              overdrive: { q: "Dr. Z's madness meter reads 6.66. Round it to the nearest whole number, then multiply by the number of lanterns. What do you get?", a: "42", type: "number" }
             },
       fallback: { q: "What color is the ribbon on the welcome sign?", a: "orange" },
-      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], overdrive: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."] } },
+      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: only one pumpkin is smiling."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: only one pumpkin is smiling."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: only one pumpkin is smiling."], overdrive: ["Round the meter reading first — 6.66 becomes a whole number.", "Multiply by the number of lanterns Wisp lost.", "Ranger assist: 7 × 6 = 42."] } },
     { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
       story: {
                cozy: "Oakie the oak caught a scrap of Dr. Z's map in his branches. Wisp thinks it points to the next lantern. Ask the tree nicely—he likes good listeners.",
@@ -36,12 +36,12 @@ const DEMO_PACK = {
                overdrive: "Oakie intercepted Dr. Z's map and is now acting like head of security. Get the next clue from the tree, Keepers. Yes, I know trees don't talk. This one has standards." },
       wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       lit: "Got it! Oakie says you're officially tree-approved.",
-      puzzle: { cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" },
+      puzzle: { cozy: { q: "Look at the oak's picture. How many wooden swings or benches face it?", a: "0", type: "number" },
                spooky: { q: "Riddle: I have arms but cannot hug, I wear a coat but cannot feel cold. The wind whispers through me but I never speak. What am I?", a: "tree", type: "text" },
                afterdark: { q: "The oak was planted in 1824. How many decades has it stood? (Round to nearest whole decade)", a: "20", type: "number" },
                overdrive: { q: "Dr. Z's challenge: The oak's canopy spans 15m. If each lantern hangs 3m apart, how many lanterns fit in a straight line across the canopy?", a: "5", type: "number" } },
       fallback: { q: "What is carved on the small sign by the oak?", a: "wisp" },
-      hints: { cozy: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: the answer is 2."], spooky: ["Its arms are branches and its coat is bark.", "It stands in the ground and never moves.", "Ranger assist: it is the tree."], afterdark: ["Subtract 1824 from this year, then divide by ten.", "A decade is ten years.", "Ranger assist: 20 decades."], overdrive: ["Divide the canopy span by the spacing.", "15 divided by 3.", "Ranger assist: 5 lanterns."] } },
+      hints: { cozy: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: there are none in the picture — the answer is 0."], spooky: ["Its arms are branches and its coat is bark.", "It stands in the ground and never moves.", "Ranger assist: it is the tree."], afterdark: ["Subtract 1824 from this year, then divide by ten.", "A decade is ten years.", "Ranger assist: 20 decades."], overdrive: ["Divide the canopy span by the spacing.", "15 divided by 3.", "Ranger assist: 5 lanterns."] } },
     { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
       story: {
                cozy: "The pretend graveyard is Dr. Z's decoy—foam stones, silly epitaphs, and ghostly giggles recorded on his machine. Wisp says the real lantern is nearby. Don't let the joke distract you!",
