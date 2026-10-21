@@ -25,4 +25,4 @@ jobs:
           node --check i18n.js
           node --check sw.js
       - name: Run dependency-free regression tests
-        run: node --test tests/global-story.test.cjs
+        run: node --test tests/global-story.test.cjs tests/pack-validator.test.cjs
