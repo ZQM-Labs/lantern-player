@@ -68,7 +68,7 @@
           "type": "number"
         },
         "spooky": {
-          "q": "I whisper without a mouth and shelter without walls. The oak is my home. What am I?",
+          "q": "I whisper without a mouth and shelter without walls. I drop acorns for the squirrels below. What am I?",
           "a": "oak",
           "type": "text"
         },
