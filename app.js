@@ -24,10 +24,10 @@ const DEMO_PACK = {
               cozy: { q: "Count the pumpkins in this stop's picture. How many are smiling?", a: "1", type: "number" },
               spooky: { q: "The carved pumpkins are watching the street. How many are smiling in the picture?", a: "1", type: "number" },
               afterdark: { q: "A lantern's glow reveals the smiling pumpkins. How many smiling pumpkins are there?", a: "1", type: "number" },
-              overdrive: { q: "Dr. Z's challenge: The storm lit 4 rows of pumpkins, and each row holds 6 grinning jack-o'-lanterns. How many grins in all?", a: "24", type: "number" }
+              overdrive: { q: "Dr. Z's madness meter reads 6.66. Round it to the nearest whole number, then multiply by the number of lanterns. What do you get?", a: "42", type: "number" }
             },
       fallback: { q: "How many carved pumpkins are glowing in this picture?", a: "1" },
-      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], overdrive: ["Multiply the rows by the grins in each row.", "4 times 6.", "Ranger assist: 24 grins."] } },
+      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], overdrive: ["Round the meter reading first — 6.66 becomes a whole number.", "Multiply by the number of lanterns Wisp lost.", "Ranger assist: 7 × 6 = 42."] } },
     { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
       story: {
                cozy: "Oakie the oak caught a scrap of Dr. Z's map in his branches. Wisp thinks it points to the next lantern. Ask the tree nicely—he likes good listeners.",
@@ -52,7 +52,7 @@ const DEMO_PACK = {
       lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
       puzzle: { cozy: { q: "The tombstones in this picture are in a silly mood. How many tombstones are smiling?", a: "3", type: "number" },
                spooky: { q: "Riddle: I have a head and a tail but no body. I lie in the dark waiting. What am I?", a: "coin", type: "text" },
-               afterdark: { q: "The 1918 flu pandemic killed 675,000 Americans. If this graveyard represents 1/1000th of that, how many 'souls' are here?", a: "675", type: "number" },
+               afterdark: { q: "Dr. Z's census counted 675,000 pretend souls across all his haunted properties. If this graveyard holds 1/1000th of them, how many 'souls' are here?", a: "675", type: "number" },
                overdrive: { q: "Dr. Z's challenge: The ghosts giggle every 7 seconds. How many giggles in one minute? (Round to nearest whole number)", a: "9", type: "number" } },
       fallback: { q: "How many tombstones are in this picture?", a: "3" },
       hints: { cozy: ["Look at the stones' faces, not for words.", "Count the big stones standing in the grass.", "Ranger assist: 3 smiling tombstones."], spooky: ["Check your pocket — it jingles.", "Heads or tails?", "Ranger assist: it is a coin."], afterdark: ["Divide 675,000 by one thousand.", "Drop the three zeros.", "Ranger assist: 675 souls."], overdrive: ["Sixty seconds in a minute, one giggle every seven.", "60 divided by 7, rounded.", "Ranger assist: 9 giggles."] } },
@@ -83,7 +83,7 @@ const DEMO_PACK = {
                afterdark: { q: "Barred owls live about 10 years in the wild. If Professor Hoot is 7, how many years does he likely have left?", a: "3", type: "number" },
                overdrive: { q: "Dr. Z's challenge: An owl can rotate its head 270 degrees. How many more degrees would it need for a full 360?", a: "90", type: "number" } },
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
-      hints: { cozy: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."], spooky: ["It hoots and turns its head almost all the way around.", "Professor Hoot, in person.", "Ranger assist: it's the owl."], afterdark: ["Ten years of life minus seven lived.", "10 minus 7.", "Ranger assist: 3 years left."], overdrive: ["A full circle is 360 degrees.", "360 minus 270.", "Ranger assist: 90 degrees."] } },
+      hints: { cozy: ["Look at this stop's picture — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."], spooky: ["It hoots and turns its head almost all the way around.", "Professor Hoot, in person.", "Ranger assist: it's the owl."], afterdark: ["Ten years of life minus seven lived.", "10 minus 7.", "Ranger assist: 3 years left."], overdrive: ["A full circle is 360 degrees.", "360 minus 270.", "Ranger assist: 90 degrees."] } },
     { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
       story: {
                cozy: "The last lantern! Bring its light together with the others and Wisp's parade can begin. Dr. Z's machine is quiet at last—and there's room in the parade for one reformed mad scientist.",
