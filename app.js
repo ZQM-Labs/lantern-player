@@ -121,6 +121,11 @@ state.arrivedGps = state.arrivedGps || {};
 state.stopAttempts = state.stopAttempts || {};  // wrong answers per stop id
 state.stopTimes = state.stopTimes || {};        // {start, end} timestamps per stop id
 state.arrivedVia = state.arrivedVia || {};      // gps|qr|manual per stop id
+// Prefill the start screen's team field from saved state, so a returning
+// player sees their team after a reload instead of a blank box. (The
+// start handler also treats a blank field as "keep the saved team", so
+// this is presentation only — but it prevents the confusion entirely.)
+{ const tn = document.getElementById("team-name"); if (tn && state.team) tn.value = state.team; }
 let sourcePack = DEMO_PACK;
 let pack = DEMO_PACK;
 let currentStop = null;
