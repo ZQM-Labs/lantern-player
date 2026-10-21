@@ -110,11 +110,9 @@ let isDemo = qs.has("demo") && !["0", "false", "no", "off"].includes(_demoVal);
 let _loaded = null;
 try { _loaded = JSON.parse(localStorage.getItem("lantern-state") || "null"); } catch { _loaded = null; }
 const state = _loaded || {
-  team: "", scare: "cozy", solved: [], hintsUsed: 0, startedAt: null, pausedAt: null, hiddenAt: null, kitId: null
+  team: "", scare: "cozy", solved: [], hintsUsed: 0, startedAt: null, kitId: null
 };
 const HINT_BUDGET = 18;
-state.pausedAt = state.pausedAt || null;
-state.hiddenAt = state.hiddenAt || null;
 state.cleanSolves = state.cleanSolves || 0;
 state.stopHints = state.stopHints || {};
 state.arrivedGps = state.arrivedGps || {};
@@ -654,17 +652,8 @@ $("btn-start").addEventListener("click", async () => {
   } else {
     state.startedAt = state.startedAt || Date.now();
   }
-  const awaySince = state.pausedAt || state.hiddenAt;
-  if (awaySince && state.startedAt) {
-    // Reloaded while paused or hidden: keep the whole away span out of
-    // elapsed time and come back paused (Resume re-anchors from here).
-    state.startedAt += Date.now() - awaySince;
-    state.pausedAt = Date.now();
-    state.hiddenAt = null;
-    $("btn-pause").textContent = "▶ Resume";
-  }
   save(); show("screen-scare");
-  if (!state.pausedAt) startTimer();
+  startTimer();
   focusFirst();
   const scareHeading = document.querySelector("#screen-scare h2");
   if (scareHeading) scareHeading.focus();
@@ -838,7 +827,15 @@ $("btn-answer").addEventListener("click", () => {
 });
 
 $("btn-unlock").addEventListener("click", () => {
-  if ($("unlock-code").value.trim().toUpperCase() === String(currentStop.code).toUpperCase()) { state.arrivedVia[currentStop.id] = state.arrivedVia[currentStop.id] || "qr"; solved(); }
+  if ($("unlock-code").value.trim().toUpperCase() === String(currentStop.code).toUpperCase()) {
+    // Sign code = verified arrival (same as GPS), NOT a solve: the puzzle
+    // still has to be answered. (Was calling solved() directly, which also
+    // counted the stop as a clean solve and inflated leaderboard badges.)
+    state.arrivedVia[currentStop.id] = state.arrivedVia[currentStop.id] || "qr";
+    state.arrivedGps = state.arrivedGps || {};
+    state.arrivedGps[currentStop.id] = true; arrivalFired[currentStop.id] = true; save();
+    $("feedback").textContent = "📍 You're here — verified on-site! Now solve the puzzle above.";
+  }
   else $("feedback").textContent = "That code isn't from this stop's sign.";
 });
 
@@ -1157,24 +1154,21 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Pause/resume game. The marker lives in state (persisted by save())
-// so a reload mid-pause keeps the pause instead of silently unpausing.
-
+// Pause/resume game
+let pausedAt = null;
 $("btn-pause").addEventListener("click", () => {
-  if (state.pausedAt) {
+  if (pausedAt) {
     // Resume: adjust startedAt forward by the pause duration
-    state.startedAt += Date.now() - state.pausedAt;
-    state.pausedAt = null;
+    state.startedAt += Date.now() - pausedAt;
+    pausedAt = null;
     $("btn-pause").textContent = "⏸ Pause";
     startTimer();
   } else {
     // Pause
-    state.pausedAt = Date.now();
-    state.hiddenAt = null;  // a button pause supersedes any hidden-tab marker
+    pausedAt = Date.now();
     $("btn-pause").textContent = "▶ Resume";
     stopTimer();
   }
-  save();
 });
 
 // Touch feedback: haptic on mobile
@@ -1184,26 +1178,12 @@ document.addEventListener("click", (e) => {
   }
 }, { passive: true });
 
-// Pause timer when tab is hidden. Background time must not count toward
-// elapsed (the score and the fastest-time record derive from it), so a
-// hidden span is accounted exactly like a button pause: startedAt shifts
-// on return. A deliberate button pause wins: never restart over it.
+// Pause timer when tab is hidden
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopTimer();
-    if (state.startedAt && !state.pausedAt && !state.hiddenAt) {
-      state.hiddenAt = Date.now();
-      save();
-    }
-  } else {
-    if (state.hiddenAt) {
-      state.startedAt += Date.now() - state.hiddenAt;
-      state.hiddenAt = null;
-      save();
-    }
-    if (!state.pausedAt && state.startedAt && state.solved.length < pack.stops.length) {
-      startTimer();
-    }
+  } else if (state.startedAt && state.solved.length < pack.stops.length) {
+    startTimer();
   }
 });
 
