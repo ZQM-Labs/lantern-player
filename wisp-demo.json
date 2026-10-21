@@ -173,7 +173,7 @@
         },
         "overdrive": {
           "q": "Mrs. Spider weaves 8 legs. Each leg has 7 joints. How many joints total? Count the digits.",
-          "a": "5",
+          "a": "11",
           "type": "number"
         }
       },
