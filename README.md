@@ -41,8 +41,7 @@ the light you share.*
 This repository is where that story becomes playable. The words are
 authored as content packs in `lantern-content`; this player is the stage
 they are performed on — offline-first, with locale files for seven
-languages, on whatever
-phone a Lantern Keeper already has in their pocket.
+languages, on whatever phone a Lantern Keeper has in their pocket.
 
 The player web app (PWA) for ZQM Labs location games. Vanilla HTML/CSS/JS —
 no build step, no framework. Leaflet is the only library (vendor it locally
