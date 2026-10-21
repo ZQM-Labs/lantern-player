@@ -131,6 +131,18 @@ let pack = DEMO_PACK;
 let currentStop = null;
 let hintLevel = 0;
 
+/* i18n shortcut: translate a UI string via I18n.t, falling back to the
+   English literal when i18n is unavailable or the key is untranslated. */
+function T(key, fallback) {
+  try {
+    if (typeof I18n !== "undefined" && I18n.translations && I18n.translations[I18n.current]) {
+      const v = I18n.t(key);
+      if (v && v !== key) return v;
+    }
+  } catch (e) { /* fall through to the literal */ }
+  return fallback;
+}
+
 /* ---------- pack validation (mirrors ZQM-Labs/quest-authoring SPEC.md) ----------
    A remote pack replaces DEMO_PACK wholesale. Without this gate a malformed
    pack (wrong stop count, missing hints, duplicate answers) crashes openMap()
@@ -256,13 +268,13 @@ function variant(stop, kind) { // kind: "story" | puzzle object
 const WISP_MOODS = [
   { min: 0, src: "wisp-sad-intro.webp",
     alt: "Wisp the will-o'-the-wisp twirling sadly — 0 to 2 lanterns lit, she is still lost",
-    cap: "Wisp is still lost…" },
+    cap: "Wisp is still lost…", capKey: "wisp_still_lost" },
   { min: 3, src: "wisp-hiding-lantern.webp",
     alt: "Wisp giggling, hope returning — 3 to 4 lanterns lit",
-    cap: "Hope is flickering back…" },
+    cap: "Hope is flickering back…", capKey: "hope_flickering" },
   { min: 5, src: "wisp-leading-parade.webp",
     alt: "Wisp soaring joyfully at the head of her lanterns — 5 to 6 lit, she is almost home",
-    cap: "She's almost home!" }
+    cap: "She's almost home!", capKey: "almost_home" }
 ];
 function wispMood(lit) {
   return WISP_MOODS.filter(m => lit >= m.min).pop();
@@ -376,11 +388,11 @@ function geoPromptNodes(box) {
   const p = document.createElement("p");
   p.textContent = "Let Wisp track your team? She\u2019ll point at the next stop and cheer when you arrive.";
   const en = document.createElement("button");
-  en.textContent = "\uD83D\uDCCD Enable location";
+  en.textContent = "\uD83D\uDCCD " + T("enable_location", "Enable location");
   en.setAttribute("aria-label", "Enable location tracking");
   en.addEventListener("click", () => { geoDeclined = false; startTracking(); });
   const no = document.createElement("button");
-  no.textContent = "No thanks";
+  no.textContent = T("no_thanks", "No thanks");
   no.className = "ghost-btn";
   no.setAttribute("aria-label", "Decline location tracking");
   no.addEventListener("click", () => {
@@ -397,7 +409,7 @@ function navButton(s, label) {
   nav.setAttribute("aria-label", "Open directions to " + s.name + " in maps");
   nav.target = "_blank";
   nav.rel = "noopener";
-  nav.textContent = label || "\uD83E\uDDED Navigate";
+  nav.textContent = label || ("\uD83E\uDDED " + T("navigate_button", "Navigate"));
   return nav;
 }
 function renderNextStop() {
@@ -416,13 +428,13 @@ function renderNextStop() {
       const banner = document.createElement("div");
       banner.className = "arrival-banner";
       const b = document.createElement("strong");
-      b.textContent = `\uD83D\uDCCD You're at Stop ${s.id}: ${s.name}!`;
+      b.textContent = `\uD83D\uDCCD ${T("youre_at", "You're at Stop")} ${s.id}: ${s.name}!`;
       banner.appendChild(b);
       const sub = document.createElement("div");
-      sub.textContent = `Within ~${stopRadius(s)}m \u2014 Wisp can smell the lantern from here.`;
+      sub.textContent = `${T("within", "Within ~")}${stopRadius(s)}${T("meters", "m")} \u2014 Wisp can smell the lantern from here.`;
       banner.appendChild(sub);
       const open = document.createElement("button");
-      open.textContent = "Open the puzzle \u2192";
+      open.textContent = T("open_puzzle", "Open the puzzle") + " \u2192";
       open.addEventListener("click", () => window.openStop(s.id));
       banner.appendChild(open);
       box.appendChild(banner);
@@ -450,18 +462,18 @@ function renderNextStop() {
     }
   } else if (geoState === "asking") {
     const info = document.createElement("span");
-    info.textContent = "\uD83D\uDCCD Finding you\u2026";
+    info.textContent = "\uD83D\uDCCD " + T("finding_you", "Finding you\u2026");
     row.appendChild(info);
   } else if (geoState === "idle" && !geoDeclined) {
     geoPromptNodes(box);
   } else {
     const info = document.createElement("span");
     info.textContent = geoState === "denied"
-      ? "\uD83D\uDCCD Location is off \u2014 the hunt still works fine without it."
-      : "\uD83D\uDCCD No live location \u2014 use Navigate below.";
+      ? "\uD83D\uDCCD " + T("location_off", "Location is off \u2014 the hunt still works fine without it.")
+      : "\uD83D\uDCCD " + T("no_location", "No live location \u2014 use Navigate below.");
     row.appendChild(info);
     const en = document.createElement("button");
-    en.textContent = "\uD83D\uDCCD Enable location";
+    en.textContent = "\uD83D\uDCCD " + T("enable_location", "Enable location");
     en.className = "ghost-btn";
     en.addEventListener("click", () => { geoDeclined = false; startTracking(); });
     row.appendChild(en);
@@ -470,7 +482,7 @@ function renderNextStop() {
 
   box.appendChild(navButton(next));
   const btn = document.createElement("button");
-  btn.textContent = "We're at the stop \u2192";
+  btn.textContent = T("at_stop_button", "We're at the stop") + " \u2192";
   btn.addEventListener("click", () => window.openStop(next.id));
   box.appendChild(btn);
 
@@ -491,7 +503,7 @@ function renderStopList() {
   lastListSig = sig;
   box.textContent = "";
   const intro = document.createElement("p");
-  intro.textContent = "Map tiles unavailable \u2014 the stop list works offline:";
+  intro.textContent = T("stop_list_intro", "Map tiles unavailable \u2014 the stop list works offline:");
   box.appendChild(intro);
   if (geoState === "idle" && !geoDeclined) geoPromptNodes(box);
   const sorted = [...pack.stops].sort((a, b) => {
@@ -505,10 +517,10 @@ function renderStopList() {
     const li = document.createElement("li");
     const done = state.solved.includes(s.id);
     let label = `Stop ${s.id}: ${s.name}`;
-    if (done) label = "\uD83C\uDFEE " + label + " \u2014 lit!";
+    if (done) label = "\uD83C\uDFEE " + label + " \u2014 " + T("lit", "lit!");
     else {
       if (playerPos) label += ` \u2014 ${fmtDist(haversine(playerPos.lat, playerPos.lng, s.lat, s.lng))}`;
-      if (hasArrived(s)) label = "\uD83D\uDCCD " + label + " \u2014 you're here!";
+      if (hasArrived(s)) label = "\uD83D\uDCCD " + label + " \u2014 " + T("youre_here", "you're here!");
     }
     const span = document.createElement("span");
     span.textContent = label;
@@ -579,10 +591,10 @@ function updateHUD() {
       const curAttr = (i === (lit < total ? lit : lit - 1)) ? ' aria-current="step"' : "";
       dots += `<span role="listitem"${curAttr} aria-label="Lantern ${i + 1}: ${on ? "lit" : "not lit"}">${on ? "🏮" : "🌑"}</span>`;
     }
-    wm.innerHTML = `<strong>Wisp's glow</strong>` +
+    wm.innerHTML = `<strong>${T("wisp_glow", "Wisp's glow")}</strong>` +
       `<img class="wisp-mood" src="assets/img/${mood.src}" alt="${mood.alt}">` +
-      `<div class="dots" role="list" aria-label="${lit} of ${total} lanterns lit">${dots}</div>` +
-      `<div>${lit}/${total} lanterns lit — ${mood.cap}</div>`;
+      `<div class="dots" role="list" aria-label="${lit} of ${total} ${T("lanterns_lit", "lanterns lit")}">${dots}</div>` +
+      `<div>${lit}/${total} ${T("lanterns_lit", "lanterns lit")} — ${mood.capKey ? T(mood.capKey, mood.cap) : mood.cap}</div>`;
   }
   markers.forEach((m, i) => { if (m.setIcon) m.setIcon(stopIcon(pack.stops[i])); });
   const tray = $("relics");
@@ -621,7 +633,7 @@ $("btn-start").addEventListener("click", async () => {
   if (!isDemo && code.toUpperCase() === "WISP-2026-DEMO") isDemo = true;
   if (!isDemo) {
     const result = await validateCode(code);
-    if (!result) { alert("That access code didn't check out — ask your organizer."); return; }
+    if (!result) { alert(T("access_code_invalid", "That access code didn't check out — ask your organizer.")); return; }
     // Show loading state
     const startBtn = $("btn-start");
     startBtn.disabled = true;
@@ -634,15 +646,15 @@ $("btn-start").addEventListener("click", async () => {
       bundle = await fetchKitBundle(result.kit, code);
     } finally {
       startBtn.disabled = false;
-      startBtn.textContent = "Start the hunt";
+      startBtn.textContent = T("start_button", "Start the hunt");
     }
-    if (!bundle) { alert("Could not load the game — check your connection."); return; }
+    if (!bundle) { alert(T("load_failed", "Could not load the game — check your connection.")); return; }
     if (bundle.pack) {
       // Gate the remote pack: a malformed one would crash openMap()/hints mid-hunt.
       const errs = validatePack(bundle.pack);
       if (errs.length) {
         console.error("Rejected content pack:", errs);
-        alert("This kit's content failed validation — using the built-in game. Tell your organizer.");
+        alert(T("pack_validation_failed", "This kit's content failed validation — using the built-in game. Tell your organizer."));
       } else {
         sourcePack = bundle.pack;
         pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
@@ -743,7 +755,7 @@ function openMap() {
       mapBroken = true;
       const el = $("map");
       // Static literal only — no untrusted data interpolated here.
-      if (el) el.textContent = "Map unavailable — use the stop list below.";
+      if (el) el.textContent = T("map_unavailable", "Map unavailable — use the stop list below.");
     } else {
       try {
         map = L.map("map");
@@ -834,7 +846,7 @@ function solved() {
   }
   if (state.stopTimes[currentStop.id]) state.stopTimes[currentStop.id].end = Date.now();
   save();
-  $("feedback").textContent = "🏮 " + (currentStop.lit || "Lantern lit!");
+  $("feedback").textContent = "🏮 " + (currentStop.lit || T("lantern_lit", "Lantern lit!"));
   setTimeout(openMap, 900);
   syncProgress(); // fire-and-forget leaderboard sync when backend present
 }
@@ -844,7 +856,7 @@ $("btn-answer").addEventListener("click", () => {
   const norm = s => String(s).toLowerCase().replace(/['"\-\u2019]/g, "").replace(/[^a-z0-9]/g, "");
   const got = norm($("puzzle-answer").value);
   if (got === norm(p.a)) solved();
-  else { state.stopAttempts[currentStop.id] = (state.stopAttempts[currentStop.id] || 0) + 1; save(); $("feedback").textContent = "Not quite — try a hint, Keeper!"; }
+  else { state.stopAttempts[currentStop.id] = (state.stopAttempts[currentStop.id] || 0) + 1; save(); $("feedback").textContent = T("not_quite", "Not quite — try a hint, Keeper!"); }
 });
 
 $("btn-unlock").addEventListener("click", () => {
@@ -855,16 +867,16 @@ $("btn-unlock").addEventListener("click", () => {
     state.arrivedVia[currentStop.id] = state.arrivedVia[currentStop.id] || "qr";
     state.arrivedGps = state.arrivedGps || {};
     state.arrivedGps[currentStop.id] = true; arrivalFired[currentStop.id] = true; save();
-    $("feedback").textContent = "📍 You're here — verified on-site! Now solve the puzzle above.";
+    $("feedback").textContent = "📍 " + T("youre_here_verified", "You're here — verified on-site! Now solve the puzzle above.");
   }
-  else $("feedback").textContent = "That code isn't from this stop's sign.";
+  else $("feedback").textContent = T("wrong_code", "That code isn't from this stop's sign.");
 });
 
 $("btn-gps").addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition(pos => {
     const acc = pos.coords.accuracy || 999;
     if (acc > 50) {
-      $("feedback").textContent = `GPS accuracy is poor (±${Math.round(acc)}m) — move to open sky or use the sign code.`;
+      $("feedback").textContent = `${T("gps_poor", "GPS accuracy is poor (±")}${Math.round(acc)}${T("move_to_open_sky", "m) — move to open sky or use the sign code.")}`;
       return;
     }
     const plat = pos.coords.latitude, plng = pos.coords.longitude;
@@ -874,19 +886,19 @@ $("btn-gps").addEventListener("click", () => {
     if (d <= radius) {
       state.arrivedGps = state.arrivedGps || {};
       state.arrivedGps[currentStop.id] = true; arrivalFired[currentStop.id] = true; save();
-      $("feedback").textContent = "📍 You're here — verified on-site! Now solve the puzzle above.";
+      $("feedback").textContent = "📍 " + T("youre_here_verified", "You're here — verified on-site! Now solve the puzzle above.");
     }
     else {
       const b = bearing(plat, plng, currentStop.lat, currentStop.lng);
-      $("feedback").textContent = `Still ${Math.round(d)}m away to the ${compassDir(b)} — keep hunting!`;
+      $("feedback").textContent = `${T("still_away", "Still")} ${Math.round(d)}${T("away", "m away to the")} ${compassDir(b)} ${T("keep_hunting", "— keep hunting!")}`;
     }
-  }, () => $("feedback").textContent = "GPS unavailable — use the sign code instead.", { timeout: 10000, enableHighAccuracy: true });
+  }, () => $("feedback").textContent = T("gps_unavailable", "GPS unavailable — use the sign code instead."), { timeout: 10000, enableHighAccuracy: true });
 });
 
 $("btn-hint").addEventListener("click", () => {
   var _dh2=$("drz-hint-img"); if(_dh2) _dh2.hidden = false;
   if (state.hintsUsed >= HINT_BUDGET) {
-    $("hint-text").textContent = "The hint jar is empty! Ask your organizer — a Lab Assistant can grant a rescue hint.";
+    $("hint-text").textContent = T("hint_jar_empty", "The hint jar is empty! Ask your organizer — a Lab Assistant can grant a rescue hint.");
     $("btn-hint").setAttribute("aria-expanded", "false");
     return;
   }
@@ -898,7 +910,7 @@ $("btn-hint").addEventListener("click", () => {
     save(); updateHUD();
     $("btn-hint").setAttribute("aria-expanded", "true");
   } else {
-    $("hint-text").textContent = "That's all 3 hints for this stop — trust your team!";
+    $("hint-text").textContent = T("all_hints_used", "That's all 3 hints for this stop — trust your team!");
     $("btn-hint").setAttribute("aria-expanded", "false");
   }
 });
@@ -940,7 +952,7 @@ function shareTeam() {
     navigator.share({ title: "Wisp's Lost Lanterns", text, url }).catch(() => {});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text + " " + url).then(() => {
-      $("feedback").textContent = "Link copied! Share it with your team.";
+      $("feedback").textContent = T("link_copied", "Link copied! Share it with your team.");
     }).catch(() => {
       $("feedback").textContent = "Copy this link to invite your team: " + url;
     });
@@ -1034,9 +1046,9 @@ function teamScore(r) {
 }
 function teamTitle(r, stops) {
   const titles = [];
-  if (r.hintsUsed === 0) titles.push("🌟 Purist");
-  if ((r.cleanSolves || 0) === stops) titles.push("🎯 Flawless");
-  if ((r.verified || 0) === stops) titles.push("📍 True Explorer");
+  if (r.hintsUsed === 0) titles.push("🌟 " + T("purist", "Purist"));
+  if ((r.cleanSolves || 0) === stops) titles.push("🎯 " + T("flawless", "Flawless"));
+  if ((r.verified || 0) === stops) titles.push("📍 " + T("true_explorer", "True Explorer"));
   return titles.join(" ");
 }
 
@@ -1072,18 +1084,18 @@ function finale() {
   let compare = "";
   if (history.length > 1) {
     const ord = rank === 1 ? "1st" : rank === 2 ? "2nd" : rank === 3 ? "3rd" : rank + "th";
-    compare = `\n🏆 ${ord} of ${history.length} teams on this device`;
+    compare = `\n🏆 ${ord} of ${history.length} ${T("of_teams", "teams on this device")}`;
     const records = [];
-    if (run.mins === bestTime && history.length > 1) records.push("fastest time");
-    if (run.cleanSolves === bestClean && run.cleanSolves > 0) records.push("most clean solves");
-    if (run.hintsUsed === fewestHints) records.push("fewest hints");
-    if (records.length) compare += ` · New record: ${records.join(", ")}!`;
+    if (run.mins === bestTime && history.length > 1) records.push(T("fastest_time", "fastest time"));
+    if (run.cleanSolves === bestClean && run.cleanSolves > 0) records.push(T("most_clean", "most clean solves"));
+    if (run.hintsUsed === fewestHints) records.push(T("fewest_hints", "fewest hints"));
+    if (records.length) compare += ` · ${T("new_record", "New record:")} ${records.join(", ")}!`;
   } else {
-    compare = "\n🎉 First team on this device — you set the bar!";
+    compare = "\n🎉 " + T("first_team", "First team on this device — you set the bar!");
   }
 
   $("finale-stats").textContent =
-    `${state.team} · ${pack.stops.length} lanterns · ${mins} minutes · ${state.hintsUsed} hints used · ★ ${state.cleanSolves}/${pack.stops.length} clean solves · 📍 ${verified}/${pack.stops.length} verified on-site · 🎯 ${totalAttempts} wrong guesses${compare}`;
+    `${state.team} · ${pack.stops.length} lanterns · ${mins} ${T("minutes", "minutes")} · ${state.hintsUsed} ${T("hints_used", "hints used")} · ★ ${state.cleanSolves}/${pack.stops.length} ${T("clean_solves", "clean solves")} · 📍 ${verified}/${pack.stops.length} ${T("verified_on_site", "verified on-site")} · 🎯 ${totalAttempts} ${T("wrong_guesses", "wrong guesses")}${compare}`;
 
   // Show the finished relic collection on the finale (the live tray sits on
   // the map screen, so without this the finale never displays the relics).
@@ -1337,6 +1349,8 @@ document.body.dataset.scare = state.scare;
 // Re-apply any available pack translations when the selected language changes.
 document.addEventListener("languageChanged", () => {
   pack = (typeof I18n !== "undefined") ? I18n.translateGameContent(sourcePack) : sourcePack;
+  lastCardSig = ""; lastListSig = ""; // translated strings must re-render
+  if (typeof updateHUD === "function") updateHUD();
   if (currentStop) {
     const activePuzzle = $("screen-puzzle")?.classList.contains("active");
     if (activePuzzle) window.openStop(currentStop.id);
