@@ -10,11 +10,11 @@
 </head>
 <body data-scare="cozy">
   <a href="#main-content" class="skip-link">Skip to main content</a>
-<div id="offline-banner" role="alert" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#e07b24;color:#fff;text-align:center;padding:8px;font-weight:600;z-index:9999">📡 You're offline — progress saves on this device</div>
+<div id="offline-banner" role="alert" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#e07b24;color:#fff;text-align:center;padding:8px;font-weight:600;z-index:9999">📡 <span data-i18n="offline_message">You're offline — progress saves on this device</span></div>
 <div id="achievements-toast" role="alert" aria-live="assertive"></div>
 <main id="app" role="main" aria-label="Wisp's Lost Lanterns game">
   <div id="lang-switcher" class="lang-switcher" role="group" aria-label="Interface language"></div>
-  <p id="language-support-note" class="fineprint" role="note">Language selection is experimental. Translation files are available for English, Spanish, French, German, Portuguese, Italian, and Russian, but the interface is not fully translated; many labels and some quest stories, puzzles, and hints may remain in English or the pack's original language.</p>
+  <p id="language-support-note" class="fineprint" role="note">Interface language: menus, buttons, and game messages translate into Spanish, French, German, Portuguese, Italian, and Russian. Quest stories, puzzles, and hints stay in the pack's original language.</p>
   <div id="story-mode-selector" class="mode-selector" role="group" aria-label="Story mode selection"></div>
   <div id="global-leaderboard" class="global-leaderboard card" style="display:none" role="region" aria-label="Global leaderboard">
     <h3>🌍 Global Leaderboard</h3>
@@ -27,7 +27,7 @@
   <!-- START -->
   <section id="screen-start" class="screen active" role="region" aria-label="Start screen">
     <img class="brand-logo" src="assets/img/logo-primary.webp" alt="Z's Quests &amp; Mischief Halloween banner: Mad Z, the manic mad scientist with white electric hair, round glasses, neck bolts and lab coat, holding up a glowing paper lantern over the Z'S QUESTS &amp; MISCHIEF ribbon">
-    <h1 tabindex="-1">🏮 Wisp's Lost Lanterns</h1>
+    <h1 tabindex="-1">🏮 <span data-i18n="game_title">Wisp's Lost Lanterns</span></h1>
     <p class="story">Wisp the will-o'-the-wisp lost her 6 glow lanterns! Your team
     are her Lantern Keepers. Find each stop, solve the puzzle, relight the lantern.</p>
     <img class="story-art" src="assets/img/wisp-sad-intro.webp" alt="Wisp the will-o'-the-wisp twirling sadly after losing her lanterns">
@@ -35,20 +35,20 @@
     <p class="lab-note">📜 <strong>A note from the Lab:</strong> she escaped again.
     Bring my lanterns home — and try not to let her outsmart you. She learned
     from the best. — <em>Dr. Z</em></p>
-    <label>Team name <input id="team-name" autocomplete="off" placeholder="The Pumpkin Patrol" aria-label="Team name"></label>
-    <label>Access code <input id="access-code" autocomplete="off" placeholder="From your kit / organizer" aria-label="Access code"></label>
-    <button id="btn-start" aria-label="Start the hunt">Start the hunt</button>
+    <label><span data-i18n="team_name_label">Team name</span> <input id="team-name" autocomplete="off" placeholder="The Pumpkin Patrol" aria-label="Team name" data-i18n-aria="team_name_label"></label>
+    <label><span data-i18n="access_code_label">Access code</span> <input id="access-code" autocomplete="off" placeholder="From your kit / organizer" aria-label="Access code" data-i18n-aria="access_code_label"></label>
+    <button id="btn-start" aria-label="Start the hunt" data-i18n="start_button" data-i18n-aria="start_button">Start the hunt</button>
     <p class="fineprint" role="note">One phone per team is plenty. Progress saves on this device.</p>
   </section>
 
   <!-- SCARE METER -->
   <section id="screen-scare" class="screen" role="region" aria-label="Scare level selection">
-    <h2 tabindex="-1">How creepy do you want it?</h2>
+    <h2 tabindex="-1" data-i18n="scare_title">How creepy do you want it?</h2>
     <img class="story-art" src="assets/img/wisp-hiding-lantern.webp" alt="Wisp giggling while hiding a lantern in an oak tree at night">
-    <button class="scare-card" data-pick="cozy" role="radio" aria-checked="false"><img src="assets/img/drz-cozy.webp" alt="Dr. Z smiling gently with his lantern on a warm autumn day, pumpkins at his feet and Wisp floating beside him — the face of Cozy Glow">🎃 <strong>Cozy Glow</strong><span>Families &amp; little kids. Counting, matching, giggles.</span></button>
-    <button class="scare-card" data-pick="spooky" role="radio" aria-checked="false"><img src="assets/img/drz-spooky.webp" alt="Dr. Z grinning and hoisting his lantern under a full moon while bats flutter past — the face of Spooky">👻 <strong>Spooky</strong><span>Tweens &amp; mixed groups. Riddles, ciphers, goosebumps.</span></button>
-    <button class="scare-card" data-pick="afterdark" role="radio" aria-checked="false"><img src="assets/img/drz-afterdark.webp" alt="Dr. Z laughing beneath a starry sky as Wisp swirls up out of his lantern — the face of After Dark">🦇 <strong>After Dark</strong><span>Grown-ups. Local ghost lore, cryptic clues, eerie sounds.</span></button>
-    <button class="scare-card" data-pick="overdrive" role="radio" aria-checked="false"><img src="assets/img/drz-overdrive.webp" alt="Dr. Z laughing as green and violet lightning crackles around him, Wisp swirling from his lantern — the face of Overdrive">🔥 <strong>Overdrive</strong><span>Competitive crews. Hardest clues, Dr. Z unleashed, bragging rights.</span></button>
+    <button class="scare-card" data-pick="cozy" role="radio" aria-checked="false"><img src="assets/img/drz-cozy.webp" alt="Dr. Z smiling gently with his lantern on a warm autumn day, pumpkins at his feet and Wisp floating beside him — the face of Cozy Glow">🎃 <strong data-i18n="cozy_label">Cozy Glow</strong><span data-i18n="cozy_desc">Families &amp; little kids. Counting, matching, giggles.</span></button>
+    <button class="scare-card" data-pick="spooky" role="radio" aria-checked="false"><img src="assets/img/drz-spooky.webp" alt="Dr. Z grinning and hoisting his lantern under a full moon while bats flutter past — the face of Spooky">👻 <strong data-i18n="spooky_label">Spooky</strong><span data-i18n="spooky_desc">Tweens &amp; mixed groups. Riddles, ciphers, goosebumps.</span></button>
+    <button class="scare-card" data-pick="afterdark" role="radio" aria-checked="false"><img src="assets/img/drz-afterdark.webp" alt="Dr. Z laughing beneath a starry sky as Wisp swirls up out of his lantern — the face of After Dark">🦇 <strong data-i18n="afterdark_label">After Dark</strong><span data-i18n="afterdark_desc">Grown-ups. Local ghost lore, cryptic clues, eerie sounds.</span></button>
+    <button class="scare-card" data-pick="overdrive" role="radio" aria-checked="false"><img src="assets/img/drz-overdrive.webp" alt="Dr. Z laughing as green and violet lightning crackles around him, Wisp swirling from his lantern — the face of Overdrive">🔥 <strong data-i18n="overdrive_label">Overdrive</strong><span data-i18n="overdrive_desc">Competitive crews. Hardest clues, Dr. Z unleashed, bragging rights.</span></button>
   </section>
 
   <!-- MAP -->
@@ -57,7 +57,7 @@
   <button id="btn-pause" aria-label="Pause game">⏸ Pause</button>
     <div id="map" role="application" aria-label="Quest map showing stop locations"></div>
     <div id="wisp-meter" class="card" role="status" aria-label="Wisp mood meter"></div>
-    <div class="card"><strong>🏺 Relics collected</strong><div id="relics" role="list" aria-label="Relics collected"></div></div>
+    <div class="card"><strong>🏺 <span data-i18n="relics_title">Relics collected</span></strong><div id="relics" role="list" aria-label="Relics collected" data-i18n-aria="relics_title"></div></div>
     <div id="next-stop" class="card" role="status" aria-label="Next stop information"></div>
   </section>
 
@@ -69,18 +69,18 @@
     <p id="wisp-says" class="wisp-speech" role="status"></p>
     <p id="puzzle-question" role="heading" aria-level="3"></p>
     <div id="puzzle-input-row">
-      <label for="puzzle-answer" class="sr-only">Your answer</label>
-      <input id="puzzle-answer" autocomplete="off" placeholder="Your answer">
+      <label for="puzzle-answer" class="sr-only" data-i18n="answer_placeholder">Your answer</label>
+      <input id="puzzle-answer" autocomplete="off" placeholder="Your answer" data-i18n-placeholder="answer_placeholder">
       <button id="btn-answer" aria-label="Submit answer">Light the lantern</button>
     </div>
     <div id="unlock-row">
-      <label for="unlock-code" class="sr-only">Code from the QR sign</label>
-      <input id="unlock-code" autocomplete="off" placeholder="Code from the QR sign">
+      <label for="unlock-code" class="sr-only" data-i18n="unlock_placeholder">Code from the QR sign</label>
+      <input id="unlock-code" autocomplete="off" placeholder="Code from the QR sign" data-i18n-placeholder="unlock_placeholder">
       <button id="btn-unlock" aria-label="Unlock with sign code">Unlock with sign code</button>
-      <button id="btn-gps" aria-label="Check GPS location">📍 I'm here (GPS check)</button>
+      <button id="btn-gps" aria-label="Check GPS location">📍 <span data-i18n="gps_button">I'm here (GPS check)</span></button>
     </div>
     <div id="hints">
-      <button id="btn-hint" aria-expanded="false" aria-controls="hint-text">💡 Hint <span id="hint-count" aria-label="Hints remaining"></span></button>
+      <button id="btn-hint" aria-expanded="false" aria-controls="hint-text">💡 <span data-i18n="hint_button">Hint</span> <span id="hint-count" aria-label="Hints remaining"></span></button>
       <p id="hint-text" role="status" aria-live="polite"></p>
       <img id="drz-hint-img" class="drz-hint" src="assets/img/drz-hint.webp" alt="Dr. Z leaning in with a secret hint scroll" hidden>
     </div>
@@ -89,23 +89,23 @@
 
   <!-- FINALE -->
   <section id="screen-finale" class="screen" role="region" aria-label="Finale screen">
-    <h2 tabindex="-1">🎉 The Lantern Parade!</h2>
+    <h2 tabindex="-1">🎉 <span data-i18n="finale_title">The Lantern Parade!</span></h2>
     <img class="story-art" src="assets/img/finale-lantern-parade.webp" alt="The lantern parade: Wisp soaring joyfully above a night path lined with glowing lanterns">
-    <p class="story">All 6 lanterns are lit. Wisp can find her way home — and so can you, Lantern Keepers.</p>
+    <p class="story" data-i18n="finale_message">All 6 lanterns are lit. Wisp can find her way home — and so can you, Lantern Keepers.</p>
     <p class="wisp-speech">"You did it! Every lantern is lit and I can see the whole way home! You're my favorite Keepers ever — don't tell the other Keepers. There are no other Keepers. You're still my favorite!" — <em>Wisp</em></p>
     <img class="drz-note" src="assets/img/drz-finale.webp" alt="Dr. Z triumphantly holding a glowing lantern high as Wisp soars beside him">
     <p class="lab-note">📜 <strong>Lab note:</strong> Experiment complete. Six of six lanterns recovered, zero Keepers lost to the graveyard (the pretend one). Wisp has been returned to her jar, where she is already plotting. Same time next year. — <em>Dr. Z</em></p>
     <p id="finale-stats" role="status"></p>
     <div class="card"><strong>🏺 Your relics</strong><div id="finale-relics" role="list" aria-label="Relics collected"></div></div>
     <div id="leaderboard" class="card" style="display:none" role="region" aria-label="Leaderboard">
-      <h3>🏆 Leaderboard</h3>
+      <h3>🏆 <span data-i18n="leaderboard_title">Leaderboard</span></h3>
       <div id="leaderboard-list"></div>
     </div>
-    <p>📸 Take your team photo, then show this screen at the finale table for your badge &amp; treat.</p>
+    <p>📸 <span data-i18n="take_photo">Take your team photo, then show this screen at the finale table for your badge &amp; treat.</span></p>
     <div class="finale-actions" role="group" aria-label="Finale actions">
-      <button id="btn-share-finale" style="display:none" aria-label="Share your result">📤 Share your result</button>
-      <button id="btn-install" style="display:none" aria-label="Install app">📱 Install app</button>
-      <button id="btn-restart" aria-label="Play again">Play again</button>
+      <button id="btn-share-finale" style="display:none" aria-label="Share your result" data-i18n-aria="share_result">📤 <span data-i18n="share_result">Share your result</span></button>
+      <button id="btn-install" style="display:none" aria-label="Install app" data-i18n-aria="install_app">📱 <span data-i18n="install_app">Install app</span></button>
+      <button id="btn-restart" aria-label="Play again" data-i18n="play_again" data-i18n-aria="play_again">Play again</button>
       <button id="btn-history" aria-label="View past stops">📜 Past Stops</button>
     </div>
   </section>
