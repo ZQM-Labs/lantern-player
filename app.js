@@ -685,6 +685,7 @@ $("btn-start").addEventListener("click", async () => {
     state.hiddenAt = null;
     $("btn-pause").textContent = T("resume_button", "▶ Resume");
   }
+  paintClock();
   save(); show("screen-scare");
   if (!state.pausedAt) startTimer();
   focusFirst();
@@ -710,6 +711,13 @@ if (deepKit && !state.kitId) state.kitId = deepKit;
 if (accessCode) {
   const ac = $("access-code");
   if (ac && !ac.value) ac.value = accessCode;
+}
+
+// In demo mode the access code is optional, but nothing on the start
+// screen said so — first-timers stalled looking for a code. Say it.
+if (isDemo) {
+  const ac = $("access-code");
+  if (ac) ac.placeholder = "Demo mode — no code needed, just start!";
 }
 
 
@@ -963,6 +971,13 @@ function shareTeam() {
 
 /* ---------- timer: elapsed time display ---------- */
 let timerInterval = null;
+function paintClock() {
+  const el = $("hunt-clock");
+  if (!el || !state.startedAt) return;
+  const secs = Math.floor((Date.now() - state.startedAt) / 1000);
+  const m = Math.floor(secs / 60), s = secs % 60;
+  el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
+}
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
@@ -1218,6 +1233,16 @@ document.addEventListener("click", (e) => {
 // elapsed (the score and the fastest-time record derive from it), so a
 // hidden span is accounted exactly like a button pause: startedAt shifts
 // on return. A deliberate button pause wins: never restart over it.
+// Reloads and tab closes do not reliably fire visibilitychange before
+// unload, which would silently add the away span to elapsed (or lose the
+// pause). pagehide is the dependable unload signal: stamp the marker.
+window.addEventListener("pagehide", () => {
+  if (state.startedAt && !state.pausedAt && !state.hiddenAt) {
+    state.hiddenAt = Date.now();
+    save();
+  }
+});
+
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopTimer();
