@@ -134,6 +134,13 @@ test("installed player survives five offline reloads and completes ten consecuti
   await page.goto(baseUrl + "/?demo=1", { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller), null, { timeout: 15000 });
   await page.reload({ waitUntil: "domcontentloaded" });
+  // Sign codes verify arrival only (b719ea0): a stop is solved by answering
+  // its puzzle. Resolve the demo pack's answer the same way app.js does.
+  const answerFor = (id) => page.evaluate((stopId) => {
+    const s = pack.stops.find(x => x.id === stopId);
+    const pz = (s.puzzle && (s.puzzle[state.scare] || s.puzzle.cozy)) || s.fallback;
+    return pz.a;
+  }, id);
   const cached = await page.evaluate(async () => {
     const cacheNames = await caches.keys();
     const currentCache = cacheNames.find((name) => /^lantern-v\d+$/.test(name));
@@ -180,6 +187,8 @@ test("installed player survives five offline reloads and completes ten consecuti
     assert.ok(artWidth > 0, "stop " + stop + " artwork must load offline");
     await page.locator("#unlock-code").fill("LANTERN-" + stop);
     await page.locator("#btn-unlock").click();
+    await page.locator("#puzzle-answer").fill(await answerFor(stop));
+    await page.locator("#btn-answer").click();
     await page.waitForFunction(expected => {
       const saved = JSON.parse(localStorage.getItem("lantern-state") || "{}");
       return Array.isArray(saved.solved) && saved.solved.length >= expected;
@@ -214,6 +223,8 @@ test("installed player survives five offline reloads and completes ten consecuti
       await page.locator("#screen-puzzle.active").waitFor({ state: "visible" });
       await page.locator("#unlock-code").fill("LANTERN-" + stop);
       await page.locator("#btn-unlock").click();
+      await page.locator("#puzzle-answer").fill(await answerFor(stop));
+      await page.locator("#btn-answer").click();
       await page.waitForFunction(expected => {
         const saved = JSON.parse(localStorage.getItem("lantern-state") || "{}");
         return Array.isArray(saved.solved) && saved.solved.length >= expected;
