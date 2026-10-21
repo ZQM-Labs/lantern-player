@@ -5,7 +5,7 @@
    NOTE: Leaflet is expected to be vendored locally (see AGENTS.md). If it is
    still loaded from a CDN, the map will not work offline — the text stop list
    in app.js is the offline fallback. */
-const CACHE = "lantern-v18";
+const CACHE = "lantern-v19";
 const SHELL = [
   "./",
   "./index.html",
@@ -83,6 +83,11 @@ self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
 
   const url = new URL(e.request.url);
+
+  // Cross-origin requests (map tiles, etc.) are not ours to cache or
+  // mediate: let the browser fetch them natively. Intercepting them here
+  // once kept tile images from ever painting in some browsers.
+  if (url.origin !== self.location.origin) return;
 
   // Never serve the app shell in place of an asset. A failed script/style
   // fetch must fail loudly, not return HTML (that yields a silent SyntaxError
