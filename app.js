@@ -617,7 +617,7 @@ function updateHUD() {
 /* ---------- flow ---------- */
 $("btn-start").addEventListener("click", async () => {
   const teamName = $("team-name").value.trim();
-  if (teamName.length > 30) { alert("Team name must be 30 characters or less."); return; }
+  if (teamName.length > 30) { alert(T("team_name_too_long", "Team name must be 30 characters or less.")); return; }
   const prevTeam = state.team;
   // A blank field must not read as a team change. After a reload the input
   // starts empty (it is not prefilled from saved state), so a returning
@@ -683,7 +683,7 @@ $("btn-start").addEventListener("click", async () => {
     state.startedAt += Date.now() - awaySince;
     state.pausedAt = Date.now();
     state.hiddenAt = null;
-    $("btn-pause").textContent = "▶ Resume";
+    $("btn-pause").textContent = T("resume_button", "▶ Resume");
   }
   save(); show("screen-scare");
   if (!state.pausedAt) startTimer();
@@ -1195,13 +1195,13 @@ $("btn-pause").addEventListener("click", () => {
     // Resume: adjust startedAt forward by the pause duration
     state.startedAt += Date.now() - state.pausedAt;
     state.pausedAt = null;
-    $("btn-pause").textContent = "⏸ Pause";
+    $("btn-pause").textContent = T("pause_button", "⏸ Pause");
     startTimer();
   } else {
     // Pause
     state.pausedAt = Date.now();
     state.hiddenAt = null;  // a button pause supersedes any hidden-tab marker
-    $("btn-pause").textContent = "▶ Resume";
+    $("btn-pause").textContent = T("resume_button", "▶ Resume");
     stopTimer();
   }
   save();

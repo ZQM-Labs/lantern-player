@@ -8,6 +8,17 @@
    - Social features (team invites, achievements)
 */
 
+// Localized UI string: use the player's i18n table when available, else the English literal.
+function gfT(key, fallback) {
+  try {
+    if (typeof I18n !== "undefined" && I18n.translations && I18n.translations[I18n.current]) {
+      const v = I18n.t(key);
+      if (v && v !== key) return v;
+    }
+  } catch (e) { /* fall through to the English literal */ }
+  return fallback;
+}
+
 const GlobalFeatures = {
   // Configuration
   config: {
@@ -102,7 +113,7 @@ const GlobalFeatures = {
       </div>`;
     }).join('');
 
-    container.innerHTML = html || '<p class="lb-empty">No global rankings yet. Be the first!</p>';
+    container.innerHTML = html || '<p class="lb-empty">' + gfT('global_rankings_empty', 'No global rankings yet. Be the first!') + '</p>';
   },
 
   // Submit score to global leaderboard
@@ -197,7 +208,7 @@ const GlobalFeatures = {
       </div>`;
     }).join('');
 
-    container.innerHTML = html || '<p class="community-empty">No communities found nearby.</p>';
+    container.innerHTML = html || '<p class="community-empty">' + gfT('communities_empty', 'No communities found nearby.') + '</p>';
   },
 
   // ============================================================
@@ -333,11 +344,11 @@ const GlobalFeatures = {
     modal.className = 'modal';
     modal.innerHTML = `
       <div class="modal-content">
-        <h3>Invite Your Team</h3>
-        <p>Share this link with your team members:</p>
+        <h3>${gfT('invite_team_title', 'Invite Your Team')}</h3>
+        <p>${gfT('invite_team_text', 'Share this link with your team members:')}</p>
         <input type="text" id="team-invite-link" readonly value="${window.location.href}">
-        <button id="copy-invite-link">Copy Link</button>
-        <button id="close-invite-modal">Close</button>
+        <button id="copy-invite-link">${gfT('copy_link_button', 'Copy Link')}</button>
+        <button id="close-invite-modal">${gfT('close_button', 'Close')}</button>
       </div>
     `;
     document.body.appendChild(modal);
@@ -346,7 +357,7 @@ const GlobalFeatures = {
       const link = modal.querySelector('#team-invite-link');
       link.select();
       document.execCommand('copy');
-      modal.querySelector('#copy-invite-link').textContent = 'Copied!';
+      modal.querySelector('#copy-invite-link').textContent = gfT('copied_button', 'Copied!');
     });
 
     modal.querySelector('#close-invite-modal').addEventListener('click', () => {
