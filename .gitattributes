@@ -20,7 +20,3 @@ _headers export-ignore
 # the repository EOL-stable so the two configurations cannot diverge again.
 * text=auto eol=lf
 
-# Windows-only build scripts must keep CRLF to stay executable.
-*.bat text eol=crlf
-*.cmd text eol=crlf
-*.ps1 text eol=crlf
