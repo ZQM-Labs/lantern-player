@@ -1,0 +1,9 @@
+# The site deploy syncs this repo into the zqmlabs.com build via git archive
+# (zqmlabs-site scripts/sync-player.sh). Without export-ignore, the player's
+# _headers file (X-Frame-Options: DENY on /*) lands in the site tree at
+# /games/hunt-for-wisps/play/_headers. Cloudflare Pages only parses the root
+# _headers today, so it is inert — but it would break framing of the embedded
+# game if that tree were ever served standalone or the file hoisted. The file
+# stays in this repo for any direct player deployment; it just stays out of
+# the site export.
+_headers export-ignore
