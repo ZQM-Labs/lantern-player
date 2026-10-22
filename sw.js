@@ -65,7 +65,16 @@ const SHELL = [
 ];
 
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // Best-effort per-file precache. cache.addAll is atomic: one failed asset
+  // (say a dropped 250 KB image on park Wi-Fi) rejects the whole install and
+  // the player loses offline play entirely. Cache each shell file on its own
+  // instead; anything that misses here is picked up by the runtime cache on
+  // first use, so a flaky install still yields a working offline player.
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c => Promise.allSettled(SHELL.map(u => c.add(u))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", e => {
