@@ -859,11 +859,27 @@ function solved() {
   syncProgress(); // fire-and-forget leaderboard sync when backend present
 }
 
+// Answer matching: forgiving about how players actually type. Case,
+// punctuation and spacing are ignored (as before); a leading article
+// ("a tree", "the owl") and a plural ending ("candles", "spiders") are
+// also accepted, since every riddle in the pack invites them. Numbers
+// pass through untouched apart from separators ("7.5", "4,015").
+function normalizeAnswer(s) {
+  const tokens = String(s).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  if (tokens.length > 1 && ["a", "an", "the", "mr", "mrs", "ms", "dr"].includes(tokens[0])) tokens.shift();
+  if (tokens.length) {
+    const last = tokens[tokens.length - 1];
+    if (/^[a-z]+$/.test(last) && last.length > 3 && last.endsWith("s") && !last.endsWith("ss")) {
+      tokens[tokens.length - 1] = last.slice(0, -1);
+    }
+  }
+  return tokens.join("");
+}
+
 $("btn-answer").addEventListener("click", () => {
   const p = variant(currentStop, "puzzle");
-  const norm = s => String(s).toLowerCase().replace(/['"\-\u2019]/g, "").replace(/[^a-z0-9]/g, "");
-  const got = norm($("puzzle-answer").value);
-  if (got === norm(p.a)) solved();
+  const got = normalizeAnswer($("puzzle-answer").value);
+  if (got === normalizeAnswer(p.a)) solved();
   else { state.stopAttempts[currentStop.id] = (state.stopAttempts[currentStop.id] || 0) + 1; save(); $("feedback").textContent = T("not_quite", "Not quite — try a hint, Keeper!"); }
 });
 
