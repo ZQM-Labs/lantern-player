@@ -290,3 +290,4 @@ button:focus-visible, input:focus-visible { outline:3px solid var(--accent); out
 .drz-hint[hidden]{display:none}
 
 #demo-badge { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 60; background: #6d28d9; color: #fff; font-weight: 700; letter-spacing: .04em; padding: 4px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.35); font-size: .85rem; pointer-events: none; }
+#finale-demo-cta a { font-weight: 700; font-size: 1.05rem; }

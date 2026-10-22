@@ -21,13 +21,13 @@ const DEMO_PACK = {
       wisp: "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
       lit: "One down! See how it glows? That's my happy leaking out.",
             puzzle: {
-              cozy: { q: "Count the pumpkins in the patch picture your organizer showed you. How many are smiling?", a: "4", type: "number" },
-              spooky: { q: "The carved pumpkins are watching the street. How many are smiling in the patch?", a: "4", type: "number" },
-              afterdark: { q: "A lantern's glow reveals the smiling pumpkins. How many smiling pumpkins are there?", a: "4", type: "number" },
-              overdrive: { q: "Dr. Z demands a quick count: how many pumpkins are smiling?", a: "4", type: "number" }
+              cozy: { q: "Count the pumpkins in this stop's picture. How many are smiling?", a: "1", type: "number" },
+              spooky: { q: "The carved pumpkins are watching the street. How many are smiling in the picture?", a: "1", type: "number" },
+              afterdark: { q: "A lantern's glow reveals the smiling pumpkins. How many smiling pumpkins are there?", a: "1", type: "number" },
+              overdrive: { q: "Dr. Z's madness meter reads 6.66. Round it to the nearest whole number, then multiply by the number of lanterns. What do you get?", a: "42", type: "number" }
             },
-      fallback: { q: "What color is the ribbon on the welcome sign?", a: "orange" },
-      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."], overdrive: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: the smiling pumpkins are 4."] } },
+      fallback: { q: "How many carved pumpkins are glowing in this picture?", a: "1" },
+      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], overdrive: ["Round the meter reading first — 6.66 becomes a whole number.", "Multiply by the number of lanterns Wisp lost.", "Ranger assist: 7 × 6 = 42."] } },
     { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
       story: {
                cozy: "Oakie the oak caught a scrap of Dr. Z's map in his branches. Wisp thinks it points to the next lantern. Ask the tree nicely—he likes good listeners.",
@@ -36,12 +36,12 @@ const DEMO_PACK = {
                overdrive: "Oakie intercepted Dr. Z's map and is now acting like head of security. Get the next clue from the tree, Keepers. Yes, I know trees don't talk. This one has standards." },
       wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       lit: "Got it! Oakie says you're officially tree-approved.",
-      puzzle: { cozy: { q: "Find the oak. How many wooden swings or benches face it?", a: "2", type: "number" },
+      puzzle: { cozy: { q: "Count the mushrooms growing at Oakie's roots in this picture. How many are there?", a: "6", type: "number" },
                spooky: { q: "Riddle: I have arms but cannot hug, I wear a coat but cannot feel cold. The wind whispers through me but I never speak. What am I?", a: "tree", type: "text" },
                afterdark: { q: "The oak was planted in 1824. How many decades has it stood? (Round to nearest whole decade)", a: "20", type: "number" },
                overdrive: { q: "Dr. Z's challenge: The oak's canopy spans 15m. If each lantern hangs 3m apart, how many lanterns fit in a straight line across the canopy?", a: "5", type: "number" } },
-      fallback: { q: "What is carved on the small sign by the oak?", a: "wisp" },
-      hints: { cozy: ["Face the tree like it is facing you.", "Only count the ones looking at the oak.", "Ranger assist: the answer is 2."], spooky: ["Its arms are branches and its coat is bark.", "It stands in the ground and never moves.", "Ranger assist: it is the tree."], afterdark: ["Subtract 1824 from this year, then divide by ten.", "A decade is ten years.", "Ranger assist: 20 decades."], overdrive: ["Divide the canopy span by the spacing.", "15 divided by 3.", "Ranger assist: 5 lanterns."] } },
+      fallback: { q: "What kind of tree is Oakie?", a: "oak" },
+      hints: { cozy: ["Look low, where the roots meet the grass — check both sides.", "There are two little clusters of caps.", "Ranger assist: 6 mushrooms."], spooky: ["Its arms are branches and its coat is bark.", "It stands in the ground and never moves.", "Ranger assist: it is the tree."], afterdark: ["Subtract 1824 from this year, then divide by ten.", "A decade is ten years.", "Ranger assist: 20 decades."], overdrive: ["Divide the canopy span by the spacing.", "15 divided by 3.", "Ranger assist: 5 lanterns."] } },
     { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
       story: {
                cozy: "The pretend graveyard is Dr. Z's decoy—foam stones, silly epitaphs, and ghostly giggles recorded on his machine. Wisp says the real lantern is nearby. Don't let the joke distract you!",
@@ -50,12 +50,12 @@ const DEMO_PACK = {
                overdrive: "You have defeated Dr. Z's terrifying graveyard of FOAM. His spooky sound effect is stuck on loop. Laugh at the villain later; find the lantern now!" },
       wisp: "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
       lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
-      puzzle: { cozy: { q: "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)", a: "pumpkins", type: "text" },
+      puzzle: { cozy: { q: "The tombstones in this picture are in a silly mood. How many tombstones are smiling?", a: "3", type: "number" },
                spooky: { q: "Riddle: I have a head and a tail but no body. I lie in the dark waiting. What am I?", a: "coin", type: "text" },
-               afterdark: { q: "The 1918 flu pandemic killed 675,000 Americans. If this graveyard represents 1/1000th of that, how many 'souls' are here?", a: "675", type: "number" },
+               afterdark: { q: "Dr. Z's census counted 675,000 pretend souls across all his haunted properties. If this graveyard holds 1/1000th of them, how many 'souls' are here?", a: "675", type: "number" },
                overdrive: { q: "Dr. Z's challenge: The ghosts giggle every 7 seconds. How many giggles in one minute? (Round to nearest whole number)", a: "9", type: "number" } },
-      fallback: { q: "How many foam tombstones are there?", a: "5" },
-      hints: { cozy: ["Read the stones — one of them is joking.", "It rhymes with the patch from Stop 1.", "Ranger assist: Rest In Pumpkins."], spooky: ["Check your pocket — it jingles.", "Heads or tails?", "Ranger assist: it is a coin."], afterdark: ["Divide 675,000 by one thousand.", "Drop the three zeros.", "Ranger assist: 675 souls."], overdrive: ["Sixty seconds in a minute, one giggle every seven.", "60 divided by 7, rounded.", "Ranger assist: 9 giggles."] } },
+      fallback: { q: "How many tombstones are in this picture?", a: "3" },
+      hints: { cozy: ["Look at the stones' faces, not for words.", "Count the big stones standing in the grass.", "Ranger assist: 3 smiling tombstones."], spooky: ["Check your pocket — it jingles.", "Heads or tails?", "Ranger assist: it is a coin."], afterdark: ["Divide 675,000 by one thousand.", "Drop the three zeros.", "Ranger assist: 675 souls."], overdrive: ["Sixty seconds in a minute, one giggle every seven.", "60 divided by 7, rounded.", "Ranger assist: 9 giggles."] } },
     { id: 4, name: "The Spider's Counting Web", lat: 29.0270, lng: -80.9252, code: "LANTERN-4", art: "stop-4-spider.webp",
       story: {
                cozy: "Mrs. Spider found a glowing thread snagged on Dr. Z's decoy. It leads toward the next lantern. She'll help untangle the clue—eight legs are better than two!",
@@ -68,7 +68,7 @@ const DEMO_PACK = {
                spooky: { q: "Riddle: I weave without a loom, I trap without a cage. My silk is stronger than steel by weight. What am I?", a: "spider", type: "text" },
                afterdark: { q: "Orb weavers rebuild their web every night. If Mrs. Spider has been here 11 years, approximately how many webs has she built? (Ignore leap years)", a: "4015", type: "number" },
                overdrive: { q: "Dr. Z's challenge: A spider web has 20 radial threads. If each radial thread takes 2 minutes to spin, how long does the full web take?", a: "40", type: "number" } },
-      fallback: { q: "What color is Mrs. Spider?", a: "purple" },
+      fallback: { q: "How many legs does Mrs. Spider have?", a: "8" },
       hints: { cozy: ["Start with 8 legs, like every spider.", "She waves with 3 of them.", "Ranger assist: 8 minus 3 is 5."], spooky: ["She has eight legs and builds the web herself.", "Mrs. Spider, in person.", "Ranger assist: it is the spider."], afterdark: ["One web a night, 365 nights a year.", "11 times 365.", "Ranger assist: 4,015 webs."], overdrive: ["Multiply the threads by the minutes each.", "20 times 2.", "Ranger assist: 40 minutes."] } },
     { id: 5, name: "The Owl's Night Watch", lat: 29.0274, lng: -80.9246, code: "LANTERN-5", art: "stop-5-owl.webp",
       story: {
@@ -83,7 +83,7 @@ const DEMO_PACK = {
                afterdark: { q: "Barred owls live about 10 years in the wild. If Professor Hoot is 7, how many years does he likely have left?", a: "3", type: "number" },
                overdrive: { q: "Dr. Z's challenge: An owl can rotate its head 270 degrees. How many more degrees would it need for a full 360?", a: "90", type: "number" } },
       fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
-      hints: { cozy: ["Look at the sign art — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."], spooky: ["It hoots and turns its head almost all the way around.", "Professor Hoot, in person.", "Ranger assist: it's the owl."], afterdark: ["Ten years of life minus seven lived.", "10 minus 7.", "Ranger assist: 3 years left."], overdrive: ["A full circle is 360 degrees.", "360 minus 270.", "Ranger assist: 90 degrees."] } },
+      hints: { cozy: ["Look at this stop's picture — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."], spooky: ["It hoots and turns its head almost all the way around.", "Professor Hoot, in person.", "Ranger assist: it's the owl."], afterdark: ["Ten years of life minus seven lived.", "10 minus 7.", "Ranger assist: 3 years left."], overdrive: ["A full circle is 360 degrees.", "360 minus 270.", "Ranger assist: 90 degrees."] } },
     { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
       story: {
                cozy: "The last lantern! Bring its light together with the others and Wisp's parade can begin. Dr. Z's machine is quiet at last—and there's room in the parade for one reformed mad scientist.",
@@ -622,7 +622,7 @@ function updateHUD() {
 /* ---------- flow ---------- */
 $("btn-start").addEventListener("click", async () => {
   const teamName = $("team-name").value.trim();
-  if (teamName.length > 30) { alert("Team name must be 30 characters or less."); return; }
+  if (teamName.length > 30) { alert(T("team_name_too_long", "Team name must be 30 characters or less.")); return; }
   const prevTeam = state.team;
   // A blank field must not read as a team change. After a reload the input
   // starts empty (it is not prefilled from saved state), so a returning
@@ -688,8 +688,9 @@ $("btn-start").addEventListener("click", async () => {
     state.startedAt += Date.now() - awaySince;
     state.pausedAt = Date.now();
     state.hiddenAt = null;
-    $("btn-pause").textContent = "▶ Resume";
+    $("btn-pause").textContent = T("resume_button", "▶ Resume");
   }
+  paintClock();
   save(); show("screen-scare");
   if (!state.pausedAt) startTimer();
   focusFirst();
@@ -715,6 +716,13 @@ if (deepKit && !state.kitId) state.kitId = deepKit;
 if (accessCode) {
   const ac = $("access-code");
   if (ac && !ac.value) ac.value = accessCode;
+}
+
+// In demo mode the access code is optional, but nothing on the start
+// screen said so — first-timers stalled looking for a code. Say it.
+if (isDemo) {
+  const ac = $("access-code");
+  if (ac) ac.placeholder = "Demo mode — no code needed, just start!";
 }
 
 
@@ -968,6 +976,13 @@ function shareTeam() {
 
 /* ---------- timer: elapsed time display ---------- */
 let timerInterval = null;
+function paintClock() {
+  const el = $("hunt-clock");
+  if (!el || !state.startedAt) return;
+  const secs = Math.floor((Date.now() - state.startedAt) / 1000);
+  const m = Math.floor(secs / 60), s = secs % 60;
+  el.textContent = `⏱ ${m}:${String(s).padStart(2, "0")}`;
+}
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
@@ -1134,11 +1149,12 @@ function finale() {
       return `<div${hl}>${medal} ${esc(r.team)} — ${r.mins}m · ${r.hintsUsed} hints · ★${r.cleanSolves}/${pack.stops.length} ${title}</div>`;
     }).join("");
   }
-  // Demo finishers get the demo note, not the finale-table claim line:
-  // badges & treats are earned on the real trail, not the practice run.
-  const claimEl = $("finale-claim"), demoNoteEl = $("finale-demo-note");
+  // Demo finishers get the demo note + kit CTA, not the finale-table
+  // claim line: badges & treats are earned on the real trail.
+  const claimEl = $("finale-claim"), demoNoteEl = $("finale-demo-note"), demoCtaEl = $("finale-demo-cta");
   if (claimEl) claimEl.style.display = isDemo ? "none" : "";
   if (demoNoteEl) demoNoteEl.style.display = isDemo ? "" : "none";
+  if (demoCtaEl) demoCtaEl.style.display = isDemo ? "" : "none";
   syncProgress(true);
   stopTimer();
   fetchGlobalLeaderboard();
@@ -1211,13 +1227,13 @@ $("btn-pause").addEventListener("click", () => {
     // Resume: adjust startedAt forward by the pause duration
     state.startedAt += Date.now() - state.pausedAt;
     state.pausedAt = null;
-    $("btn-pause").textContent = "⏸ Pause";
+    $("btn-pause").textContent = T("pause_button", "⏸ Pause");
     startTimer();
   } else {
     // Pause
     state.pausedAt = Date.now();
     state.hiddenAt = null;  // a button pause supersedes any hidden-tab marker
-    $("btn-pause").textContent = "▶ Resume";
+    $("btn-pause").textContent = T("resume_button", "▶ Resume");
     stopTimer();
   }
   save();
@@ -1234,6 +1250,16 @@ document.addEventListener("click", (e) => {
 // elapsed (the score and the fastest-time record derive from it), so a
 // hidden span is accounted exactly like a button pause: startedAt shifts
 // on return. A deliberate button pause wins: never restart over it.
+// Reloads and tab closes do not reliably fire visibilitychange before
+// unload, which would silently add the away span to elapsed (or lose the
+// pause). pagehide is the dependable unload signal: stamp the marker.
+window.addEventListener("pagehide", () => {
+  if (state.startedAt && !state.pausedAt && !state.hiddenAt) {
+    state.hiddenAt = Date.now();
+    save();
+  }
+});
+
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     stopTimer();
