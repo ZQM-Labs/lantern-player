@@ -17,7 +17,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 
 function loadNormalizeAnswer() {
-  const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "app.js"), "utf8").replace(/\r\n/g, "\n");
   const start = app.indexOf("function normalizeAnswer(s) {");
   assert.ok(start >= 0, "normalizeAnswer should exist in app.js");
   const end = app.indexOf("\n}\n", start);

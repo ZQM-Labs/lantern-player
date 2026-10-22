@@ -7,3 +7,20 @@
 # stays in this repo for any direct player deployment; it just stays out of
 # the site export.
 _headers export-ignore
+
+# Normalize every remaining text file to LF in the repository and on checkout.
+#
+# Why: the Tests workflow historically ran on `runs-on: self-hosted` (Windows),
+# and several node:test files slice app.js with LF-only markers such as
+#   app.indexOf("\n\nconst $ = id", start)
+# On Windows with core.autocrlf=true the tree is checked out with CRLF, so
+# those indexOf() calls return -1 and the tests fail locally (4 failures)
+# while passing on ubuntu-latest, where the tree is LF. The test files are
+# now EOL-agnostic (they pass either way); these attributes additionally make
+# the repository EOL-stable so the two configurations cannot diverge again.
+* text=auto eol=lf
+
+# Windows-only build scripts must keep CRLF to stay executable.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
