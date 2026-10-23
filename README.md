@@ -1,4 +1,4 @@
-# quest-player
+# quest-player — ZQM Labs player web app
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
