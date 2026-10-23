@@ -205,6 +205,7 @@ const GlobalFeatures = {
         <button class="community-join" data-community="${community.id}">
           View Games
         </button>
+        ${community.booking_url ? `<a class="community-book" href="${this.escapeHtml(community.booking_url)}" target="_blank" rel="noopener">Run this in your town</a>` : ''}
       </div>`;
     }).join('');
 
