@@ -115,6 +115,17 @@ hardcode new story text here — author it in `lantern-content`.
 - `sw.js` — service worker: cache-first app shell (offline play)
 - `manifest.webmanifest` — installable PWA metadata
 
+## Deployment
+
+This repo is the single brain for the game player served at
+`https://zqmlabs.com/games/hunt-for-wisps/play/`. Nothing here deploys by
+itself: production is assembled by the composite build in
+`ZQM-Computing/zqm-labs`, which syncs the player from this repo at the
+pinned `PLAYER_SOURCE_SHA`. To ship, merge here, then pin-bump
+`PLAYER_SOURCE_SHA` in the monorepo. Bump the `lantern-vNN` cache name in
+`sw.js` whenever player assets or behavior change. Full rules:
+[docs/deployment.md](docs/deployment.md).
+
 ## Related repos
 
 - quest-analytics — team analytics + tracking backend (FastAPI + SQLite) for the quest-player PWA; its source repository is private and is not linked from public documentation
