@@ -18,13 +18,17 @@ The Cloudflare Pages project and custom-domain state must be checked in the Clou
 Run these from the repository root. They require a compatible Node.js installation; the browser end-to-end suite additionally requires the Playwright package and Chromium browser to be available.
 
 ```sh
-node --check app.js
-node --check global-story.js
-node --check i18n.js
-node --check sw.js
+npm run check
 node scripts/test-player-source.cjs
-node --test tests/global-story.test.cjs
-node --test tests/release-e2e.test.cjs
+npm test
+```
+
+`npm test` runs every tracked test file. It is the same command CI runs, so it
+requires the Playwright dev dependency (`npm install`) and a Chromium browser.
+To run the fast, dependency-free subset instead:
+
+```sh
+node --test tests/global-story.test.cjs tests/pack-validator.test.cjs tests/normalize-answer.test.cjs tests/pack-content-consistency.test.cjs tests/i18n-coverage.test.cjs
 ```
 
 If a command cannot run because a dependency/browser is unavailable, record it as **not run** rather than passing. Do not trigger hosted Actions solely to repeat a successful static check when hosted minutes are constrained.

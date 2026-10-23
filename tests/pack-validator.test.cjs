@@ -16,7 +16,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 
 function loadValidatePack() {
-  const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "app.js"), "utf8").replace(/\r\n/g, "\n");
   const start = app.indexOf("function validatePack(p) {");
   const end = app.indexOf("\n\nconst $ = id", start);
   assert.ok(start >= 0 && end > start, "validatePack should exist in app.js");
@@ -93,7 +93,7 @@ test("validatePack rejects an incomplete per-level hints object (both validators
 // hints value (legacy flat array). Evaluate the REAL selection expression
 // from app.js against stubs so a refactor that drops the fallback fails here.
 test("hint selection uses the active scare level and falls back to cozy", () => {
-  const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "app.js"), "utf8").replace(/\r\n/g, "\n");
   const match = app.match(/var hintSet = .*$/m);
   assert.ok(match, "hint selection expression should exist in app.js");
   const pick = new Function(
@@ -125,7 +125,7 @@ test("hint selection uses the active scare level and falls back to cozy", () => 
 test("finale screen renders the relic collection", () => {
   const index = fs.readFileSync(path.join(root, "index.html"), "utf8");
   assert.ok(index.includes('id="finale-relics"'), "index.html must contain the finale relic container");
-  const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
+  const app = fs.readFileSync(path.join(root, "app.js"), "utf8").replace(/\r\n/g, "\n");
   assert.ok(app.includes('$("finale-relics")'), "app.js finale() must render into #finale-relics");
 });
 
