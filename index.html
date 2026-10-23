@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-scare="cozy">
+  <div id="demo-badge" role="note" style="display:none">🎮 <span data-i18n="demo_badge">DEMO — practice hunt</span></div>
   <a href="#main-content" class="skip-link" data-i18n="skip_to_content">Skip to main content</a>
 <div id="offline-banner" role="alert" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#e07b24;color:#fff;text-align:center;padding:8px;font-weight:600;z-index:9999">📡 <span data-i18n="offline_message">You're offline — progress saves on this device</span></div>
 <div id="achievements-toast" role="alert" aria-live="assertive"></div>
@@ -108,7 +109,9 @@
       <h3>🏆 <span data-i18n="leaderboard_title">Leaderboard</span></h3>
       <div id="leaderboard-list"></div>
     </div>
-    <p>📸 <span data-i18n="take_photo">Take your team photo, then show this screen at the finale table for your badge &amp; treat.</span></p>
+    <p id="finale-claim">📸 <span data-i18n="take_photo">Take your team photo, then show this screen at the finale table for your badge &amp; treat.</span></p>
+    <p id="finale-demo-note" class="story" style="display:none">🎮 <span data-i18n="finale_demo_note">That was the demo — a practice run on this device. The real hunt is played out on the trail with a physical kit, and the finale table is where badges &amp; treats are claimed. Loved it? Grab a kit and play for real!</span></p>
+    <p id="finale-demo-cta" style="display:none"><a href="https://zqmlabs.com/tiers" target="_blank" rel="noopener">🎟️ <span data-i18n="demo_cta">Get the real hunt — kits &amp; Family Night</span></a></p>
     <div class="finale-actions" role="group" aria-label="Finale actions">
       <button id="btn-share-finale" style="display:none" aria-label="Share your result" data-i18n-aria="share_result">📤 <span data-i18n="share_result">Share your result</span></button>
       <button id="btn-install" style="display:none" aria-label="Install app" data-i18n-aria="install_app">📱 <span data-i18n="install_app">Install app</span></button>
