@@ -20,8 +20,8 @@ const GlobalStory = {
       description: 'Spooky autumn hunt',
       season: 'autumn',
       theme: 'light vs darkness',
-      intro: "On the night when the veil between worlds grows thin, Wisp the will-o'-the-wisp lost her lanterns. Without them, she cannot find her way home — and the shadows grow longer.",
-      outro: "The lanterns are lit, the shadows retreat, and Wisp dances in the light she helped reclaim. The night belongs to those who carry light.",
+      intro: "On the night when the veil between worlds grows thin, Wisp the will-o'-the-wisp lost her six glow lanterns. Without them she cannot find her way home — and the shadows grow longer. You are her Lantern Keepers now. Bring the light back.",
+      outro: "The lanterns are lit, the shadows retreat, and Wisp dances in the light she helped reclaim. The night belongs to those who carry light — and tonight the parade burns bright behind her, all the way home.",
       cultural_hooks: ['pumpkin', 'ghost', 'spooky', 'autumn', 'costume']
     },
     lantern_festival: {
@@ -249,12 +249,12 @@ const GlobalStory = {
   // Transition narratives between stops
   transitions: {
     halloween: [
-      "The wind picks up, carrying whispers of the next lantern's location...",
-      "A rustle in the bushes — another lantern's glow beckons from deeper in the park...",
-      "The shadows part slightly, revealing the path to the next light...",
-      "Wisp flutters ahead, her glow growing stronger with each lantern you find...",
-      "The air grows colder, but the light grows warmer. Almost there...",
-      "One more. Just one more, and the whole night will shine..."
+      "Wisp's light is a candle cupped in small hands. The night is big, and she is small — for now.",
+      "One lantern lit. Wisp stands a little taller, and the dark gives back a step.",
+      "Two lights. Somewhere behind her eyes, a road she used to know is coming back to her.",
+      "Three — half the parade. Wisp is humming a tune she could not have named an hour ago.",
+      "Four lanterns, and the tune has words now. She almost remembers the way home.",
+      "Five. One more light, and the road home exists again. Almost there, Keepers."
     ],
     lantern_festival: [
       "The wind carries the scent of incense and the promise of another lantern...",
