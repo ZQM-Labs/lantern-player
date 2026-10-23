@@ -50,11 +50,28 @@ const DEMO_PACK = {
         "q": "What color is the ribbon on the welcome sign?",
         "a": "orange"
       },
-      "hints": [
-        "Look low — lanterns love the ground.",
-        "Count slowly, out loud, as a team.",
-        "Ranger assist: the smiling pumpkins are 4."
-      ],
+      "hints": {
+        "cozy": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: the smiling pumpkins are 4."
+        ],
+        "spooky": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: a carved, glowing jack-o-lantern."
+        ],
+        "afterdark": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: add the year's digits — they sum to 22."
+        ],
+        "overdrive": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: 7 × 6 = 42."
+        ]
+      },
       "art": "stop-1-pumpkin.webp",
       "wisp": "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
       "lit": "One down! See how it glows? That's my happy leaking out."
@@ -97,11 +114,28 @@ const DEMO_PACK = {
         "q": "What is carved on the small sign by the oak?",
         "a": "wisp"
       },
-      "hints": [
-        "Face the tree like it is facing you.",
-        "Only count the ones looking at the oak.",
-        "Ranger assist: the answer is 2."
-      ],
+      "hints": {
+        "cozy": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: the answer is 2."
+        ],
+        "spooky": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: the oak itself."
+        ],
+        "afterdark": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: 'whispering' has 10 letters — 10 − 2 benches = 8."
+        ],
+        "overdrive": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: 200 × 3 = 600 words, and 6 + 0 + 0 = 6."
+        ]
+      },
       "art": "stop-2-oak.webp",
       "wisp": "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
       "lit": "Got it! Oakie says you're officially tree-approved."
@@ -144,11 +178,28 @@ const DEMO_PACK = {
         "q": "How many foam tombstones are there?",
         "a": "5"
       },
-      "hints": [
-        "Read the stones — one of them is joking.",
-        "It rhymes with the patch from Stop 1.",
-        "Ranger assist: Rest In Pumpkins."
-      ],
+      "hints": {
+        "cozy": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: Rest In Pumpkins."
+        ],
+        "spooky": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: red — the question tells you!"
+        ],
+        "afterdark": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: count l-a-n-t-e-r-n — 7 letters."
+        ],
+        "overdrive": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: 4 letters per stone + 5 stones = 9."
+        ]
+      },
       "art": "stop-3-graveyard.webp",
       "wisp": "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
       "lit": "The ghosts are doing the wave. That's their applause. You're welcome."
@@ -191,11 +242,28 @@ const DEMO_PACK = {
         "q": "What color is Mrs. Spider?",
         "a": "purple"
       },
-      "hints": [
-        "Start with 8 legs, like every spider.",
-        "She waves with 3 of them.",
-        "Ranger assist: 8 − 3 = 5."
-      ],
+      "hints": {
+        "cozy": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 − 3 = 5."
+        ],
+        "spooky": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 points − 5 cut = 3 remain."
+        ],
+        "afterdark": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 − 3 − 4 = 1."
+        ],
+        "overdrive": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 × 7 = 56 joints, and 5 + 6 = 11."
+        ]
+      },
       "art": "stop-4-spider.webp",
       "wisp": "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
       "lit": "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT."
@@ -238,11 +306,28 @@ const DEMO_PACK = {
         "q": "What two letters does an owl 'say'?",
         "a": "ho"
       },
-      "hints": [
-        "It is the sound this whole stop is named after.",
-        "Twilight is this bird's favorite time.",
-        "Ranger assist: it's the owl."
-      ],
+      "hints": {
+        "cozy": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: it's the owl."
+        ],
+        "spooky": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: twilight."
+        ],
+        "afterdark": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: Hoot is 4 letters + 6 hoots = 10."
+        ],
+        "overdrive": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: 2 syllables per hoot + 10 hoots = 12."
+        ]
+      },
       "art": "stop-5-owl.webp",
       "wisp": "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
       "lit": "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome."
@@ -285,11 +370,28 @@ const DEMO_PACK = {
         "q": "Say the magic words out loud as a team: 'Light the way, Wisp!' then type: wisp",
         "a": "wisp"
       },
-      "hints": [
-        "Count the stops on your map.",
-        "One lantern per stop.",
-        "Ranger assist: 6 lanterns."
-      ],
+      "hints": {
+        "cozy": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 lanterns."
+        ],
+        "spooky": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 lanterns × 3 hours = 18."
+        ],
+        "afterdark": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: the even lanterns — 2 + 4 + 6 = 12."
+        ],
+        "overdrive": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 × 3 = 18 hours, and 1 + 8 = 9."
+        ]
+      },
       "art": "stop-6-lantern.webp",
       "wisp": "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
       "lit": "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!"
