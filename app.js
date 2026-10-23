@@ -9,95 +9,393 @@ const API_BASE =
   ? "http://localhost:8090" : "https://api.zqmlabs.com";
 
 const DEMO_PACK = {
-  title: "Wisp's Lost Lanterns",
-  kit: "DEMO",
-  stops: [
-    { id: 1, name: "The Welcome Pumpkin", lat: 29.0258, lng: -80.9270, code: "LANTERN-1", art: "stop-1-pumpkin.webp",
-      story: {
-               cozy: "Wisp's lanterns bounced out of her basket when Dr. Z's experimental wind-up machine went BZZT. The first one rolled right to this pumpkin. Can your team help her gather all six?",
-               spooky: "The pumpkin's grin flickers though no flame is inside it. From somewhere behind the carved eyes comes the slow click of a winding key. When it stops, a second click answers from the dark. The first lantern is glowing inside.",
-               afterdark: "FIELD RECORD 01 — 00:13. The first lantern is inside the pumpkin. The recording captures a winding key turning by itself, then a second mechanism answering from beyond the path. Dr. Z's notes say the machine cannot operate without its operator. His signature appears on the next page—in fresh ink.",
-               overdrive: "DR. Z'S OFFICIAL INCIDENT REPORT: My machine made one tiny puff of wind. SIX lanterns escaped. This pumpkin has the first. Retrieve it before Wisp files a complaint—and before I have to apologize." },
-      wisp: "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
-      lit: "One down! See how it glows? That's my happy leaking out.",
-            puzzle: {
-              cozy: { q: "Count the pumpkins in this stop's picture. How many are smiling?", a: "1", type: "number" },
-              spooky: { q: "The carved pumpkins are watching the street. How many are smiling in the picture?", a: "1", type: "number" },
-              afterdark: { q: "A lantern's glow reveals the smiling pumpkins. How many smiling pumpkins are there?", a: "1", type: "number" },
-              overdrive: { q: "Dr. Z's madness meter reads 6.66. Round it to the nearest whole number, then multiply by the number of lanterns. What do you get?", a: "42", type: "number" }
-            },
-      fallback: { q: "How many carved pumpkins are glowing in this picture?", a: "1" },
-      hints: { cozy: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], spooky: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], afterdark: ["Look low — lanterns love the ground.", "Count slowly, out loud, as a team.", "Ranger assist: just 1 — the big carved pumpkin."], overdrive: ["Round the meter reading first — 6.66 becomes a whole number.", "Multiply by the number of lanterns Wisp lost.", "Ranger assist: 7 × 6 = 42."] } },
-    { id: 2, name: "The Whispering Oak", lat: 29.0262, lng: -80.9264, code: "LANTERN-2", art: "stop-2-oak.webp",
-      story: {
-               cozy: "Oakie the oak caught a scrap of Dr. Z's map in his branches. Wisp thinks it points to the next lantern. Ask the tree nicely—he likes good listeners.",
-               spooky: "Oakie's branches scrape together overhead. A map is pinned to the bark, though nobody saw it arrive. One route is crossed out so violently the paper has torn. Beneath it, in handwriting that looks almost like yours: DON'T FOLLOW THE LIGHT THAT MOVES.",
-               afterdark: "FIELD RECORD 02 — The map was dry when found, but the bark beneath it is wet with cold condensation. One route has been scratched away. On the reverse, a message has appeared in your team's handwriting: DON'T FOLLOW THE LIGHT THAT MOVES. No one admits writing it.",
-               overdrive: "Oakie intercepted Dr. Z's map and is now acting like head of security. Get the next clue from the tree, Keepers. Yes, I know trees don't talk. This one has standards." },
-      wisp: "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
-      lit: "Got it! Oakie says you're officially tree-approved.",
-      puzzle: { cozy: { q: "Count the mushrooms growing at Oakie's roots in this picture. How many are there?", a: "6", type: "number" },
-               spooky: { q: "Riddle: I have arms but cannot hug, I wear a coat but cannot feel cold. The wind whispers through me but I never speak. What am I?", a: "tree", type: "text" },
-               afterdark: { q: "The oak was planted in 1824. How many decades has it stood? (Round to nearest whole decade)", a: "20", type: "number" },
-               overdrive: { q: "Dr. Z's challenge: The oak's canopy spans 15m. If each lantern hangs 3m apart, how many lanterns fit in a straight line across the canopy?", a: "5", type: "number" } },
-      fallback: { q: "What kind of tree is Oakie?", a: "oak" },
-      hints: { cozy: ["Look low, where the roots meet the grass — check both sides.", "There are two little clusters of caps.", "Ranger assist: 6 mushrooms."], spooky: ["Its arms are branches and its coat is bark.", "It stands in the ground and never moves.", "Ranger assist: it is the tree."], afterdark: ["Subtract 1824 from this year, then divide by ten.", "A decade is ten years.", "Ranger assist: 20 decades."], overdrive: ["Divide the canopy span by the spacing.", "15 divided by 3.", "Ranger assist: 5 lanterns."] } },
-    { id: 3, name: "The Giggling Graveyard (pretend!)", lat: 29.0266, lng: -80.9258, code: "LANTERN-3", art: "stop-3-graveyard.webp",
-      story: {
-               cozy: "The pretend graveyard is Dr. Z's decoy—foam stones, silly epitaphs, and ghostly giggles recorded on his machine. Wisp says the real lantern is nearby. Don't let the joke distract you!",
-               spooky: "The foam stones are harmless. The laughter is not. It plays from a speaker under the nearest stone, then cuts off when you approach. In the sudden silence, something beneath the prop taps three times—waits—and taps once more.",
-               afterdark: "FIELD RECORD 03 — The graveyard is a staged set. The tapping is not part of the sound file; the recording's waveform is silent during it. Four knocks, always. The final frame shows a shadow standing behind the team. Reviewers confirm nobody was standing there when the clip was made.",
-               overdrive: "You have defeated Dr. Z's terrifying graveyard of FOAM. His spooky sound effect is stuck on loop. Laugh at the villain later; find the lantern now!" },
-      wisp: "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
-      lit: "The ghosts are doing the wave. That's their applause. You're welcome.",
-      puzzle: { cozy: { q: "The tombstones in this picture are in a silly mood. How many tombstones are smiling?", a: "3", type: "number" },
-               spooky: { q: "Riddle: I have a head and a tail but no body. I lie in the dark waiting. What am I?", a: "coin", type: "text" },
-               afterdark: { q: "Dr. Z's census counted 675,000 pretend souls across all his haunted properties. If this graveyard holds 1/1000th of them, how many 'souls' are here?", a: "675", type: "number" },
-               overdrive: { q: "Dr. Z's challenge: The ghosts giggle every 7 seconds. How many giggles in one minute? (Round to nearest whole number)", a: "9", type: "number" } },
-      fallback: { q: "How many tombstones are in this picture?", a: "3" },
-      hints: { cozy: ["Look at the stones' faces, not for words.", "Count the big stones standing in the grass.", "Ranger assist: 3 smiling tombstones."], spooky: ["Check your pocket — it jingles.", "Heads or tails?", "Ranger assist: it is a coin."], afterdark: ["Divide 675,000 by one thousand.", "Drop the three zeros.", "Ranger assist: 675 souls."], overdrive: ["Sixty seconds in a minute, one giggle every seven.", "60 divided by 7, rounded.", "Ranger assist: 9 giggles."] } },
-    { id: 4, name: "The Spider's Counting Web", lat: 29.0270, lng: -80.9252, code: "LANTERN-4", art: "stop-4-spider.webp",
-      story: {
-               cozy: "Mrs. Spider found a glowing thread snagged on Dr. Z's decoy. It leads toward the next lantern. She'll help untangle the clue—eight legs are better than two!",
-               spooky: "A silver thread stretches across the web, trembling without wind. At its center hangs a tiny metal tag stamped with Dr. Z's crooked Z. The web tightens, strand by strand, around something unseen. From the dark comes a dry whisper: 'You took the wrong one.'",
-               afterdark: "FIELD RECORD 04 — The tag matches the mark on Dr. Z's machine. The thread runs toward the next lantern, but its shadow points the opposite way. A voice on the recorder says, 'You took the wrong one.' The recorder was switched off when the voice was captured.",
-               overdrive: "Mrs. Spider has trapped a piece of my very expensive lantern rig. I would like it back. She would like you to solve the clue first. Frankly, I'm afraid to negotiate with her." },
-      wisp: "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
-      lit: "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT.",
-      puzzle: { cozy: { q: "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?", a: "5", type: "number" },
-               spooky: { q: "Riddle: I weave without a loom, I trap without a cage. My silk is stronger than steel by weight. What am I?", a: "spider", type: "text" },
-               afterdark: { q: "Orb weavers rebuild their web every night. If Mrs. Spider has been here 11 years, approximately how many webs has she built? (Ignore leap years)", a: "4015", type: "number" },
-               overdrive: { q: "Dr. Z's challenge: A spider web has 20 radial threads. If each radial thread takes 2 minutes to spin, how long does the full web take?", a: "40", type: "number" } },
-      fallback: { q: "How many legs does Mrs. Spider have?", a: "8" },
-      hints: { cozy: ["Start with 8 legs, like every spider.", "She waves with 3 of them.", "Ranger assist: 8 minus 3 is 5."], spooky: ["She has eight legs and builds the web herself.", "Mrs. Spider, in person.", "Ranger assist: it is the spider."], afterdark: ["One web a night, 365 nights a year.", "11 times 365.", "Ranger assist: 4,015 webs."], overdrive: ["Multiply the threads by the minutes each.", "20 times 2.", "Ranger assist: 40 minutes."] } },
-    { id: 5, name: "The Owl's Night Watch", lat: 29.0274, lng: -80.9246, code: "LANTERN-5", art: "stop-5-owl.webp",
-      story: {
-               cozy: "Professor Hoot has Dr. Z's final note. The last lantern is waiting at the parade ground, but it needs all six lights to make the parade shine. You're nearly there!",
-               spooky: "Professor Hoot will not look at the path behind you. His note says the final lantern waits at the parade ground. Beneath that, in smaller letters: SIX LIGHTS MAKE A PATH. SEVEN MAKE A WAY BACK. The owl folds his wings and refuses to explain.",
-               afterdark: "FIELD RECORD 05 — Professor Hoot's note lists six lanterns, then a seventh line crossed out so hard the paper has split. The final instruction is clear: reunite the lights at the parade ground. The margin contains one last warning: IF YOU HEAR YOUR TEAM COUNTING, CHECK THAT EVERYONE IS HERE.",
-               overdrive: "Professor Hoot has my final note and is grading my handwriting. Focus, Keepers: one stop left. Bring the lights together, save the parade, and please do not let the owl review my entire notebook." },
-      wisp: "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
-      lit: "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome.",
-      puzzle: { cozy: { q: "Professor Hoot guards this stop's lantern. What kind of bird is he?", a: "owl", type: "text" },
-               spooky: { q: "Riddle: I fly without wings, I see without eyes. I turn my head almost all the way around. What am I?", a: "owl", type: "text" },
-               afterdark: { q: "Barred owls live about 10 years in the wild. If Professor Hoot is 7, how many years does he likely have left?", a: "3", type: "number" },
-               overdrive: { q: "Dr. Z's challenge: An owl can rotate its head 270 degrees. How many more degrees would it need for a full 360?", a: "90", type: "number" } },
-      fallback: { q: "What two letters does an owl 'say'?", a: "ho" },
-      hints: { cozy: ["Look at this stop's picture — he's watching you.", "Twilight is this bird's favorite time.", "Ranger assist: it's the owl."], spooky: ["It hoots and turns its head almost all the way around.", "Professor Hoot, in person.", "Ranger assist: it's the owl."], afterdark: ["Ten years of life minus seven lived.", "10 minus 7.", "Ranger assist: 3 years left."], overdrive: ["A full circle is 360 degrees.", "360 minus 270.", "Ranger assist: 90 degrees."] } },
-    { id: 6, name: "The Lantern Parade Ground", lat: 29.0278, lng: -80.9240, code: "LANTERN-6", art: "stop-6-lantern.webp",
-      story: {
-               cozy: "The last lantern! Bring its light together with the others and Wisp's parade can begin. Dr. Z's machine is quiet at last—and there's room in the parade for one reformed mad scientist.",
-               spooky: "Six lanterns burn across the parade ground. Their shadows stretch toward the team, not away from the light. A seventh shadow lifts its hand. Dr. Z steps out beside his silent machine—but the shadow keeps waving after he stops. Then the lanterns flare, and every shadow turns toward the road home.",
-               afterdark: "FIELD RECORD 06 — All six lanterns recovered. Dr. Z's machine is silent. The seventh shadow remains after its owner leaves the frame. At 00:13, the lights go out for one second; when they return, the shadow is gone and the road home is visible. Final note: the experiment ended. The recording did not.",
-               overdrive: "FINAL LANTERN RECOVERED! The machine is off, the parade is ON, and Dr. Z has been assigned one job: carry the snacks. You saved the night, Keepers. I am absolutely not getting sentimental about this." },
-      wisp: "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
-      lit: "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!",
-      puzzle: { cozy: { q: "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?", a: "6", type: "number" },
-               spooky: { q: "Riddle: I am born in fire, I die in water, and I glow in the dark. What am I?", a: "candle", type: "text" },
-               afterdark: { q: "The first lantern festival was in China over 1800 years ago. Approximately how many centuries ago was that?", a: "18", type: "number" },
-               overdrive: { q: "Dr. Z's final challenge: If your team lit 6 lanterns in 45 minutes, what was your average time per lantern?", a: "7.5", type: "number" } },
-      fallback: { q: "Say the magic words out loud as a team: 'Light the way, Wisp!' then type: wisp", a: "wisp" },
-      hints: { cozy: ["Count the stops on your map.", "One lantern per stop.", "Ranger assist: 6 lanterns."], spooky: ["You light it when the power goes out.", "Wax and a wick.", "Ranger assist: it is a candle."], afterdark: ["A century is one hundred years.", "1800 divided by 100.", "Ranger assist: 18 centuries."], overdrive: ["Divide the minutes by the lanterns.", "45 divided by 6.", "Ranger assist: 7.5 minutes each."] } }
+  "title": "Wisp's Lost Lanterns",
+  "kit": "DEMO",
+  "stops": [
+    {
+      "id": 1,
+      "name": "The Welcome Pumpkin",
+      "lat": 29.0258,
+      "lng": -80.927,
+      "code": "LANTERN-1",
+      "story": {
+        "cozy": "Wisp twirls sadly, her light flickering like a dying candle. \"My first lantern rolled away right at the start!\" she cries, her voice barely a whisper. \"Without it, I can't remember which way is home. Please — you have to help me find it.\"",
+        "spooky": "A carved pumpkin grins where no pumpkin should be. Something glows inside it — something alive, something watching. The grin widens as you approach, and you realize: it's not a pumpkin at all. It's a lantern, and it's been waiting for you.",
+        "afterdark": "The old-timers say a light once wandered this road, looking for the turning it missed in 1768. They say it still wanders, still searching, still hoping. Tonight, that light is Wisp — and tonight, you can help her find her way home.",
+        "overdrive": "Dr. Z's voice crackles through the static: \"FULL MADNESS engaged! My sensors detect faster teams ahead of you. That pumpkin isn't smiling — it's SMIRKING. Wipe that smirk off its face and reclaim what's Wisp's!\""
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "Count the pumpkins in the patch picture your organizer showed you. How many are smiling?",
+          "a": "4",
+          "type": "number"
+        },
+        "spooky": {
+          "q": "Riddle: I have a face but cannot see, I glow but cannot flee. On Halloween night I watch the street. What am I?",
+          "a": "jack-o-lantern",
+          "type": "text"
+        },
+        "afterdark": {
+          "q": "The colony year hides in the welcome sign's numbers. Add its digits. What do you get?",
+          "a": "22",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "Dr. Z's madness meter reads 6.66. Round to the nearest whole number and multiply by the number of lanterns.",
+          "a": "42",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "What color is the ribbon on the welcome sign?",
+        "a": "orange"
+      },
+      "hints": {
+        "cozy": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: the smiling pumpkins are 4."
+        ],
+        "spooky": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: a carved, glowing jack-o-lantern."
+        ],
+        "afterdark": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: add the year's digits — they sum to 22."
+        ],
+        "overdrive": [
+          "Look low — lanterns love the ground.",
+          "Count slowly, out loud, as a team.",
+          "Ranger assist: 7 × 6 = 42."
+        ]
+      },
+      "art": "stop-1-pumpkin.webp",
+      "wisp": "That's MINE! Oh — oh! It still remembers me. Quick, light it!",
+      "lit": "One down! See how it glows? That's my happy leaking out."
+    },
+    {
+      "id": 2,
+      "name": "The Whispering Oak",
+      "lat": 29.0262,
+      "lng": -80.9264,
+      "code": "LANTERN-2",
+      "story": {
+        "cozy": "The big oak is Wisp's best friend. He hid a lantern in his branches centuries ago, and he's been waiting for someone worthy to claim it. \"Oakie only hides things for friends,\" Wisp whispers. \"Are we friends?\"",
+        "spooky": "The oak's branches are bare, but something in the canopy breathes in and out, in and out — like the tree is dreaming. The leaves rustle though there's no wind. A voice whispers from the branches: \"Whooo dares to enter my domain?\"",
+        "afterdark": "They say this oak was a hanging tree in the 1800s. On still nights the leaves whisper names — the names of those who never left. Listen carefully. Is one of them yours? Or is it Wisp's, calling out for help?",
+        "overdrive": "Two hundred years this oak has stood, and it has seen faster Keepers than you. Oakie, be honest — are they slow? …He says yes. MOVE. That lantern is yours for the taking, but the oak won't wait forever."
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "Find the oak. How many wooden swings or benches face it?",
+          "a": "2",
+          "type": "number"
+        },
+        "spooky": {
+          "q": "I whisper without a mouth and shelter without walls. I drop acorns for the squirrels below. What am I?",
+          "a": "oak",
+          "type": "text"
+        },
+        "afterdark": {
+          "q": "The word 'whispering' hides a number. Count its letters, then subtract the benches (2).",
+          "a": "8",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "The oak has whispered 200 years. Each year it whispers 3 words. How many words total? Count the digits.",
+          "a": "6",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "What is carved on the small sign by the oak?",
+        "a": "wisp"
+      },
+      "hints": {
+        "cozy": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: the answer is 2."
+        ],
+        "spooky": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: the oak itself."
+        ],
+        "afterdark": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: 'whispering' has 10 letters — 10 − 2 benches = 8."
+        ],
+        "overdrive": [
+          "Face the tree like it is facing you.",
+          "Only count the ones looking at the oak.",
+          "Ranger assist: 200 × 3 = 600 words, and 6 + 0 + 0 = 6."
+        ]
+      },
+      "art": "stop-2-oak.webp",
+      "wisp": "Shhh — Oakie is sleeping. He only hides things for friends. We're friends, right?",
+      "lit": "Got it! Oakie says you're officially tree-approved."
+    },
+    {
+      "id": 3,
+      "name": "The Giggling Graveyard (pretend!)",
+      "lat": 29.0266,
+      "lng": -80.9258,
+      "code": "LANTERN-3",
+      "story": {
+        "cozy": "Don't worry — these tombstones are made of foam, and every ghost here just wants to play tag. The giggling isn't coming from any of them. It's coming from underneath. \"Tag, you're it!\" Wisp giggles. \"Kidding — unless…? No, kidding. Probably.\"",
+        "spooky": "The foam tombstones lean like bad teeth, and the giggling isn't coming from any of them. It's coming from underneath. The ground trembles slightly, and you realize: the graveyard is alive, and it's laughing at you.",
+        "afterdark": "Pretend stones, real ground. The town buried its 1918 flu dead in a field like this one — and on Halloween the veil is thin enough to hear them laugh. They're not mocking you. They're inviting you to play.",
+        "overdrive": "The ghosts keep score, and right now you're losing to a team of TODDLERS. Tag them back. TAG. THEM. BACK. The graveyard is watching, and it's not impressed. Show them what real Keepers can do."
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "One foam tombstone says R.I.P. — Rest In... what? (The silly word on the stone!)",
+          "a": "pumpkins",
+          "type": "text"
+        },
+        "spooky": {
+          "q": "The gnome's hat points to the tombstones. His hat is red. What color is it?",
+          "a": "red",
+          "type": "text"
+        },
+        "afterdark": {
+          "q": "One stone reads 'Here lies Wisp's lantern'. Count the letters in 'lantern'.",
+          "a": "7",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "The graveyard has 5 tombstones. Each tombstone has 4 letters. Add the letters to the number of stones.",
+          "a": "9",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "How many foam tombstones are there?",
+        "a": "5"
+      },
+      "hints": {
+        "cozy": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: Rest In Pumpkins."
+        ],
+        "spooky": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: red — the question tells you!"
+        ],
+        "afterdark": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: count l-a-n-t-e-r-n — 7 letters."
+        ],
+        "overdrive": [
+          "Read the stones — one of them is joking.",
+          "It rhymes with the patch from Stop 1.",
+          "Ranger assist: 4 letters per stone + 5 stones = 9."
+        ]
+      },
+      "art": "stop-3-graveyard.webp",
+      "wisp": "Tag, you're it! Kidding — unless…? No, kidding. Probably.",
+      "lit": "The ghosts are doing the wave. That's their applause. You're welcome."
+    },
+    {
+      "id": 4,
+      "name": "The Spider's Counting Web",
+      "lat": 29.027,
+      "lng": -80.9252,
+      "code": "LANTERN-4",
+      "story": {
+        "cozy": "Mrs. Spider — she's friendly, and made of pipe cleaners — has a lantern tangled in her web! \"She says it with all eight legs. It's a lot of hi.\" Wisp translates. \"She only lends it to good listeners. Are you a good listener?\"",
+        "spooky": "The web stretches between the gazebo posts like a trap, and the dew on it isn't dew — it's too thick, and it trembles when you step close. Mrs. Spider watches you with all eight eyes, and you can feel her grading you.",
+        "afterdark": "Orb weavers rebuild every night. This one has rebuilt in this exact spot for eleven years. She remembers every face that's ever been caught. She's waiting to see if yours is worth remembering.",
+        "overdrive": "Mrs. Spider has rebuilt eleven webs tonight AND finished a crossword. Your excuse is WHAT, exactly? Untangle that lantern. Clock's ticking. She's losing patience, and spiders are not known for their patience."
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "A real spider has 8 legs. Mrs. Spider is holding up 3 legs to wave. How many legs are on the ground?",
+          "a": "5",
+          "type": "number"
+        },
+        "spooky": {
+          "q": "Mrs. Spider's web has 8 points. She cuts 5. How many remain?",
+          "a": "3",
+          "type": "number"
+        },
+        "afterdark": {
+          "q": "Mrs. Spider has 8 legs. She gives 3 to her sister and 4 to her brother. How many legs does she have left?",
+          "a": "1",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "Mrs. Spider weaves 8 legs. Each leg has 7 joints. How many joints total? Count the digits.",
+          "a": "11",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "What color is Mrs. Spider?",
+        "a": "purple"
+      },
+      "hints": {
+        "cozy": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 − 3 = 5."
+        ],
+        "spooky": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 points − 5 cut = 3 remain."
+        ],
+        "afterdark": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 − 3 − 4 = 1."
+        ],
+        "overdrive": [
+          "Start with 8 legs, like every spider.",
+          "She waves with 3 of them.",
+          "Ranger assist: 8 × 7 = 56 joints, and 5 + 6 = 11."
+        ]
+      },
+      "art": "stop-4-spider.webp",
+      "wisp": "Mrs. Spider says hi. She says it with all eight legs. It's a lot of hi.",
+      "lit": "Untangled! Mrs. Spider is doing a happy leg-dance. All eight. It's a LOT."
+    },
+    {
+      "id": 5,
+      "name": "The Owl's Night Watch",
+      "lat": 29.0274,
+      "lng": -80.9246,
+      "code": "LANTERN-5",
+      "story": {
+        "cozy": "High in the tree, Professor Hoot guards a lantern. He only lends it to good listeners. \"Professor Hoot is very serious,\" Wisp whispers. \"Do your serious face. …Not that serious. Dial it back.\"",
+        "spooky": "The owl doesn't blink. Owls can't — but this one isn't trying to. It watches you solve, and you can feel it grading you. The silence is heavy, expectant. One wrong answer and you'll fail the test.",
+        "afterdark": "Barred owls ask 'who cooks for you.' The old stories say if you answer wrong, you follow the sound into the dark and don't come back. Answer carefully. The owl is listening.",
+        "overdrive": "Professor Hoot graded your last answer a C+. A C! In MY hunt! Listen harder, answer faster — make an owl proud. He's waiting, and owls are not known for their patience. Well, they are. But he's not."
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "Listen to the sound your phone plays at this stop: is it an owl, a cat, or a frog?",
+          "a": "owl",
+          "type": "text"
+        },
+        "spooky": {
+          "q": "The owl's favorite time rhymes with 'twilight light'. What is it?",
+          "a": "twilight",
+          "type": "text"
+        },
+        "afterdark": {
+          "q": "Professor Hoot's name has 4 letters. The owl hoots 6 times. Add them.",
+          "a": "10",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "Professor Hoot hoots 10 times. Each hoot has 2 syllables. Add the syllables to the number of hoots.",
+          "a": "12",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "What two letters does an owl 'say'?",
+        "a": "ho"
+      },
+      "hints": {
+        "cozy": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: it's the owl."
+        ],
+        "spooky": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: twilight."
+        ],
+        "afterdark": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: Hoot is 4 letters + 6 hoots = 10."
+        ],
+        "overdrive": [
+          "It is the sound this whole stop is named after.",
+          "Twilight is this bird's favorite time.",
+          "Ranger assist: 2 syllables per hoot + 10 hoots = 12."
+        ]
+      },
+      "art": "stop-5-owl.webp",
+      "wisp": "Professor Hoot is very serious. Do your serious face. …Not that serious. Dial it back.",
+      "lit": "‘Hoo,’ he says. That's owl for ‘well done.’ I translated. You're welcome."
+    },
+    {
+      "id": 6,
+      "name": "The Lantern Parade Ground",
+      "lat": 29.0278,
+      "lng": -80.924,
+      "code": "LANTERN-6",
+      "story": {
+        "cozy": "The last lantern! Light it and the whole parade glows. Wisp's hands are all shaky. \"Do I have hands? I'm shaky anyway!\" she laughs, her light flickering with joy. \"This is it — the last one!\"",
+        "spooky": "The empty parade ground waits. Six lanterns, six shadows — but there are seven shadows moving on the grass, and one of them is waving at you. Wisp's light flickers nervously. \"That's... that's not one of mine.\"",
+        "afterdark": "Every lantern you've lit is still burning behind you, a dotted line of fire through the dark. One more, and the road home exists. One more, and Wisp can find her way. One more, and the night is yours.",
+        "overdrive": "FINAL STRETCH. Wisp ran the numbers and they are NOT in your favor. Light that last lantern like you mean it — FULL! MADNESS! The parade ground is watching, the shadows are waiting, and Dr. Z is timing you. GO!"
+      },
+      "puzzle": {
+        "cozy": {
+          "q": "Teamwork finale: how many lanterns did you light on the whole hunt (including this one)?",
+          "a": "6",
+          "type": "number"
+        },
+        "spooky": {
+          "q": "If each lantern burns for 3 hours, how many total hours do all 6 burn?",
+          "a": "18",
+          "type": "number"
+        },
+        "afterdark": {
+          "q": "The 6 lanterns are numbered 1 through 6. Add the even numbers.",
+          "a": "12",
+          "type": "number"
+        },
+        "overdrive": {
+          "q": "FINAL CHALLENGE: 6 lanterns, each burns 3 hours. Total burn time? Add the digits of your answer.",
+          "a": "9",
+          "type": "number"
+        }
+      },
+      "fallback": {
+        "q": "Say the magic words out loud as a team: 'Light the way, Wisp!' then type: wisp",
+        "a": "wisp"
+      },
+      "hints": {
+        "cozy": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 lanterns."
+        ],
+        "spooky": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 lanterns × 3 hours = 18."
+        ],
+        "afterdark": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: the even lanterns — 2 + 4 + 6 = 12."
+        ],
+        "overdrive": [
+          "Count the stops on your map.",
+          "One lantern per stop.",
+          "Ranger assist: 6 × 3 = 18 hours, and 1 + 8 = 9."
+        ]
+      },
+      "art": "stop-6-lantern.webp",
+      "wisp": "This is it — the last one! My hands are all shaky. Do I have hands? I'm shaky anyway!",
+      "lit": "IT'S LIT! Look at them all — look at ME! I'm basically a sunrise!"
+    }
   ]
 };
 
